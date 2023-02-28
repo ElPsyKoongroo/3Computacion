@@ -83,7 +83,6 @@ public class AgenteSuperInteligente extends AbstractPlayer {
 	
 	
 	public void update_map(StateObservation stateObs) {
-		//ArrayList<>
 		Vector2d avatar_pos = stateObs.getAvatarPosition();
 		int block_size = stateObs.getBlockSize();
 		int avatar_x = (int) (avatar_pos.x / block_size); 
