@@ -1,6 +1,4 @@
 function [IEtiq, n] = Etiquetar(Ib)
-%ETIQUETAR Summary of this function goes here
-%   Detailed explanation goes here
     [n_rows, n_col] = size(Ib);
     n = 1.0;
 
@@ -15,12 +13,12 @@ function [IEtiq, n] = Etiquetar(Ib)
             end
         end
     end
-
+    
     % Cambiar esta forma de añadir 0 por la que le 
     % gusta al teacher
     padded_array = padarray(IEtiq,[1 1],0,'both');
-    cambiado = true;
 
+    cambiado = true;
     while cambiado 
         cambiado = false;
 
@@ -28,7 +26,10 @@ function [IEtiq, n] = Etiquetar(Ib)
         for x = 2:n_rows
             for y = 2:n_col
                 if padded_array(x,y) ~= 0
-                    min_vecino = Min_vecino(padded_array, y, x);
+                    % Funcion que se podria/ ¿Deberia? poner
+                    % inline
+                    min_vecino = Min_vecino(padded_array,x,y);
+
                     if min_vecino ~= padded_array(x,y)
                         cambiado = true;
                         padded_array(x,y) = min_vecino;

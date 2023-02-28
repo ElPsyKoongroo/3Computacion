@@ -1,4 +1,4 @@
-function [Io] = funcion_visualiza(Ii, Ib, Color)
+function [Io] = funcion_visualiza(Ii, Ib, Color, flagRepresenta)
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
     Io = Ii;
@@ -12,5 +12,9 @@ function [Io] = funcion_visualiza(Ii, Ib, Color)
                 Io(x,y,3) = Color(3);
             end
         end
+    end
+
+    if flagRepresenta
+        imshow(uint8(Io));
     end
 end
