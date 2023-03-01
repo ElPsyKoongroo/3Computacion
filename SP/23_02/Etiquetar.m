@@ -1,4 +1,4 @@
-function [IEtiq, n] = Etiquetar(Ib)
+function [IEtiq, N] = Etiquetar(Ib)
     [n_rows, n_col] = size(Ib);
     n = 1.0;
 
@@ -60,8 +60,13 @@ function [IEtiq, n] = Etiquetar(Ib)
         end
     end
 
-
     IEtiq = padded_array(2:n_rows+1, 2:n_col+1);
+    etiquetas = unique(IEtiq(IEtiq ~= 0));
+    N = 1;
+    for etiqueta = 1:size(etiquetas)
+        IEtiq(IEtiq==etiquetas(etiqueta)) = N;
+        N = N + 1;
+    end
 
 end
 
