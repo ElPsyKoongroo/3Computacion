@@ -9,21 +9,19 @@ if size(unique(I(I ~= 0))) > 1
 end
 
 Ib = I==255;
-[i_etiq, N] = Etiquetar(Ib);
-n_etiquetas = unique(i_etiq(i_etiq ~= 0));
-[n_rows, n_cols] = size(i_etiq);
+[IEtiq, N] = Etiquetar(Ib);
+[n_rows, n_cols] = size(IEtiq);
 new_image = zeros(n_rows, n_cols, 3);
 
 for etiqueta = 1:N
-    Ib = i_etiq==etiqueta;
-    Color =  round(255*rand(1,3)); %[randi([0,255]), randi([0,255]), randi([0,255])];
-    new_image = funcion_visualiza(new_image, Ib, Color);
+    Ib = IEtiq==etiqueta;
+    Color =  round(255*rand(1,3)); 
+    new_image = funcion_visualiza(new_image, Ib, Color, true);
 end
-
 imshow(uint8(new_image))
-%cr = randi([0, 255])
-%% Ejercicio 4
 
+
+%% Ejercicio 4
 %{
 
     !TODO
@@ -39,4 +37,29 @@ imshow(uint8(new_image))
         Mantener solo aquellas etiquetas cuyas areas 
         cumplan la condicion del enunciado
     
-}%
+%}
+    clc
+    areas = funcion_calcula_areas(IEtiq, N);
+    centroides = funcion_calcula_centroides(IEtiq, N);
+
+    [sorted_areas, indexes] = sort(areas, 'descend');
+    imshow(I);
+    hold on, plot(centroides(indexes(1),1), centroides(indexes(1),2), '*r');
+    hold on, plot(centroides(indexes(N-1),1), centroides(indexes(N-1),2), '*r');
+    
+    
+    %{
+    % Mostrar todos los centroides
+
+    for i = 1:N-1
+        hold on, plot(centroides(indexes(i),1), centroides(indexes(i),2), '*r');
+    end
+    %}
+    
+    clc;
+
+
+
+
+
+
