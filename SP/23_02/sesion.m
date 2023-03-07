@@ -16,7 +16,7 @@ new_image = zeros(n_rows, n_cols, 3);
 for etiqueta = 1:N
     Ib = IEtiq==etiqueta;
     Color =  round(255*rand(1,3)); 
-    new_image = funcion_visualiza(new_image, Ib, Color, true);
+    new_image = funcion_visualiza(new_image, Ib, Color, false);
 end
 imshow(uint8(new_image))
 
