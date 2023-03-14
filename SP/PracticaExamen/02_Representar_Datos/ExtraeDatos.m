@@ -10,44 +10,45 @@ figure(), hold on;
 
 n_imagenes = 15;
 
-DatosColor = PoI;
-% 9
+SeleccionColor = zeros(240, 320, n_imagenes);
+%% Roi colores
 for i = 1:15
     I = uint8 (Fotitos(:,:,:,i));
     imshow(I);
     roi = roipoly(I);
-    DatosColor(:,:,i) = roi;
+    SeleccionColor(:,:,i) = roi;
     pause(1);
 end
 
-DatosColor2 = zeros(n_imagenes, 4);
+save('SeleccionColor', 'SeleccionColor');
 
-DatosColor3 = [1, DatosColor3(:,:,1)]
-
+%% Genera Datos Color
+DatosColor = [];
 for i = 1:n_imagenes 
     I = Fotitos(:,:,:,i);
-    Ib = logical (DatosColor(:,:,i));
+    Ib = logical(SeleccionColor(:,:,i));
     R = I(:,:,1);
     G = I(:,:,2);
     B = I(:,:,3);
-
-    R = reshape(R,[],1);
-    G = reshape(G,[],1);
-    B = reshape(B,[],1);
-
-    DatosColor2 = [DatosColor2; ones(size(a))*i, R, G, B];
+    R = R(Ib);
+    G = G(Ib);
+    B = B(Ib);
+    DatosColor = [DatosColor; ones(size(R))*i, R, G, B];
 end
 
-DatosFondo = zeros(240, 320, n_imagenes);
+%% Roi fondo
+SeleccionFondo = zeros(240, 320, n_imagenes);
 for i = 1:15
     I = uint8 (Fotitos(:,:,:,i));
     imshow(I);
     roi = roipoly(I);
-    DatosFondo(:,:,i) = roi;
+    SeleccionFondo(:,:,i) = roi;
     pause(1);
 end
+close all;
+save('SeleccionFondo', 'SeleccionFondo');
 
-
+%% 
 for i = 1:15
     I = Fotitos(:,:,:,i);
     Ib = logical (DatosFondo(:,:,i));
