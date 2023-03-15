@@ -70,7 +70,7 @@ end
 
 %%
 X = [DatosColor; DatosFondo];
-Y = [ones(size(DatosColor, 1),1); zeros(size(DatosFondo,1),1)];
+Y = [ones()]
 %%
 rmpath(".\PracticaExamen\01_GeneracionMaterial")
 close all;
