@@ -8,18 +8,26 @@ import si2023.SergioGarciaMacias.ia.reglas.Accion;
 import si2023.SergioGarciaMacias.p03.agente89.mente.Mundo89;
 import tools.Vector2d;
 
-// Es un singleton, cuidadito con las threads
-public class IrCarcel implements Accion {	
+/*
+	Es un singleton, cuidadito con las threads.
+
+	A diferencia de las demas clases que mueven a Superman, esta calcula el camino
+	desde la posicion del jugador y mete todas las acciones necesarias en un Stack. A medida que
+	el juego solicita una accion el Stack se va vaciando y asi hasta que quede vacio.
+	completamente.
+*/
+
+public class IrCarcel implements Accion {
 	private static Stack<ACTIONS> path_to_jail = new Stack<>();
 
-	public IrCarcel() { 
+	public IrCarcel() {
 		// TODO Auto-generated constructor stub
 	}
 
 	private ACTIONS pop() {
-		return IrCarcel.path_to_jail.pop(); 
+		return IrCarcel.path_to_jail.pop();
 	}
-	
+
 	@Override
 	public ACTIONS do_action(Mundo m) {
 		if (!path_to_jail.isEmpty()) {
@@ -28,9 +36,8 @@ public class IrCarcel implements Accion {
 
 		Mundo89 mundo = (Mundo89) m;
 		Vector2d jail_pos = mundo.get_jail_position();
-		// Vector2d player_pos = mundo.get_player_position().copy();
-		double x_diff = jail_pos.x - mundo.get_player_position().x / mundo.get_block_size();
-		double y_diff = jail_pos.y - mundo.get_player_position().y / mundo.get_block_size();	
+		double x_diff = jail_pos.x - mundo.get_player_pos_block().x;
+		double y_diff = jail_pos.y - mundo.get_player_pos_block().y;
 
 		while (Math.abs(Math.floor(x_diff) - Math.floor(y_diff)) > 0) {
 			if (y_diff < 0) {
@@ -52,6 +59,6 @@ public class IrCarcel implements Accion {
 		if (!path_to_jail.isEmpty())
 			return this.pop();
 		return ACTIONS.ACTION_DOWN;
-		
+
 	}
 }

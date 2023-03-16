@@ -10,7 +10,10 @@ import si2023.SergioGarciaMacias.p03.agente89.mente.Motor89;
 import si2023.SergioGarciaMacias.p03.agente89.mente.Mundo89;
 import tools.ElapsedCpuTimer;
 
-/* iType
+/* 
+ * Cortesia de Adrian Rodriguez Rodriguez:
+ * 
+ * iType
  * 0     -> Rocas (end of map)
  * 3     -> Nube
  * 4     -> Piedras
@@ -22,8 +25,10 @@ import tools.ElapsedCpuTimer;
  * 18    -> Civil cayendo
  * 19    -> Bala
  * 20    -> Player
+ * 
  */
 
+// Si no funciona bien es por que le falta oligoelementos <3
 public class AgenteSuperInteligente extends AbstractPlayer {
 	String[][] map;
 	Mundo89 mundo;
@@ -52,7 +57,7 @@ public class AgenteSuperInteligente extends AbstractPlayer {
 				if (estados[i][j].size() == 0) {
 					map[i][j] = " ";
 				} else {
-					int type = estados[i][j].get(0).itype;
+					int type = estados[i][j].get(0).category;
 					set_char(i, j, type);
 				}
 			}
@@ -87,6 +92,8 @@ public class AgenteSuperInteligente extends AbstractPlayer {
 
 		update_map(stateObs);
 		this.mundo.actualizar(stateObs);
+
+		// Descomentar esto para que se muestre el mapa por consola.
 		// print_map();
 		return this.serebro.Pensar(this.mundo);
 	}

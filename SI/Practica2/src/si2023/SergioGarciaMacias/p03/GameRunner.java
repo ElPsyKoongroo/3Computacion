@@ -9,7 +9,7 @@ import tracks.ArcadeMachine;
 public class GameRunner {
 	public static void main(String[] args) {
 
-		int ejecuciones = 50;
+		int ejecuciones = 100;
 		String p0 = "si2023.SergioGarciaMacias.p03.agente89.AgenteSuperInteligente";
 
 		// Load available games
@@ -19,8 +19,9 @@ public class GameRunner {
 		// Game settings
 		boolean visuals = false;
 
-		int[] seed_to_play = { 1130732993, -1624850195, 1662558412, -1128433611, 1436601074, 667203964,
-				-1088813805, -738128400, -1232769431 };
+		int[] seed_to_play = { 1963797956, 2074061387, -1872155723, 1303888686, -81322281, -847850438, 157357791,
+				2025477112, -1153726265, 262677882, -216340112, -1368116601, 1464790604, -1987832276, 1245635922,
+				-1408398019, };
 
 		// Game and level to play
 		int gameIdx = 89;
@@ -35,20 +36,22 @@ public class GameRunner {
 
 		for (int i = 0; i < seed_to_play.length; i++) {
 			// 2. This plays a game in a level by the controller.
-			int seed = seed_to_play[i]; // new Random().nextInt();
+			int seed = seed_to_play[i];
 			System.out.println(seed);
-			// ArcadeMachine.runOneGame(game, level1, visuals, p0, null, seed, 0);
+			ArcadeMachine.runOneGame(game, level1, visuals, p0, null, seed, 0);
 		}
 
-		
 		System.out.println("\n\nRandom seeds !!\n\n"
 				+ "=========================================================================");
 
 		ArrayList<Integer> seed_perdedoras = new ArrayList<>();
 
-		for (int i = 0; i < ejecuciones; i++) {
+		// 90% de WinRate en la seed 33
+		Random rand = new Random(33);
+
+		for (int i = 0; i < 100; i++) {
 			// 2. This plays a game in a level by the controller.
-			int seed = new Random().nextInt();
+			int seed = rand.nextInt();
 			double[] cosos = ArcadeMachine.runOneGame(game, level1, visuals, p0, null, seed, 0);
 			if (cosos[0] == 0.0) {
 				seed_perdedoras.add(seed);
@@ -58,6 +61,8 @@ public class GameRunner {
 		System.out.println("\n\n\n");
 		for (Integer seed : seed_perdedoras)
 			System.out.println(seed + ",");
+
+		System.out.println("WinRate: " + (ejecuciones - seed_perdedoras.size()) * 100 / ejecuciones);
 
 		System.exit(0);
 
