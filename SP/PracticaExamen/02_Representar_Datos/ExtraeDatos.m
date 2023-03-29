@@ -81,8 +81,9 @@ save("Datos_Generados/conjunto_datos", "X", "Y")
 
 %% Eliminar outliers y visualizar
 visualiza_datos(X,Y,2);
-[X_i,Y_i] = funcion_elimina_outliers(X,Y,2);
+[X,Y] = funcion_elimina_outliers(X,Y,2);
 visualiza_datos(X_i,Y_i,2);
+save("Datos_Generados/conjunto_datos_final", "X", "Y")
 
 
 %% 

@@ -1,0 +1,59 @@
+function [outputArg1,outputArg2] = calcula_datos_esfera(XColor, XFondo)
+    
+    
+    XColor = X(logical(Y), 2:4);
+    XFondo = X(~logical(Y), 2:4);
+
+    %% Obtener las distancias de los colores desde 0,0
+    X = double([XColor; XFondo]);
+    Y = logical([ones(size(XColor,1),1); zeros(size(XFondo, 1),1) ]);
+    
+    [rows, ~] = size(X);
+    distancias = zeros(rows, 1);
+    
+    for i = 1:rows 
+        distancias(i) = round(sqrt((X(i, 1).^2 + X(i, 2).^2 + X(i, 3).^2)));
+      
+    end
+    
+    %% Media de los colores de interes
+
+    media_colores = double(round(mean(X(Y, :))));
+
+
+    distancias_color = distancias(logical(Y));
+    distancias_fondo = distancias(~Y);
+    distancia_media = mean(distancias(logical(Y)));
+
+    %% Sin ruido
+    sin_ruido = 0;
+    [color_rows, ~] = size(distancias_color);
+    distancias_color = distancias(Y, :);
+    for i = 1:color_rows 
+        distancia_aux =  abs(distancia_media-distancias_color(i));
+        if ( distancia_aux > sin_ruido ) 
+            sin_ruido = distancia_aux;
+        end
+    end
+
+    %% Max pixeles
+    [fondo_rows, ~] = size(distancias_fondo);
+    colores_fondo = double(X(logical(~Y), 2:4));
+    
+    distancias_fondo = zeros(fondo_rows, 1); 
+    for i = 1:fondo_rows
+        distancia_act = double(colores_fondo(i, :));
+        distancia_aux = sqrt(sum((media_colores-distancia_act).^2));
+        distancias_fondo(i) = distancia_aux;
+    end
+    max_pixeles = min(distancias_fondo);
+    
+    %% Sin compromiso
+    radio_media = (max_pixeles+sin_ruido)/2;
+
+    %%
+
+    
+
+end
+
