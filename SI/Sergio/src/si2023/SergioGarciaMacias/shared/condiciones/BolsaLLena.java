@@ -2,7 +2,7 @@ package si2023.SergioGarciaMacias.shared.condiciones;
 
 import si2023.SergioGarciaMacias.ia.mente.Mundo;
 import si2023.SergioGarciaMacias.ia.reglas.Condicion;
-import si2023.SergioGarciaMacias.p03.agente89.mente.Mundo89;
+import si2023.SergioGarciaMacias.shared.Mundo89;
 
 public class BolsaLLena implements Condicion {
 

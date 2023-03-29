@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import si2023.SergioGarciaMacias.ia.mente.Mundo;
 import si2023.SergioGarciaMacias.ia.reglas.Condicion;
-import si2023.SergioGarciaMacias.p03.agente89.mente.Mundo89;
-import si2023.SergioGarciaMacias.p03.agente89.mente.Mundo89.iType;
+import si2023.SergioGarciaMacias.shared.Mundo89;
+import si2023.SergioGarciaMacias.shared.Mundo89.iType;
 import tools.Vector2d;
 
 /**
@@ -33,7 +33,7 @@ public class ParguelaEnPeligro implements Condicion {
 	// Esto es bueno porque al estar mas cerca del centro puede llegar antes a
 	// cualquier
 	// posicion.
-	private static final int FACTOR_DE_LEJANIA = 3;
+	private static final int FACTOR_DE_LEJANIA = 4;
 
 	public ParguelaEnPeligro() {
 		// TODO Auto-generated constructor stub

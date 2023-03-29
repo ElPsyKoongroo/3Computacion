@@ -1,4 +1,4 @@
-package si2023.SergioGarciaMacias.p04.agente89;
+package si2023.SergioGarciaMacias.p05.agente89;
 
 import java.util.ArrayList;
 
@@ -6,7 +6,7 @@ import core.game.Observation;
 import core.game.StateObservation;
 import core.player.AbstractPlayer;
 import ontology.Types.ACTIONS;
-import si2023.SergioGarciaMacias.p04.agente89.mente.FSM_89;
+import si2023.SergioGarciaMacias.p05.agente89.mente.Baobab89;
 import si2023.SergioGarciaMacias.shared.Mundo89;
 import tools.ElapsedCpuTimer;
 
@@ -32,12 +32,12 @@ import tools.ElapsedCpuTimer;
 public class AgenteSuperInteligente extends AbstractPlayer {
 	String[][] map;
 	Mundo89 mundo;
-	FSM_89 serebro;
+	Baobab89 serebro;
 
 	public AgenteSuperInteligente(StateObservation state, ElapsedCpuTimer timer) {
 		ArrayList<Observation>[][] estados = state.getObservationGrid();
 
-		serebro = new FSM_89(mundo);
+		serebro = new Baobab89();
 		mundo = new Mundo89(state);
 		int x_size = estados.length;
 		int y_size = estados[0].length;

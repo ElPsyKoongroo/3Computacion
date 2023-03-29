@@ -3,6 +3,6 @@ package si2023.SergioGarciaMacias.ia.mente;
 import ontology.Types.ACTIONS;
 
 public interface Motor {
-	ACTIONS AnalizarMapa(Mundo mundo);
-	ACTIONS Pensar(Mundo mundo);
+	ACTIONS decide(Mundo mundo);
+	ACTIONS pensar(Mundo mundo);
 }

@@ -12,6 +12,8 @@ import si2023.SergioGarciaMacias.p03.agente89.reglas.Default;
 import si2023.SergioGarciaMacias.p03.agente89.reglas.ParguelaPeligroso;
 import si2023.SergioGarciaMacias.p03.agente89.reglas.SalvarParguela;
 import si2023.SergioGarciaMacias.p03.agente89.reglas.VaciarBolsa;
+import si2023.SergioGarciaMacias.shared.Mundo89;
+
 
 public class Motor89 implements Motor {
 
@@ -30,7 +32,7 @@ public class Motor89 implements Motor {
 	}
 
 	@Override
-	public ACTIONS AnalizarMapa(Mundo m) {
+	public ACTIONS decide(Mundo m) {
 		for(Regla r: this.reglas) { 
 			if (r.se_cumple(m)) {
 				return r.act().do_action(m);
@@ -41,7 +43,7 @@ public class Motor89 implements Motor {
 	}
 
 	@Override
-	public ACTIONS Pensar(Mundo m) {
+	public ACTIONS pensar(Mundo m) {
 		Mundo89 mundo = (Mundo89) m;
 		this.mundo = new Mundo89(mundo);
 
@@ -49,7 +51,7 @@ public class Motor89 implements Motor {
 		// por lo que es necesaria esta comprobacion para
 		// que no pete.
 		if (this.mundo.ok())
-			return this.AnalizarMapa(m);
+			return this.decide(m);
 
 		System.out.println("Mapa no ok");
 		return ACTIONS.ACTION_NIL;

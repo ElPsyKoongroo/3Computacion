@@ -1,4 +1,4 @@
-package si2023.SergioGarciaMacias.p04;
+package si2023.SergioGarciaMacias.p05;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -10,7 +10,7 @@ public class GameRunner {
 	public static void main(String[] args) {
 
 		int ejecuciones = 100;
-		String p0 = "si2023.SergioGarciaMacias.p04.agente89.AgenteSuperInteligente";
+		String p0 = "si2023.SergioGarciaMacias.p05.agente89.AgenteSuperInteligente";
 
 		// Load available games
 		String spGamesCollection = "examples/all_games_sp.csv";

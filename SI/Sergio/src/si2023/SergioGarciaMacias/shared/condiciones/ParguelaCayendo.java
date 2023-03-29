@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import si2023.SergioGarciaMacias.ia.mente.Mundo;
 import si2023.SergioGarciaMacias.ia.reglas.Condicion;
-import si2023.SergioGarciaMacias.p03.agente89.mente.Mundo89;
-import si2023.SergioGarciaMacias.p03.agente89.mente.Mundo89.iType;
+import si2023.SergioGarciaMacias.shared.Mundo89;
+import si2023.SergioGarciaMacias.shared.Mundo89.iType;
 import tools.Vector2d;
 
 public class ParguelaCayendo implements Condicion {

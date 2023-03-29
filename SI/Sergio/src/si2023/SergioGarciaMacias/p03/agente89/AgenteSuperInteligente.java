@@ -7,7 +7,7 @@ import core.game.StateObservation;
 import core.player.AbstractPlayer;
 import ontology.Types.ACTIONS;
 import si2023.SergioGarciaMacias.p03.agente89.mente.Motor89;
-import si2023.SergioGarciaMacias.p03.agente89.mente.Mundo89;
+import si2023.SergioGarciaMacias.shared.Mundo89;
 import tools.ElapsedCpuTimer;
 
 /* 
@@ -95,6 +95,6 @@ public class AgenteSuperInteligente extends AbstractPlayer {
 
 		// Descomentar esto para que se muestre el mapa por consola.
 		// print_map();
-		return this.serebro.Pensar(this.mundo);
+		return this.serebro.pensar(this.mundo);
 	}
 }

@@ -26,7 +26,7 @@ public abstract class MaquinaFSM {
 	public MaquinaFSM() {
 	}
 
-	public ACTIONS disparo(Mundo m) {
+	public ACTIONS decide(Mundo m) {
 		for (Transicion t : estado_actual.get_transiciones()) {
 			if (t.se_dispara(m)) {
 				estado_actual = conversion_estado.get(t.siguiente_estado());
@@ -35,5 +35,7 @@ public abstract class MaquinaFSM {
 		}
 		return estado_actual.get_accion().do_action(m);
 	}
+	
+	public abstract ACTIONS pensar(Mundo m);
 
 }

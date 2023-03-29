@@ -12,6 +12,7 @@ import si2023.SergioGarciaMacias.p04.agente89.estados.EPrevieneParguela;
 import si2023.SergioGarciaMacias.p04.agente89.estados.ESalirCarcel;
 import si2023.SergioGarciaMacias.p04.agente89.estados.ESalvarParguela;
 import si2023.SergioGarciaMacias.p04.agente89.estados.EVaciarBolsa;
+import si2023.SergioGarciaMacias.shared.Mundo89;
 
 /*
  * MSF stands for MotherSuperFucker89 or Maquina de heStados Finita.
@@ -37,6 +38,6 @@ public class FSM_89 extends MaquinaFSM {
 	}
 
 	public ACTIONS pensar(Mundo m) {
-		return this.disparo(m);
+		return this.decide(m);
 	};
 }
