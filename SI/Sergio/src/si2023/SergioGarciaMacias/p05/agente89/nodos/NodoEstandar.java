@@ -1,5 +1,7 @@
 package si2023.SergioGarciaMacias.p05.agente89.nodos;
 
+import ontology.Types.ACTIONS;
+import si2023.SergioGarciaMacias.ia.mente.Mundo;
 import si2023.SergioGarciaMacias.ia.reglas.Condicion;
 import si2023.SergioGarciaMacias.ia.reglas.Nodo;
 
@@ -10,4 +12,9 @@ public class NodoEstandar extends Nodo {
 		this.izq = false_path;
 		this.cond = c;
 	}
+
+    @Override
+    public ACTIONS get_action(Mundo m) {
+        return null;
+    }
 }

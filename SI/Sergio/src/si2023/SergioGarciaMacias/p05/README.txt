@@ -29,6 +29,12 @@ Cositas de la practica:
    		He pasado Mundo89 a shared para que java no se queje porque la verdad es un poco tonto el 
    		niño.
    		
+   		Como siempre perdon por los nombres de las variables, me he tomado libertades a la hora
+   		de diseñar las clases y como ponerlas y el WR al 90%.
+   		
+   		En la practica 4 el WR se queda en 87% debido a que protege parguela está activado, si se
+   		desactiva vuelve a 90%.
+   		
    		
    		
    		

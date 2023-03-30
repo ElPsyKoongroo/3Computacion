@@ -1,13 +1,17 @@
 package si2023.SergioGarciaMacias.ia.reglas;
 
+import ontology.Types.ACTIONS;
 import si2023.SergioGarciaMacias.ia.mente.Mundo;
 
 public abstract class Nodo {
 	
-	protected Nodo izq, drc;
+	public Nodo izq, drc;
 	protected Condicion cond;
 	
 	public Nodo() {}
+	
+	public abstract ACTIONS get_action(Mundo m);
+	
 	public boolean es_hoja() {
 		return izq == null && drc == null;
 	}

@@ -1,9 +1,6 @@
 package si2023.SergioGarciaMacias.p05.agente89.mente;
 
-import ontology.Types.ACTIONS;
 import si2023.SergioGarciaMacias.ia.mente.Arbol;
-import si2023.SergioGarciaMacias.ia.mente.Mundo;
-import si2023.SergioGarciaMacias.ia.reglas.Nodo;
 import si2023.SergioGarciaMacias.p05.agente89.nodos.NodoAccion;
 import si2023.SergioGarciaMacias.p05.agente89.nodos.NodoEstandar;
 import si2023.SergioGarciaMacias.shared.acciones.CapturaEnemigo;
@@ -61,26 +58,5 @@ public class Baobab89 extends Arbol {
                 new NodoAccion(new SalvaParguelaPeligro()), rescata_parguela);
 
         this.root = rescate_pp;
-    }
-
-    
-    @Override
-    public ACTIONS decide(Mundo m) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-    
-
-    @Override
-    public ACTIONS pensar(Mundo m) {
-        Nodo estado_actual = this.root;
-
-        while (!estado_actual.es_hoja()) {
-            estado_actual = estado_actual.decide(m);
-        }
-
-        NodoAccion estado_accion = (NodoAccion) estado_actual;
-        return estado_accion.get_action(m);
-    }
-
+    } 
 }
