@@ -4,9 +4,10 @@ datos_path = "../02_Representar_Datos/Datos_Generados/";
 addpath(datos_path)
 addpath("funciones/");
 load("conjunto_datos_final.mat", 'X', 'Y');
+X = double (X(:, 2:4))
 
 %%
-    datos_esfera = calcula_datos_esfera(X(logical(Y), 2:4), X(logical(~Y), 2:4));
+datos_esfera = calcula_datos_esfera(X(logical(Y), 2:4), X(logical(~Y), 2:4));
 %%
 datos_color = double(X(:, 2:4));
 
@@ -65,14 +66,19 @@ Gc = media_colores(2);
 Bc = media_colores(3);
 plot3(X(logical(Y), 2), X(logical(Y), 3), X(logical(Y), 4), ".b"), hold on;
 plot3(X(logical(~Y), 2), X(logical(~Y), 3), X(logical(~Y), 4), ".r"), hold on;
+esferas(1,1) = Rc;
+esferas(1,2) = Gc;
+esferas(1,3) = Bc;
 for i = 1:3
-    Radio = radios(1);
-    esferas(i,1) = Radio*R(:)+Rc; 
-    esferas(i,2) = Radio*G(:)+Gc; 
-    esferas(i,3) = Radio*B(:)+Bc;
-    
-    plot3(x,y,z, colores_esferas(1)), hold on;
+    Radio = radios(i);
+    x = Radio*R(:)+Rc; 
+    y = Radio*G(:)+Gc; 
+    z = Radio*B(:)+Bc;
+    esferas(1, i+3) = Radio;
+    representa_esfera(esferas(1, (1:3)), Radio, colores_esferas(i)), hold on;
 end
+
+
 
 
 
