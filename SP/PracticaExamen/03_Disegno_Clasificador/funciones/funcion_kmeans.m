@@ -1,25 +1,27 @@
-function [idx, centroides] = funcion_kmeans(X, K)
-N = 5;
-K = 5;
-% No tengo randsample porque no puedo instalar el paquete
-% de statistics. 
-samples = randi(size(X,1), K,1);
-centroides = X(samples, :);
-end
-
-function idx = funcion_calcula_agrupacion(X, centroides)
+function [idx, centroids] = funcion_kmeans(X, K)
+    N = 5;
+    % No tengo randsample porque no puedo instalar el paquete
+    % de statistics. 
+    samples = randi(size(X,1), K,1);
+    centroides = X(samples, :);
     
-[rows, cols] = size(X);
-idx = zeros(rows, 1);
-n_centroides = size(centroides, 1);
+    idx = funcion_calcula_grupos(X, centroides);
+    centroids = funcion_calcula_centroides(X, idx);
 
-for i = 1:rows 
-    distancias = [];
-    for c = 1:n_centroides 
-        distancias(c) = norm(X(i,:) - centroides(c, :));
+    cambiado = true;
+
+    while cambiado
+        new_centroids = funcion_calcula_centroides(X, idx);
+        new_idx = funcion_calcula_grupos(X, new_centroids);
+        
+        if isequal(idx, new_idx) == 0
+            idx = new_idx;
+            % centroids = new_centroids;
+        else 
+            cambiado = false;
+        end
     end
-    [~, id] = min(distancias);
-    idx(i) = id;
+
+    centroids = new_centroids;
 end
 
-end
