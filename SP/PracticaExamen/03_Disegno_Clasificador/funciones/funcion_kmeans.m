@@ -14,7 +14,7 @@ function [idx, centroids] = funcion_kmeans(X, K)
         new_centroids = funcion_calcula_centroides(X, idx);
         new_idx = funcion_calcula_grupos(X, new_centroids);
         
-        if isequal(idx, new_idx) == 0
+        if ~isequal(idx, new_idx)
             idx = new_idx;
             % centroids = new_centroids;
         else 
