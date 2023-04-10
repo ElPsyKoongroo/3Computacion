@@ -1,47 +1,13 @@
-%% Load data Y constantes
-clearvars, close all;
 
-SIN_RUIDO = 4;
-MEDIA = 5;
-MAX_ALCANCE = 6;
-
-esferas_path = "../03_Disegno_Clasificador/datos_multiple_esferas";
-load(esferas_path, "datos_esferas");
-addpath("funciones")
-
-%% Carga los datos de las esferas
-esfera = 3;
-centro_esfera = datos_esferas(esfera, 1:3);
-radio_esfera = datos_esferas(esfera, MEDIA); 
-
-%% Guardar el video en una array
-close all;
-video = VideoReader("videito.avi");
-nFrames = video.NumFrames;
-factor = 1;
-Width = video.Width * factor;
-Height = video.Height * factor; 
-Frames = uint8(zeros(Height, Width, 3, nFrames));
-i = 0;
-while hasFrame(video)
-    I_Original = readFrame(video);
-    I = uint8 (imresize(I_Original, factor));
-    Frames(:,:,:,i+1) = I;
-    i = i+1;
-end
-close all;
-
-%% Aqui empieza la magia
-% Detectar los objetos que pertenezcan al color deseado
-% y ademas que tengan una diferencia de intensidad.
+%%
 i = 1;
 
-UMBRAL_AREA       = 10*factor;
-UMBRAL_INTENSIDAD = 2;
+UMBRAL_CONECTIVIDAD  = 30;
+UMBRAL_INTENSIDAD    = 20;
 
 % Size de la caja que se muestra en la imagen
 BLOCK_SIZE        =  3;  
-BLOCK_COLOR       = [255,0,0];
+
 % Cantidad de elementos que tiene que haber en la interseccion
 INTERSECT_LEN     = BLOCK_SIZE*2+1;
 
@@ -54,13 +20,6 @@ for i = 2:nFrames-1
     
     % Obtener matrices binarias de color y de intensidad
     Ib_color = calcula_deteccion_1esfera_en_imagen(I, [centro_esfera, radio_esfera]);
-    for esfera = 2:4
-        centro_esfera = datos_esferas(esfera, 1:3);
-        radio_esfera = datos_esferas(esfera, MAX_ALCANCE);
-        temp = calcula_deteccion_1esfera_en_imagen(I, [centro_esfera, radio_esfera]);
-        Ib_color = or(Ib_color, temp);
-    end
-    
     Ib_intensidad = logical(imabsdiff(rgb2gray(I_old), rgb2gray(I)) > UMBRAL_INTENSIDAD);
 
     % Aplicar 'and' logica entre las dos para quedarnos solo
@@ -78,40 +37,37 @@ for i = 2:nFrames-1
     % En caso de que no se haya detectado nada
     % siguiente frame.
     if pos_len == 0
-        imshow(Ib);
+        imshow(I);
         continue
     end
 
     % Nos quedamos con el/los objeto/s que cumplan
-    % com el UMBRAL_AREA
+    % com el UMBRAL_CONECTIVIDAD
     p = 1;
-    IbEtiqs = false;
-    while areas(pos(p)) > UMBRAL_AREA && p < pos_len
-        IbEtiqs = or(IbEtiqs, IEtiq == pos(p));
+    while areas(pos(p)) > UMBRAL_CONECTIVIDAD && p < pos_len
+        Ib = and(Ib, IEtiq == pos(p));
         p = p+1;
     end
     
-    Ib = and(Ib, IbEtiqs);
-
     % Si no ha detectado ningun objeto entonces
     % todo false para que no muestre nada por pantalla.
     if sum(sum(Ib)) == 0
         Ib = false(Height, Width);
-        imshow(Ib);
+        imshow(I);
     end
 
     % Esto era para mostrar una imagen negra 
     % excepto los pixeles del objeto en azul
-    % R = I(:,:,1);
-    % G = I(:,:,2);
-    % B = I(:,:,3);
-    % R(~Ib) = 0;
-    % G(~Ib) = 0;
-    % B(~Ib) = 0;
-    % compose = uint8(cat(3,R,G,B));
+     R = I(:,:,1);
+     G = I(:,:,2);
+     B = I(:,:,3);
+     R(~Ib) = 0;
+     G(~Ib) = 0;
+     B(~Ib) = 0;
+     compose = uint8(cat(3,R,G,B));
 
     centroides = cat(1,properties.Centroid);
-    
+    colores = [255, 0,0];
 
 
     
@@ -132,12 +88,12 @@ for i = 2:nFrames-1
 
         % Si la caja esta dentro de la imagen entonces dibujarla
         for componente = 1:3
-            I(y-BLOCK_SIZE:y+BLOCK_SIZE, x-BLOCK_SIZE:x+BLOCK_SIZE, componente) = BLOCK_COLOR(componente);
+            I(y-BLOCK_SIZE:y+BLOCK_SIZE, x-BLOCK_SIZE:x+BLOCK_SIZE, componente) = colores(componente);
         end
     end
     
     ACIERTO = ACIERTO + 1;
-    imshow(Ib); 
+    imshow(I); 
     I_old = I;
 end
 
