@@ -14,6 +14,8 @@ esfera = 3;
 centro_esfera = datos_esferas(esfera, 1:3);
 radio_esfera = datos_esferas(esfera, MEDIA); 
 
+save("ajustes", "radio_esfera","centro_esfera");
+
 %% Guardar el video en una array
 close all;
 video = VideoReader("videito.avi");
@@ -82,39 +84,16 @@ for i = 2:nFrames-1
         continue
     end
 
-    % Nos quedamos con el/los objeto/s que cumplan
-    % com el UMBRAL_AREA
-    p = 1;
-    IbEtiqs = false;
-    while areas(pos(p)) > UMBRAL_AREA && p < pos_len
-        IbEtiqs = or(IbEtiqs, IEtiq == pos(p));
-        p = p+1;
-    end
-    
     Ib = and(Ib, IbEtiqs);
 
     % Si no ha detectado ningun objeto entonces
     % todo false para que no muestre nada por pantalla.
     if sum(sum(Ib)) == 0
         Ib = false(Height, Width);
-        imshow(Ib);
     end
 
-    % Esto era para mostrar una imagen negra 
-    % excepto los pixeles del objeto en azul
-    % R = I(:,:,1);
-    % G = I(:,:,2);
-    % B = I(:,:,3);
-    % R(~Ib) = 0;
-    % G(~Ib) = 0;
-    % B(~Ib) = 0;
-    % compose = uint8(cat(3,R,G,B));
-
     centroides = cat(1,properties.Centroid);
-    
 
-
-    
     % Para visualizar todos los objetos detectados
     % cambiar el rango del bucle de 1:1 a 1:p
     for c = 1:1

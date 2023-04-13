@@ -1,4 +1,4 @@
-function [I] = calcula_deteccion_multiples_esferas(I) 
+function [I] = calcula_deteccion_multiples_esferas(I, I_old) 
 
     load("../04_Ajuste_Clasificador/ajustes.mat", ...
         "centro_esfera", ...
@@ -6,7 +6,8 @@ function [I] = calcula_deteccion_multiples_esferas(I)
     );
 
     load("../03_Disegno_Clasificador/datos_multiple_esferas.mat", "datos_esferas");
-
+    
+    UMBRAL_INTENSIDAD = 2;
     [Height, Width, ~] = size(I);
 
     % Size de la caja que se muestra en la imagen
@@ -21,13 +22,23 @@ function [I] = calcula_deteccion_multiples_esferas(I)
         Ib_color = or(Ib_color, calcula_deteccion_1esfera_en_imagen(I, [centro_esfera, radio_esfera]));
     end    
 
+    Ib_intensidad = logical(imabsdiff(rgb2gray(I_old), rgb2gray(I)) > UMBRAL_INTENSIDAD);
+
+    % Aplicar 'and' logica entre las dos para quedarnos solo
+    % con los pixeles que cumplan en el color y tambien
+    % cumplan con el UMBRAL_INTENSIDAD
+    Ib = and(Ib_intensidad, Ib_color);
+
     % Etiquetar y quedarnos con las propiedades.
-    [IEtiq, n] = bwlabel(Ib_color);
-    properties = regionprops(IEtiq, "Centroid");
+    [IEtiq, n] = bwlabel(Ib);
+    properties = regionprops(IEtiq);
+    areas = cat(1,properties.Area);
+    [~, pos] = sort(areas, 'descend');
+    [pos_len, ~] = size(pos);
 
     % En caso de que no se haya detectado nada
     % siguiente frame.
-    if n == 0
+    if pos_len == 0
         return
     end
 
