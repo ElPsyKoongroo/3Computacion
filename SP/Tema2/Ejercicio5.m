@@ -42,7 +42,10 @@ C2_media = mean(C2)';
 C1_cov = cov(C1);
 C2_cov = cov(C2);
 
-Cov_media = (C1_cov+C2_cov)/2;
+nc1 = sum(YTrain == 1);
+nc2 = sum(YTrain == 2); 
+
+Cov_media = ((nc1-1)*C1_cov+(nc2-1)*(C2_cov))/(nc1+nc2-2);
 
 x1 = sym('x1', 'real');
 x2 = sym('x2', 'real');
@@ -55,8 +58,7 @@ C1_dE = expand(-(1/2)*(X-C1_media)'*inv(Cov_media)*(X - C1_media)+log10(nc1));
 C2_dE = expand(-(1/2)*(X-C2_media)'*inv(Cov_media)*(X - C2_media)+log10(nc2));
 
 funcion_discriminante = (sqrt(C1_dE) - sqrt(C2_dE));
-nc1 = sum(YTrain == 1);
-nc2 = sum(YTrain == 2); 
+
 
 x1 = 1; x2 = 0; n = 702; a1 = eval(C1_dE - C2_dE);
 x1 = 0; x2 = 1; n = 702; b1 = eval(C1_dE - C2_dE);
@@ -89,7 +91,7 @@ TASAL = aciertos/(numDatos-numDatos*porcentajeTrain)
 C1_dEQ = expand(-(1/2)*(X-C1_media)'*inv(C1_cov)*(X - C1_media)-(1/2)*log10(det(C1_cov))+log10(nc1));
 C2_dEQ = expand(-(1/2)*(X-C2_media)'*inv(C2_cov)*(X - C2_media)-(1/2)*log10(det(C2_cov))+log10(nc2));
 
-funcion_discriminanteQ = (sqrt(C1_dEQ) - sqrt(C2_dEQ));
+funcion_discriminanteQ = (C1_dEQ-C2_dEQ);
 
 aciertos = 0;
 for i = 1:numDatos-numDatos*porcentajeTrain
@@ -116,7 +118,7 @@ x1 = 0; x2 = 1; b1 = eval(funcion_discriminanteQ)-c;
 % Evaluar la función cuadrática en cada punto de x
 
 % Graficar la función cuadrática
-subplot(2,1,1), fplot(@(x) (a1*x.^2 + b1*x + c)), hold on
+subplot(2,1,1), fplot(@(x) (a1*x^2 + b1*x + c)), hold on
 
 % La representacion esta mal
 % subplot(2,1,1), fplot(@(x) (((a1*x^2)+c)/-b1)), hold on
