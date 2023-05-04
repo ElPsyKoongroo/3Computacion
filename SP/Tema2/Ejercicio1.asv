@@ -80,18 +80,18 @@ d1 = expand(-(X-mu1)'*(X-mu1))
 %%
 clc, clear;
 
-Datos1 = [2,3,3,4; 1,2,3,2]';
-Datos2 = [6,5,7  ; 1,2,3  ]';
+Datos1 = [2,3,3,4; 1,2,3,2];
+Datos2 = [6,5,7  ; 1,2,3  ];
 
-mu1 = mean(Datos1);
-mu2 = mean(Datos2);
+mu1 = mean(Datos1');
+mu2 = mean(Datos2');
 
-Datos1C = Datos1- mu1
+Datos1C = Datos1'-mu1
 
-cruzados = (Datos1C' * Datos1C) / 3
+cruzados = Dato
 
-C1_cov = cov(Datos1)
-C2_cov = cov(Datos2)
+C1_cov = cov(Datos1')
+C2_cov = cov(Datos2')
 nc1      = 4;
 nc2      = 3;
 cov(Datos2')
@@ -102,9 +102,4 @@ x2 = sym('x2','real');
 X = [x1 ; x2];
 
 d1 = expand(-(1/2)*(X-mu1)' * inv(Cov_media) * (X-mu1) - (1/2)*log10(nc1));
-d2 = expand(-(1/2)*(X-mu2)' * inv(Cov_media) * (X-mu2) - (1/2)*log10(nc2));
 
-d_dis = d1 - d2;
-
-x1 = 7; x2 = 3;
-eval(d_dis) > 0

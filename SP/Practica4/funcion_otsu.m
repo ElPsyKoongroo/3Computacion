@@ -33,7 +33,7 @@ function [umbral] = funcion_otsu(histograma)
     
         for j=i+1:256
             u2 = u2 +(j * histograma(j));
-            N2 = N2 +histograma(j);
+            N2 = N2 + histograma(j);
         end
     
         u2 = (u2/N2);

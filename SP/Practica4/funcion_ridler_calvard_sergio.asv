@@ -1,0 +1,20 @@
+function [umbral] = funcion_ridler_calvard_sergio(histograma, umbral)
+    
+    nPix = sum(h);
+    valor_medio = sum((1:256) * h) / nPix;
+    nueva_media = -1;
+    
+    while valor_medio
+    G1 = h(h <= valor_medio);
+    G2 = h(h > valor_medio);
+
+    len1 = length(G1);
+    media_g1 = sum((1:len1) * G1) / sum(G1);
+
+
+    len2 = length(G2);
+    media_g2 = sum((1:len2) * G2) / sum(G2);
+
+    nueva_media = (1/2) * (media_g1+media_g2);
+end
+
