@@ -206,7 +206,6 @@ public class StripsState {
         this.cached = true;
         return hash;
     }
-
     @Override
     public boolean equals(Object obj) {
         if (obj == null)

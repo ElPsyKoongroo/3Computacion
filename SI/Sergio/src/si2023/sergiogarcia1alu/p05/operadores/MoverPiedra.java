@@ -7,6 +7,9 @@ import si2023.sergiogarcia1alu.strips.StripsState;
 import tools.Vector2d;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class MoverPiedra extends Operador {
     private Vector2d jugador_pos;
@@ -46,40 +49,37 @@ public class MoverPiedra extends Operador {
     public ArrayList<Operador> gen_posibilidades(Meta m, StripsState estado_actual) {
         ArrayList<Operador> operadores = new ArrayList<>();
 
-//        Vector2d posicion_jugador =
-//                estado_actual
-//                        .get_estado_actual()
-//                        .get(RecursosTypes.Jugador.Value)
-//                        .stream()
-//                        .map(met-> (Jugador)met)
-//                        .findFirst()
-//                        .get()
-//                        .posicion;
-//
-//        ArrayList<Vector2d> piedras = new ArrayList<>();
-//        for(Meta recurso: estado_actual.get_estado_actual().get(RecursosTypes.BloquePiedra)) {
-//            if (recurso instanceof BloquePiedra) {
-//                piedras.add(((BloquePiedra) recurso).posicion);
-//            }
-//        }
-//
-//        if (!(m instanceof BloqueLibre)) { return operadores; }
-//
-//        BloqueLibre meta = (BloqueLibre) m;
-//
-//        if (piedras.stream().noneMatch(pos -> pos.equals(meta.posicion))) { return operadores; }
-//
-//        for (Vector2d pos_piedra: piedras) {
-//            if (!pos_piedra.equals(meta.posicion)) continue;
-//            for (Vector2d pos : POSICIONES) {
-//                Vector2d posaux = pos_piedra.subtract(pos);
-//                operadores.add(
-//                        new MoverPiedra(posicion_jugador, pos_piedra, posaux)
-//                );
-//            }
-//        }
-//
+        if (!(m instanceof TengoLlave)) return operadores;
 
+        Optional<Llave> llave = estado_actual
+                .get_estado_actual()
+                .get(RecursosTypes.Llave.Value)
+                .stream()
+                .map(met-> (Llave)met)
+                .findFirst();
+
+        // En principio siempre deberia haber una llave en el mapa
+        // si queremos coger la llave pero por si acaso.
+        if(!llave.isPresent()) return operadores;
+
+        Vector2d posicion_llave = llave.get().posicion;
+
+        ArrayList<Vector2d> pos_adyacentes =(ArrayList<Vector2d>) Arrays.stream(POSICIONES)
+                .map(posicion -> posicion_llave.copy().add(posicion))
+                .collect(Collectors.toList());
+
+        ArrayList<Vector2d> posiciones_paredes_adyacentes = (ArrayList<Vector2d>) estado_actual.get_estado_actual()
+                .get(RecursosTypes.Pared.Value)
+                .stream()
+                .map(p -> ((Pared)p).posicion)
+                .filter(pos_adyacentes::contains)
+                .collect(Collectors.toList());
+
+        operadores.addAll(
+                pos_adyacentes.stream()
+                        .filter(pos -> !posiciones_paredes_adyacentes.contains(pos))
+                        .map(pos -> new CogerLlave(pos, posicion_llave))
+                        .collect(Collectors.toList()));
 
         return operadores;
     }
