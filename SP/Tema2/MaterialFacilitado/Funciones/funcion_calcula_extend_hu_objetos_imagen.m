@@ -4,4 +4,3 @@ function [XImagen] = funcion_calcula_extend_hu_objetos_imagen(IEtiq, N)
     momentos_hu = funcion_calcula_Hu_objetos_imagen(IEtiq, N);
     XImagen = [extension, momentos_hu];
 end
-
