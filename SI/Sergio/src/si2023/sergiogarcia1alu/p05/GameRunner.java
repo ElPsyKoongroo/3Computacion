@@ -1,4 +1,4 @@
-package si2023.sergiogarcia1alu.p04v2;
+package si2023.sergiogarcia1alu.p05;
 
 import tools.Utils;
 import tracks.ArcadeMachine;
@@ -17,16 +17,17 @@ public class GameRunner {
         boolean visuals = true;
 
         // Game and level to play
-        int gameIdx = 16;
+        int gameIdx = 4;
 //        int levelIdx = 4; // level names from 0 to 4 (game_lvlN.txt).
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 4; i < 5; i++) {
+            i = 0;
             String gameName = games[gameIdx][1];
             String game = games[gameIdx][0];
             String level1 = game.replace(gameName, gameName + "_lvl" + i);
 
             // 1. This starts a game, in a level, played by a human.
-            // ArcadeMachine.playOneGame(game, level1, null, 33);
+            //ArcadeMachine.playOneGame(game, level1, null, 33);
             ArcadeMachine.runOneGame(game, level1, visuals, p0, null, 2, 0);
         }
 

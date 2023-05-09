@@ -1,4 +1,4 @@
-package si2023.sergiogarcia1alu.p05;
+package si2023.sergiogarcia1alu.p04v2;
 
 import java.util.ArrayList;
 
@@ -6,9 +6,9 @@ import core.game.Observation;
 import core.game.StateObservation;
 import core.player.AbstractPlayer;
 import ontology.Types.ACTIONS;
-import si2023.sergiogarcia1alu.p05.agente.mente.CEstrella;
-import si2023.sergiogarcia1alu.p05.agente.mente.CEstrella.Recorrido;
-import si2023.sergiogarcia1alu.p05.agente.nodo.Estado;
+import si2023.sergiogarcia1alu.p04v2.agente.mente.CEstrella;
+import si2023.sergiogarcia1alu.p04v2.agente.mente.CEstrella.Recorrido;
+import si2023.sergiogarcia1alu.p04v2.agente.nodo.Estado;
 import si2023.sergiogarcia1alu.shared.Mundo16;
 import si2023.sergiogarcia1alu.shared.Mundo16.iType;
 import si2023.sergiogarcia1alu.shared.utils.Stack;

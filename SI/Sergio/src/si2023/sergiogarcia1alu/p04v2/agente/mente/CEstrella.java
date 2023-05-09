@@ -1,4 +1,4 @@
-package si2023.sergiogarcia1alu.p05.agente.mente;
+package si2023.sergiogarcia1alu.p04v2.agente.mente;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,7 +6,7 @@ import java.util.Map;
 import si2023.sergiogarcia1alu.shared.utils.*;
 
 import ontology.Types.ACTIONS;
-import si2023.sergiogarcia1alu.p05.agente.nodo.Estado;
+import si2023.sergiogarcia1alu.p04v2.agente.nodo.Estado;
 import si2023.sergiogarcia1alu.shared.Mundo16;
 import si2023.sergiogarcia1alu.shared.utils.Polleable;
 import tools.Vector2d;

@@ -60,25 +60,17 @@ public class Mundo16 extends MundoBasics<Mundo16.iType> implements Mundo {
         // Mirar esquema de arriba
         switch (type) {
             case Tree:
-                return false;
             case Player:
-                return false;
-            case Right:
-                return true;
-            case Down:
-                return true;
-            case Left:
-                return true;
-            case Up:
-                return true;
-            case Goal:
-                return true;
             case Water:
-                return false;
-            case Nothing:
-                return true;
             case Invalid:
                 return false;
+            case Right:
+            case Left:
+            case Down:
+            case Up:
+            case Goal:
+            case Nothing:
+                return true;
         }
         return false;
     }

@@ -40,12 +40,12 @@ public class Strips {
     private final Polleable<StripsState> estados;
 
     private final HashSet<StripsState> visitados = new HashSet<>();
-    private final ArrayList<Accion> acciones_disponibles;
+    private final ArrayList<Operador> acciones_disponibles;
     static ArrayList<Meta> objetivo_meta = new ArrayList<>();
 
     private int n_visitas = 0;
 
-    public Strips(StripsState estado_inicial, ArrayList<Accion> acciones, ArrayList<Meta> meta, TipoRecorrido t) {
+    public Strips(StripsState estado_inicial, ArrayList<Operador> acciones, ArrayList<Meta> meta, TipoRecorrido t) {
 
         if (t == TipoRecorrido.Anchura) {
             this.estados = new Queue<>();
@@ -80,9 +80,9 @@ public class Strips {
         ArrayList<StripsState> siguientes_estados = new ArrayList<>();
 
 
-        for (Accion acc : this.acciones_disponibles) {
-            ArrayList<Accion> posibilidades = acc.gen_posibilidades(meta_actual, estado_actual);
-            for (Accion pos : posibilidades) {
+        for (Operador acc : this.acciones_disponibles) {
+            ArrayList<Operador> posibilidades = acc.gen_posibilidades(meta_actual, estado_actual);
+            for (Operador pos : posibilidades) {
                 StripsState copia = new StripsState(estado_actual);
                 copia.add_accion(pos);
                 siguientes_estados.add(copia);
@@ -99,6 +99,12 @@ public class Strips {
     private EstadoMeta meta_compuesta(StripsState estado_actual, ConjuncionMeta meta_actual) {
         if (estado_actual.cumple(meta_actual)) {
             return EstadoMeta.CumpleMeta;
+        }
+
+        for (Meta m: meta_actual.get_recursos()) {
+            if (hay_bucle(estado_actual, m)) {
+                return EstadoMeta.Bucle;
+            }
         }
 
         ArrayList<IStackeable> copia = new ArrayList<>(meta_actual.get_recursos());
@@ -132,12 +138,12 @@ public class Strips {
         IStackeable elemento = estado_actual.get_stack_objetivos().peek();
 
         if (elemento.is_accion()) {
-            Accion accion_actual = (Accion) elemento;
+            Operador operador_actual = (Operador) elemento;
             StripsState copia;
-            if (estado_actual.es_ejecutable(accion_actual)) {
-                copia = accion_actual.aplica_accion(estado_actual);
+            if (estado_actual.es_ejecutable(operador_actual)) {
+                copia = operador_actual.aplica_accion(estado_actual);
             } else {
-                copia = accion_actual.add_prerequisitos(estado_actual);
+                copia = operador_actual.add_prerequisitos(estado_actual);
             }
             this.estados.add(copia);
         } else {
@@ -161,7 +167,7 @@ public class Strips {
                 final long end = System.currentTimeMillis();
 
                 System.out.println("Meta: " + n_estados + " || visitas: " + n_visitas);
-                for (final Accion a : estado_actual.get_solucion()) {
+                for (final Operador a : estado_actual.get_solucion()) {
                     System.out.println(a);
                 }
                 System.out.println(end - start + "ms");

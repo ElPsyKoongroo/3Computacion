@@ -11,6 +11,7 @@ public abstract class Meta implements IStackeable {
 
     protected int cached_hash;
     protected boolean cached = false;
+    public int type;
 
     @Override
     public final boolean is_accion() {

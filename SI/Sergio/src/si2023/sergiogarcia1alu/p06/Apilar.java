@@ -1,14 +1,13 @@
 package si2023.sergiogarcia1alu.p06;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Objects;
 
-import si2023.sergiogarcia1alu.strips.Accion;
+import si2023.sergiogarcia1alu.strips.Operador;
 import si2023.sergiogarcia1alu.strips.Meta;
 import si2023.sergiogarcia1alu.strips.StripsState;
 
-public class Apilar extends Accion {
+public class Apilar extends Operador {
     
     private int x;
     private int y;
@@ -47,9 +46,9 @@ public class Apilar extends Accion {
 
     
     @Override
-    public ArrayList<Accion> gen_posibilidades(Meta meta2, StripsState estado_actual) {
+    public ArrayList<Operador> gen_posibilidades(Meta meta2, StripsState estado_actual) {
         
-        ArrayList<Accion> pos = new ArrayList<>();
+        ArrayList<Operador> pos = new ArrayList<>();
     
         if (meta2.getClass() == Sobre.class) {
             Sobre meta = (Sobre) meta2;
@@ -123,7 +122,7 @@ public class Apilar extends Accion {
 
 
     @Override
-    public Accion clone() {
+    public Operador clone() {
         return this;
     }
 

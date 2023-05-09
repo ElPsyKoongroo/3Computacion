@@ -1,4 +1,4 @@
-package si2023.sergiogarcia1alu.p05.agente.nodo;
+package si2023.sergiogarcia1alu.p04v2.agente.nodo;
 
 import java.util.ArrayList;
 import java.util.Arrays;

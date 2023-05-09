@@ -68,7 +68,7 @@ public class JuegoStrips {
         }
         estado_actual.add(new Sobre(discos, -1));
 
-        // Estado inicial de los discos
+        // Estado objetivo de los discos
         ArrayList<IStackeable> objetivos = new ArrayList<>();
         for (int i = 1; i < discos; i++) {
             objetivos.add(new Sobre(i, i+1));
@@ -77,7 +77,7 @@ public class JuegoStrips {
         
         StripsState estado_inicial = new StripsState(estado_actual, objetivos);
 
-        ArrayList<Accion> acciones = new ArrayList<>();
+        ArrayList<Operador> acciones = new ArrayList<>();
         acciones.add(new Apilar());
 
         // Estado de meta

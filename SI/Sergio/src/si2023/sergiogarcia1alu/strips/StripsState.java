@@ -1,22 +1,32 @@
 package si2023.sergiogarcia1alu.strips;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.stream.Collectors;
 
 import si2023.sergiogarcia1alu.shared.utils.StripsStack;
 
 public class StripsState {
 
-    private ArrayList<Accion> solucion;
-    private final HashSet<Meta> estado_actual;
+    private ArrayList<Operador> solucion;
+    private final HashMap<Integer,HashSet<Meta>> estado_actual;
     private final StripsStack<IStackeable> stack_objetivos;
 
     private Integer cache_hash = null;
     private boolean cached;
-
     public StripsState(ArrayList<Meta> ea, ArrayList<IStackeable> objetivos) {
-        this.estado_actual = new HashSet<>(ea);// new HashSet<>(ea);
+        this.estado_actual = new HashMap<>();// new HashSet<>(ea);
+
+        for (int i = 1; i < 10; i++) {
+            estado_actual.put(i, new HashSet<>());
+        }
+
+        for (Meta estado : ea) {
+            estado_actual.get(estado.type).add(estado);
+        }
+
+
         this.stack_objetivos = new StripsStack<>();
         this.stack_objetivos.addAll(objetivos);
         this.solucion = new ArrayList<>();
@@ -24,7 +34,16 @@ public class StripsState {
     }
 
     public StripsState(ArrayList<Meta> ea, ConjuncionMeta objetivos) {
-        this.estado_actual = new HashSet<>(ea);// new HashSet<>(ea);
+        this.estado_actual = new HashMap<>();// new HashSet<>(ea);
+
+        for (int i = 1; i < 10; i++) {
+            estado_actual.put(i, new HashSet<>());
+        }
+
+        for (Meta estado : ea) {
+            estado_actual.get(estado.type).add(estado);
+        }
+
         this.stack_objetivos = new StripsStack<>();
         this.stack_objetivos.add(objetivos);
         this.solucion = new ArrayList<>();
@@ -34,34 +53,44 @@ public class StripsState {
     @SuppressWarnings({"unchecked", "CopyConstructorMissesField"})
     public StripsState(StripsState other) {
         this.solucion = new ArrayList<>();
-        this.solucion = (ArrayList<Accion>) other.solucion.clone();
+        this.solucion = (ArrayList<Operador>) other.solucion.clone();
 
-        this.estado_actual = (HashSet<Meta>) other.estado_actual.clone();
+        this.estado_actual = (HashMap<Integer, HashSet<Meta>>) other.estado_actual.clone();
         this.stack_objetivos = new StripsStack<>(other.stack_objetivos);
         this.cached = false;
     }
 
-    public ArrayList<Accion> get_solucion() {
+    public ArrayList<Operador> get_solucion() {
         return solucion;
     }
 
-    public HashSet<Meta> get_raw_estado_actual() {
+    public HashMap<Integer, HashSet<Meta>> get_raw_estado_actual() {
         return this.estado_actual;
     }
 
-    public ArrayList<Meta> get_estado_actual() {
-        return new ArrayList<>(estado_actual);
+    public HashMap<Integer, HashSet<Meta>> get_estado_actual() {
+        return new HashMap<>(estado_actual);
+    }
+
+    public HashSet<Meta> get_raw_estado_actual_type(int type) {
+        return this.estado_actual.get(type);
+    }
+
+    public HashSet<Meta> get_estado_actual_type(int type) {
+        return new HashSet<>(estado_actual.get(type));
     }
 
     public StripsStack<IStackeable> get_stack_objetivos() {
         return this.stack_objetivos;
     }
 
-    public boolean es_ejecutable(Accion a) {
-        return this.estado_actual.containsAll(a.get_precondiciones());
+    public boolean es_ejecutable(Operador a) {
+        return a.precondiciones.stream().allMatch(precondicion ->{
+            return this.estado_actual.get((precondicion).type).contains(precondicion);
+        });
     }
 
-    public void add_solucion(Accion a) {
+    public void add_solucion(Operador a) {
         this.solucion.add(a);
     }
 
@@ -75,7 +104,7 @@ public class StripsState {
      *     como Conjunto, es mejor añadirlas como metas individuales en el orden correcto.
      * </p>
      */
-    public void add_pre_requisitos(Accion a) {
+    public void add_pre_requisitos(Operador a) {
         ConjuncionMeta c = new ConjuncionMeta(a.get_precondiciones());
         this.stack_objetivos.add(c);
 //        this.stack_objetivos.addAll(a.get_precondiciones());
@@ -89,7 +118,7 @@ public class StripsState {
         this.stack_objetivos.add(obj);
     }
 
-    public void add_accion(Accion a) {
+    public void add_accion(Operador a) {
         this.stack_objetivos.add(a);
     }
 
@@ -98,7 +127,7 @@ public class StripsState {
      * @return Devuelve true si el estado contiene la meta
      */
     public boolean cumple(Meta meta) {
-        return this.estado_actual.contains(meta);
+        return this.estado_actual.get(meta.type).contains(meta);
     }
 
     /**
@@ -109,18 +138,13 @@ public class StripsState {
     public boolean cumple(ConjuncionMeta metas) {
         // Esta es una manera "mas bonica" de hacerlo, funcionan las dos.
         // return this.estado_actual.containsAll(metas.get_recursos());
-        boolean encontrado;
-        for (Meta meta: metas.get_recursos()) {
-            encontrado = false;
-            int objetivo = this.estado_actual.size();
-            while (--objetivo >= 0 && !encontrado) {
-                if (this.estado_actual.contains(meta)) {
-                    encontrado = true;
-                }
-            }
-            if (!encontrado) return false;
-        }
-        return true;
+
+        return metas.get_recursos().stream().allMatch(this::cumple);
+
+//        for (Meta meta: metas.get_recursos()) {
+//            if(!cumple(meta)) return false;
+//        }
+//        return true;
     }
 
     public void elimina_meta(ConjuncionMeta metas) {
@@ -145,20 +169,21 @@ public class StripsState {
 
     @Override
     public int hashCode() {
-        if(this.cached) {
+        if (this.cached) {
             return this.cache_hash;
         }
 
         int hash = 1;
-        int i = 1;
-        for (Meta m : this.estado_actual) {
-            hash = (hash * m.hashCode()) + i;
-            i++;
+        int counter = 1;
+        for (int i = 1; i < 10; i++) {
+            for (Meta m : this.estado_actual.get(i)) {
+                hash = (hash * m.hashCode()) + counter;
+                counter++;
+            }
         }
-
         for (int j = 0; j < this.stack_objetivos.size(); j++) {
-            hash = (hash * this.stack_objetivos.get_index(j).hashCode()) + i;
-            i++;
+            hash = (hash * this.stack_objetivos.get_index(j).hashCode()) + counter;
+            counter++;
         }
 
         this.cache_hash = hash;
@@ -191,9 +216,11 @@ public class StripsState {
             }
         }
 
-        for (Meta m : this.estado_actual) {
-            if (!other.estado_actual.contains(m))
-                return false;
+        for(int i = 1;i < 10; ++i) {
+            for (Meta m : this.estado_actual.get(i)) {
+                if (!other.estado_actual.get(i).contains(m))
+                    return false;
+            }
         }
 
         return true;

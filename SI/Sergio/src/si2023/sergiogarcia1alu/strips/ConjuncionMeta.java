@@ -7,12 +7,10 @@ public class ConjuncionMeta implements IStackeable {
 
         private final ArrayList<Meta> recursos;
 
-        public ConjuncionMeta(ArrayList<IStackeable> recursos) {
+        public ConjuncionMeta(ArrayList<Meta> recursos) {
             this.recursos = new ArrayList<>();
-            for(IStackeable meta: recursos) {
-                if (!meta.is_accion()) {
-                    this.recursos.add((Meta)meta);
-                }
+            for(Meta meta: recursos) {
+                this.recursos.add(meta);
             }
         }
 
