@@ -27,16 +27,18 @@ public class MoverPiedra extends Operador {
         this.siguiente_bloque = siguiente_bloque;
 
         this.precondiciones.add(new Jugador(this.jugador_pos));
-        this.precondiciones.add(new BloquePiedra(bloque_piedra));
-        this.precondiciones.add(new BloqueLibre(siguiente_bloque));
+        this.precondiciones.add(new BloquePiedra(this.bloque_piedra));
+        this.precondiciones.add(new BloqueLibre(this.siguiente_bloque));
 
-        this.lista_adicion.add(new Jugador(bloque_piedra));
-        this.lista_adicion.add(new BloqueLibre(bloque_piedra));
-        this.lista_adicion.add(new BloquePiedra(siguiente_bloque));
+        this.lista_adicion.add(new Jugador(this.bloque_piedra));
+        this.lista_adicion.add(new BloqueLibre(this.bloque_piedra));
+        this.lista_adicion.add(new BloquePiedra(this.siguiente_bloque));
 
         this.lista_supresion.add(new Jugador(this.jugador_pos));
-        this.lista_supresion.add(new BloquePiedra(bloque_piedra));
-        this.lista_supresion.add(new BloqueLibre(siguiente_bloque));
+        this.lista_supresion.add(new BloquePiedra(this.bloque_piedra));
+        this.lista_supresion.add(new BloqueLibre(this.siguiente_bloque));
+
+        SetAccion(this.bloque_piedra.copy().subtract(this.jugador_pos));
 
     }
 
@@ -44,46 +46,39 @@ public class MoverPiedra extends Operador {
     public ArrayList<Operador> gen_posibilidades(Meta m, StripsState estado_actual) {
         ArrayList<Operador> operadores = new ArrayList<>();
 
-        Vector2d posicion_jugador =
-                estado_actual
-                        .get_estado_actual()
-                        .get(RecursosTypes.Jugador.Value)
-                        .stream()
-                        .map(met-> (Jugador)met)
-                        .findFirst()
-                        .get()
-                        .posicion;
-
-        ArrayList<Vector2d> piedras = new ArrayList<>();
-        for(Meta recurso: estado_actual.get_estado_actual()) {
-            if (recurso instanceof BloquePiedra) {
-                piedras.add(((BloquePiedra) recurso).Posicion);
-            }
-        }
-
-        if (!(m instanceof BloqueLibre)) { return operadores; }
-
-        BloqueLibre meta = (BloqueLibre) m;
-
-        if (piedras.stream().noneMatch(pos -> pos.equals(meta.posicion))) { return operadores; }
-
-        for (Vector2d pos_piedra: piedras) {
-            if (!pos_piedra.equals(meta.posicion)) continue;
-            for (Vector2d pos : POSICIONES) {
-                Vector2d posaux = pos_piedra.subtract(pos);
-                operadores.add(
-                        new MoverPiedra(posicion_jugador, pos_piedra, posaux)
-                );
-            }
-        }
-
-        /*
-
-                     L
-                   L P J
-                     L
-
-        */
+//        Vector2d posicion_jugador =
+//                estado_actual
+//                        .get_estado_actual()
+//                        .get(RecursosTypes.Jugador.Value)
+//                        .stream()
+//                        .map(met-> (Jugador)met)
+//                        .findFirst()
+//                        .get()
+//                        .posicion;
+//
+//        ArrayList<Vector2d> piedras = new ArrayList<>();
+//        for(Meta recurso: estado_actual.get_estado_actual().get(RecursosTypes.BloquePiedra)) {
+//            if (recurso instanceof BloquePiedra) {
+//                piedras.add(((BloquePiedra) recurso).posicion);
+//            }
+//        }
+//
+//        if (!(m instanceof BloqueLibre)) { return operadores; }
+//
+//        BloqueLibre meta = (BloqueLibre) m;
+//
+//        if (piedras.stream().noneMatch(pos -> pos.equals(meta.posicion))) { return operadores; }
+//
+//        for (Vector2d pos_piedra: piedras) {
+//            if (!pos_piedra.equals(meta.posicion)) continue;
+//            for (Vector2d pos : POSICIONES) {
+//                Vector2d posaux = pos_piedra.subtract(pos);
+//                operadores.add(
+//                        new MoverPiedra(posicion_jugador, pos_piedra, posaux)
+//                );
+//            }
+//        }
+//
 
 
         return operadores;

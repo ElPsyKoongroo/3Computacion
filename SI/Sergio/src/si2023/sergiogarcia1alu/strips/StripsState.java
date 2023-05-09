@@ -1,16 +1,14 @@
 package si2023.sergiogarcia1alu.strips;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
+import si2023.sergiogarcia1alu.p05.operadores.RecursosTypes;
 import si2023.sergiogarcia1alu.shared.utils.StripsStack;
 
 public class StripsState {
 
     private ArrayList<Operador> solucion;
-    private final HashMap<Integer,HashSet<Meta>> estado_actual;
+    private final HashMap<Integer,HashSetMetas> estado_actual;
     private final StripsStack<IStackeable> stack_objetivos;
 
     private Integer cache_hash = null;
@@ -18,8 +16,8 @@ public class StripsState {
     public StripsState(ArrayList<Meta> ea, ArrayList<IStackeable> objetivos) {
         this.estado_actual = new HashMap<>();// new HashSet<>(ea);
 
-        for (int i = 1; i < 10; i++) {
-            estado_actual.put(i, new HashSet<>());
+        for (int i = 0; i < RecursosTypes.SIZE; i++) {
+            estado_actual.put(i, new HashSetMetas());
         }
 
         for (Meta estado : ea) {
@@ -36,8 +34,8 @@ public class StripsState {
     public StripsState(ArrayList<Meta> ea, ConjuncionMeta objetivos) {
         this.estado_actual = new HashMap<>();// new HashSet<>(ea);
 
-        for (int i = 1; i < 10; i++) {
-            estado_actual.put(i, new HashSet<>());
+        for (int i = 0; i < RecursosTypes.SIZE; i++) {
+            estado_actual.put(i, new HashSetMetas());
         }
 
         for (Meta estado : ea) {
@@ -55,7 +53,14 @@ public class StripsState {
         this.solucion = new ArrayList<>();
         this.solucion = (ArrayList<Operador>) other.solucion.clone();
 
-        this.estado_actual = (HashMap<Integer, HashSet<Meta>>) other.estado_actual.clone();
+        //this.estado_actual = (HashMap<Integer, HashSetMetas>) other.estado_actual.clone();
+
+        this.estado_actual = new HashMap<>();
+
+        for (int i = 0; i < RecursosTypes.SIZE; i++) {
+            estado_actual.put(i, new HashSetMetas(other.estado_actual.get(i)));
+        }
+
         this.stack_objetivos = new StripsStack<>(other.stack_objetivos);
         this.cached = false;
     }
@@ -64,20 +69,20 @@ public class StripsState {
         return solucion;
     }
 
-    public HashMap<Integer, HashSet<Meta>> get_raw_estado_actual() {
+    public HashMap<Integer, HashSetMetas> get_raw_estado_actual() {
         return this.estado_actual;
     }
 
-    public HashMap<Integer, HashSet<Meta>> get_estado_actual() {
+    public HashMap<Integer, HashSetMetas> get_estado_actual() {
         return new HashMap<>(estado_actual);
     }
 
-    public HashSet<Meta> get_raw_estado_actual_type(int type) {
+    public HashSetMetas get_raw_estado_actual_type(int type) {
         return this.estado_actual.get(type);
     }
 
-    public HashSet<Meta> get_estado_actual_type(int type) {
-        return new HashSet<>(estado_actual.get(type));
+    public HashSetMetas get_estado_actual_type(int type) {
+        return new HashSetMetas(estado_actual.get(type));
     }
 
     public StripsStack<IStackeable> get_stack_objetivos() {
@@ -95,7 +100,7 @@ public class StripsState {
     }
 
     /**
-     * Añade a la lista de objetivos los pre requisitos una accion.
+     * Añade a la lista de objetivos los prerequisitos una accion.
      * <p>
      * Aunque el algoritmo funcione esta funcion no es correcta. Para que sea
      * correcta descomentar la ultima linea y comentar las dos primeras.
@@ -160,7 +165,18 @@ public class StripsState {
      */
     public boolean contiene_meta(Meta meta) {
         for(int i = 0; i<this.get_stack_objetivos().size()-1; i++){
+            if(!(this.get_stack_objetivos().get_index(i) instanceof Meta)) continue;
             if(meta.equals(this.get_stack_objetivos().get_index(i))){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean contiene_meta(ConjuncionMeta con_meta) {
+        for(int i = 0; i<this.get_stack_objetivos().size()-1; i++){
+            if(!(this.get_stack_objetivos().get_index(i) instanceof Meta)) continue;
+            if(con_meta.contains((Meta)this.get_stack_objetivos().get_index(i))){
                 return true;
             }
         }
@@ -175,7 +191,7 @@ public class StripsState {
 
         int hash = 1;
         int counter = 1;
-        for (int i = 1; i < 10; i++) {
+        for (int i = 0; i < RecursosTypes.SIZE; i++) {
             for (Meta m : this.estado_actual.get(i)) {
                 hash = (hash * m.hashCode()) + counter;
                 counter++;
@@ -198,7 +214,11 @@ public class StripsState {
         if (this.getClass() != obj.getClass())
             return false;
         if (this == obj)
+        {
+            int a = 0;
             return true;
+        }
+
 
         StripsState other = (StripsState) obj;
 
@@ -216,13 +236,20 @@ public class StripsState {
             }
         }
 
-        for(int i = 1;i < 10; ++i) {
-            for (Meta m : this.estado_actual.get(i)) {
-                if (!other.estado_actual.get(i).contains(m))
-                    return false;
+
+        for(int i = 0; i < RecursosTypes.SIZE; ++i) {
+            if (this.get_estado_actual().get(i).size() != other.get_estado_actual().get(i).size()) {
+                return false;
+            }
+            int finalI = i;
+            if (!(this.get_estado_actual().get(i).stream().allMatch(meta -> other.get_estado_actual().get(finalI).contains(meta)))) {
+                return false;
             }
         }
 
+
+
+        int a = 0;
         return true;
 
     }

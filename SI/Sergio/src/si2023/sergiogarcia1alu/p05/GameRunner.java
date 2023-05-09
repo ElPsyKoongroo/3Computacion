@@ -13,23 +13,29 @@ public class GameRunner {
         String spGamesCollection = "examples/all_games_sp.csv";
         String[][] games = Utils.readGames(spGamesCollection);
 
+        int gameIdx = 4;
+        int levelIdx = 0;
+
+        String gameName = games[gameIdx][1];
+        String game = games[gameIdx][0];
+        String level1 = game.replace(gameName, gameName + "_lvl" + levelIdx);
         // Game settings
         boolean visuals = true;
 
+        //ArcadeMachine.playOneGame(game, level1, null, 33);
+        ArcadeMachine.runOneGame(game, level1, visuals, p0, null, 2, 0);
         // Game and level to play
-        int gameIdx = 4;
+
 //        int levelIdx = 4; // level names from 0 to 4 (game_lvlN.txt).
 
-        for (int i = 4; i < 5; i++) {
-            i = 0;
-            String gameName = games[gameIdx][1];
-            String game = games[gameIdx][0];
-            String level1 = game.replace(gameName, gameName + "_lvl" + i);
-
-            // 1. This starts a game, in a level, played by a human.
-            //ArcadeMachine.playOneGame(game, level1, null, 33);
-            ArcadeMachine.runOneGame(game, level1, visuals, p0, null, 2, 0);
-        }
+//        for (int i = 4; i < 5; i++) {
+//            i = 0;
+//
+//            String level = game.replace(gameName, gameName + "_lvl" + i);
+//            // 1. This starts a game, in a level, played by a human.
+//            //ArcadeMachine.playOneGame(game, level1, null, 33);
+//            ArcadeMachine.runOneGame(game, level1, visuals, p0, null, 2, 0);
+//        }
 
 //		for (int i = 0; i < seed_to_play.length; i++) {
 //			// 2. This plays a game in a level by the controller.

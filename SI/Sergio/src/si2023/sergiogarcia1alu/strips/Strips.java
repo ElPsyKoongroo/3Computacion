@@ -3,6 +3,7 @@ package si2023.sergiogarcia1alu.strips;
 import si2023.sergiogarcia1alu.shared.utils.Polleable;
 import si2023.sergiogarcia1alu.shared.utils.Queue;
 import si2023.sergiogarcia1alu.shared.utils.Stack;
+import si2023.sergiogarcia1alu.shared.utils.StripsStack;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -42,6 +43,7 @@ public class Strips {
     private final HashSet<StripsState> visitados = new HashSet<>();
     private final ArrayList<Operador> acciones_disponibles;
     static ArrayList<Meta> objetivo_meta = new ArrayList<>();
+    public ArrayList<Operador> solucion = new ArrayList<>();
 
     private int n_visitas = 0;
 
@@ -101,11 +103,11 @@ public class Strips {
             return EstadoMeta.CumpleMeta;
         }
 
-        for (Meta m: meta_actual.get_recursos()) {
-            if (hay_bucle(estado_actual, m)) {
-                return EstadoMeta.Bucle;
-            }
+
+        if (estado_actual.contiene_meta(meta_actual)) {
+            return EstadoMeta.Bucle;
         }
+
 
         ArrayList<IStackeable> copia = new ArrayList<>(meta_actual.get_recursos());
 
@@ -163,7 +165,7 @@ public class Strips {
         while (!estados.isEmpty()) {
             StripsState estado_actual = estados.poll();
 
-            if ( this.es_meta(estado_actual)) {
+            if ( this.es_meta(estado_actual) ) {
                 final long end = System.currentTimeMillis();
 
                 System.out.println("Meta: " + n_estados + " || visitas: " + n_visitas);
@@ -171,6 +173,7 @@ public class Strips {
                     System.out.println(a);
                 }
                 System.out.println(end - start + "ms");
+                this.solucion = estado_actual.get_solucion();
                 return;
             }
 
@@ -189,7 +192,7 @@ public class Strips {
     }
 
     private boolean es_meta(StripsState estado) {
-        return estado.get_estado_actual().containsAll(objetivo_meta);
+        return objetivo_meta.stream().allMatch(estado::cumple);
     }
 
     /*

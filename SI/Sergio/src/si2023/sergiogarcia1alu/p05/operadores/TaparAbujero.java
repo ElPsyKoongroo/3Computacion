@@ -32,6 +32,8 @@ public class TaparAbujero extends Operador {
         this.lista_supresion.add(new BloquePiedra(bloque_piedra));
         this.lista_supresion.add(new BloqueLibre(bloque_bujero));
 
+        SetAccion(bloque_piedra.copy().subtract(pos));
+
     }
 
     @Override

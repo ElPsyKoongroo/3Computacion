@@ -1,12 +1,21 @@
 package si2023.sergiogarcia1alu.strips;
 
+import ontology.Types;
+import tools.Vector2d;
+
 import java.util.ArrayList;
 
+
 public abstract class Operador implements IStackeable {
+
 
     protected final ArrayList<Meta> precondiciones;
     protected final ArrayList<Meta> lista_adicion;
     protected final ArrayList<Meta> lista_supresion;
+
+    protected Types.ACTIONS accion;
+
+
 
     public Operador() {
         this.precondiciones = new ArrayList<>();
@@ -28,6 +37,36 @@ public abstract class Operador implements IStackeable {
         this.lista_adicion = (ArrayList<Meta>) other.lista_adicion.clone();
         this.lista_supresion = (ArrayList<Meta>) other.lista_supresion.clone();
         this.precondiciones = (ArrayList<Meta>) other.precondiciones.clone();
+    }
+
+    public Types.ACTIONS GetAction() {
+        return this.accion;
+    }
+
+    protected void SetAccion(Vector2d diff) {
+//        public final static Vector2d DOWN = new Vector2d(0, 1.0);
+//        public final static Vector2d UP = new Vector2d(0, -1.0);
+//
+//        public final static Vector2d LEFT = new Vector2d(-1.0, 0);
+//        public final static Vector2d RIGHT = new Vector2d(1.0, 0);
+//
+//        public final static Vector2d NIL = new Vector2d(0,0);
+//
+        if(diff.x < 0) {
+            accion = Types.ACTIONS.ACTION_LEFT;
+        }
+        else if (diff.x > 0) {
+            accion = Types.ACTIONS.ACTION_RIGHT;
+        }
+        else if (diff.y < 0) {
+            accion = Types.ACTIONS.ACTION_UP;
+        }
+        else if (diff.y > 0){
+            accion = Types.ACTIONS.ACTION_DOWN;
+        }
+        else {
+            accion = Types.ACTIONS.ACTION_NIL;
+        }
     }
 
     public ArrayList<Meta> get_precondiciones() {
@@ -56,6 +95,7 @@ public abstract class Operador implements IStackeable {
         this.lista_supresion.forEach(supr -> {
             copia.get_raw_estado_actual_type(supr.type).remove(supr);
         });
+
         ArrayList<Meta> adicion = (ArrayList<Meta>) this.lista_adicion.clone();
 
         this.lista_adicion.forEach(addi -> {

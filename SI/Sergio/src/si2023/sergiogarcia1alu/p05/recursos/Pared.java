@@ -6,11 +6,11 @@ import tools.Vector2d;
 
 import java.util.Objects;
 
-public class Seta extends Meta {
+public class Pared extends Meta {
     public Vector2d posicion;
-    public Seta(Vector2d pos) {
+    public Pared(Vector2d pos) {
         posicion = pos;
-        type = RecursosTypes.Seta.Value;
+        type = RecursosTypes.Pared.Value;
     }
 
     @Override
@@ -28,6 +28,6 @@ public class Seta extends Meta {
     @Override
     protected int calcule_hash()
     {
-        return Objects.hash(RecursosTypes.Seta.Value, posicion.x, posicion.y);
+        return Objects.hash(RecursosTypes.Pared.Value, posicion.x, posicion.y);
     }
 }

@@ -2,15 +2,16 @@ package si2023.sergiogarcia1alu.p05.recursos;
 
 import si2023.sergiogarcia1alu.p05.operadores.RecursosTypes;
 import si2023.sergiogarcia1alu.strips.Meta;
-import tools.Vector2d;
 
-import java.util.Objects;
+public class HeSalido extends Meta {
 
-public class Seta extends Meta {
-    public Vector2d posicion;
-    public Seta(Vector2d pos) {
-        posicion = pos;
-        type = RecursosTypes.Seta.Value;
+    public HeSalido()
+    {
+        type = RecursosTypes.HeSalido.Value;
+    }
+    @Override
+    protected int calcule_hash() {
+        return RecursosTypes.HeSalido.Value;
     }
 
     @Override
@@ -23,11 +24,6 @@ public class Seta extends Meta {
             return false;
 
         return this.hashCode() == obj.hashCode();
-    }
 
-    @Override
-    protected int calcule_hash()
-    {
-        return Objects.hash(RecursosTypes.Seta.Value, posicion.x, posicion.y);
     }
 }
