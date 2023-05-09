@@ -1,8 +1,8 @@
 %%
 clear, clc
 
-addpath("MaterialFacilitado\ImagenesPractica5\Entrenamiento\")
-addpath("MaterialFacilitado\Funciones\")
+addpath("MaterialFacilitado/ImagenesPractica5/Entrenamiento/")
+addpath("MaterialFacilitado/Funciones/")
 
 nombreClases        = {'Circulo', 'Cuadrado', 'Triangulo'};
 codifClases         = [360, 420, 69];
@@ -16,7 +16,7 @@ numImagenesPorClase = 2;
 
 for i = 1:numClases
     for imagen = 1:numImagenesPorClase
-        nombre_imagen = [nombreClases{i} num2str(imagen,'%02d') '.JPG'];
+        nombre_imagen = [nombreClases{i} num2str(imagen,'%02d') '.jpg'];
         I = imread(nombre_imagen);
     
         Ib = I < 255*graythresh(I);
