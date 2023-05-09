@@ -63,13 +63,8 @@ public abstract class Accion implements IStackeable {
     
     public StripsState add_prerequisitos(StripsState estado) {
         StripsState copia = new StripsState(estado);
-        for(int i = 0; i<2; i++){
-            copia.get_stack_objetivos().add(this.get_precondiciones().get(i));
-        }
-        ArrayList<IStackeable> sobres = new ArrayList<>();
-        for(int i = 2; i<4; i++){
-            sobres.add(this.get_precondiciones().get(i));
-        }
+
+        ArrayList<IStackeable> sobres = new ArrayList<>(this.get_precondiciones());
         copia.get_stack_objetivos().add(new ConjuncionMeta(sobres));
         
         return copia;
