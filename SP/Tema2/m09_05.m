@@ -7,7 +7,7 @@ addpath("MaterialFacilitado/Funciones/")
 nombreClases        = {'Circulo', 'Cuadrado', 'Triangulo'};
 codifClases         = [360, 420, 69];
 numClases           = length(codifClases);
-simbolosClases      = {'*r', '*b'};
+simbolosClases      = {'*r', '*b', '*g'};
 
 X = [];
 Y = [];
@@ -22,7 +22,7 @@ for i = 1:numClases
         Ib = I < 255*graythresh(I);
         [IEtiq, N] = bwlabel(Ib);
         
-        XImagen = funcion_calcula_extend_hu_objetos_imagen(IEtiq, N);
+        XImagen = funcion_calcula_descriptores_objetos(IEtiq, N);
         YImagen = codifClases(i)*ones(N,1);
     
         X = [X; XImagen];
@@ -33,7 +33,7 @@ end
 %%
 
 nombresProblema.clases = nombreClases;
-nombresProblema.descriptores = {'Extension','Hu1','Hu2','Hu3','Hu4','Hu5','Hu6','Hu7'};
+nombresProblema.descriptores = {'Compacticidad', 'Excentricidad', 'Solidez', 'Extension', 'ExtensionInvRot','Hu1','Hu2','Hu3','Hu4','Hu5','Hu6','Hu7', 'DF1', 'DF2', 'DF3', 'DF4', 'DF5', 'DF6', 'DF7', 'DF8', 'DF9', 'DF10', 'Euler'};
 nombresProblema.simbolos = {'*b', '+r', '*g'};
 nombresProblema.numDatos = numClases;
 

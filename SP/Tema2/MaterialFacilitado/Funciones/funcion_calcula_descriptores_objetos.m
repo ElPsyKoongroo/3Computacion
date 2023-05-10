@@ -24,12 +24,12 @@ function X = funcion_calcula_descriptores_objetos(IEtiq, N)
         Ib = IEtiq == etiqueta;
         
 
-        propiedades = regionprops(Ib, 'Solidity', 'Extent', 'EulerNumber', 'Eccentricity', 'Area');
+        propiedades = regionprops(Ib, 'Solidity', 'Extent', 'EulerNumber', 'Eccentricity', 'Perimeter', 'Area');
         X(etiqueta, EULER)          = propiedades.EulerNumber;
         X(etiqueta, EXTENSION_BB)   = propiedades.Extent;
         X(etiqueta, SOLIDEZ)        = propiedades.Solidity;
         X(etiqueta, EXCENTRICIDAD)  = propiedades.Eccentricity;
-        X(etiqueta, COMPACTICIDAD) = sum(sum(Ib)).^2 / propiedades.Area;
+        X(etiqueta, COMPACTICIDAD) =  propiedades.Perimeter.^2 / propiedades.Area;
     end
 end
 
