@@ -4,16 +4,20 @@ import ontology.Types;
 import tools.Vector2d;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 
 public abstract class Operador implements IStackeable {
 
 
-    protected final ArrayList<Meta> precondiciones;
+    protected final ArrayList<IStackeable> precondiciones;
     protected final ArrayList<Meta> lista_adicion;
     protected final ArrayList<Meta> lista_supresion;
 
     protected Types.ACTIONS accion;
+
+    protected int hash;
+    protected boolean hash_calculed = false;
 
 
 
@@ -36,7 +40,7 @@ public abstract class Operador implements IStackeable {
     public Operador(Operador other) {
         this.lista_adicion = (ArrayList<Meta>) other.lista_adicion.clone();
         this.lista_supresion = (ArrayList<Meta>) other.lista_supresion.clone();
-        this.precondiciones = (ArrayList<Meta>) other.precondiciones.clone();
+        this.precondiciones = (ArrayList<IStackeable>) other.precondiciones.clone();
     }
 
     public Types.ACTIONS GetAction() {
@@ -44,14 +48,6 @@ public abstract class Operador implements IStackeable {
     }
 
     protected void SetAccion(Vector2d diff) {
-//        public final static Vector2d DOWN = new Vector2d(0, 1.0);
-//        public final static Vector2d UP = new Vector2d(0, -1.0);
-//
-//        public final static Vector2d LEFT = new Vector2d(-1.0, 0);
-//        public final static Vector2d RIGHT = new Vector2d(1.0, 0);
-//
-//        public final static Vector2d NIL = new Vector2d(0,0);
-//
         if(diff.x < 0) {
             accion = Types.ACTIONS.ACTION_LEFT;
         }
@@ -69,7 +65,20 @@ public abstract class Operador implements IStackeable {
         }
     }
 
-    public ArrayList<Meta> get_precondiciones() {
+    protected boolean Contrario(Operador otro)
+    {
+        if(otro.getClass() != this.getClass()) return false;
+        switch (otro.accion)
+        {
+            case ACTION_DOWN: return accion == Types.ACTIONS.ACTION_UP;
+            case ACTION_UP: return accion == Types.ACTIONS.ACTION_DOWN;
+            case ACTION_LEFT: return accion == Types.ACTIONS.ACTION_RIGHT;
+            case ACTION_RIGHT:  return accion == Types.ACTIONS.ACTION_LEFT;
+            default: return accion == Types.ACTIONS.ACTION_NIL;
+        }
+    }
+
+    public ArrayList<IStackeable> get_precondiciones() {
         return precondiciones;
     }
 
@@ -109,10 +118,7 @@ public abstract class Operador implements IStackeable {
     
     public StripsState add_prerequisitos(StripsState estado) {
         StripsState copia = new StripsState(estado);
-
-        ArrayList<Meta> sobres = new ArrayList<>(this.get_precondiciones());
-        copia.get_stack_objetivos().add(new ConjuncionMeta(sobres));
-        
+        copia.get_stack_objetivos().addAll(this.get_precondiciones());
         return copia;
     }
 
@@ -122,9 +128,27 @@ public abstract class Operador implements IStackeable {
 
     public abstract Operador clone();
 
-//    @Override
-//    public IStackeable clone() {
-//        return new Accion(this);
-//    }
+    /*
+    @Override
+    public int hashCode() {
+        if(hash_calculed) return hash;
+        hash_calculed = true;
+        hash = 14;
+        for(Meta m : this.lista_supresion)
+        {
+            hash = Objects.hash(hash, m.hashCode());
+        }
+        for(Meta m : this.lista_adicion)
+        {
+            hash = Objects.hash(hash, m.hashCode());
+        }
+        for(IStackeable m : this.precondiciones)
+        {
+            hash = Objects.hash(hash, m.hashCode());
+        }
+        return hash;
+    }
+    */
+
 
 }

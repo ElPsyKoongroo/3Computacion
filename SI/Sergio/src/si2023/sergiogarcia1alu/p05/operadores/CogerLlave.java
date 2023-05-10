@@ -4,6 +4,7 @@ import ontology.Types;
 import si2023.sergiogarcia1alu.p04.agente.nodo.Estado;
 import si2023.sergiogarcia1alu.p05.recursos.*;
 import si2023.sergiogarcia1alu.p06.Apilar;
+import si2023.sergiogarcia1alu.strips.ConjuncionMeta;
 import si2023.sergiogarcia1alu.strips.Meta;
 import si2023.sergiogarcia1alu.strips.Operador;
 import si2023.sergiogarcia1alu.strips.StripsState;
@@ -30,6 +31,7 @@ public class CogerLlave extends Operador {
         this.bloque_llave = bloque_llave;
 
         this.precondiciones.add(new Jugador(this.jugador_pos));
+        this.precondiciones.add(new BloqueLibre(this.jugador_pos));
         this.precondiciones.add(new Llave(this.bloque_llave));
 
         this.lista_adicion.add(new Jugador(this.bloque_llave));
@@ -52,7 +54,7 @@ public class CogerLlave extends Operador {
         if (!(m instanceof TengoLlave)) return operadores;
 
         Optional<Llave> llave = estado_actual
-                        .get_estado_actual()
+                        .get_raw_estado_actual()
                         .get(RecursosTypes.Llave.Value)
                         .stream()
                         .map(met-> (Llave)met)
@@ -68,7 +70,7 @@ public class CogerLlave extends Operador {
                 .map(posicion -> posicion_llave.copy().add(posicion))
                 .collect(Collectors.toList());
 
-        ArrayList<Vector2d> posiciones_paredes_adyacentes = (ArrayList<Vector2d>) estado_actual.get_estado_actual()
+        ArrayList<Vector2d> posiciones_paredes_adyacentes = (ArrayList<Vector2d>) estado_actual.get_raw_estado_actual()
                 .get(RecursosTypes.Pared.Value)
                 .stream()
                 .map(p -> ((Pared)p).posicion)
@@ -84,6 +86,26 @@ public class CogerLlave extends Operador {
         return operadores;
 
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+
+        CogerLlave other = (CogerLlave) obj;
+        return this.bloque_llave.equals(other.bloque_llave) &&
+                this.jugador_pos.equals(other.jugador_pos);
+    }
+
+    @Override
+    public int hashCode(){
+        return Objects.hash(this.jugador_pos.x, this.jugador_pos.y, this.bloque_llave.x, this.bloque_llave.y, 7);
+    }
+
 
     @Override
     public Operador clone() {

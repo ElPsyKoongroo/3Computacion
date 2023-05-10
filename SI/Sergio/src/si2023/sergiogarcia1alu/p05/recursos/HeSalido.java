@@ -3,7 +3,7 @@ package si2023.sergiogarcia1alu.p05.recursos;
 import si2023.sergiogarcia1alu.p05.operadores.RecursosTypes;
 import si2023.sergiogarcia1alu.strips.Meta;
 
-public class HeSalido extends Meta {
+public class HeSalido extends Meta implements Comparable<HeSalido>{
 
     public HeSalido()
     {
@@ -23,7 +23,13 @@ public class HeSalido extends Meta {
         if (this.getClass() != obj.getClass())
             return false;
 
-        return this.hashCode() == obj.hashCode();
+        HeSalido other = (HeSalido) obj;
+        return this.type == other.type;
 
+    }
+
+    @Override
+    public int compareTo(HeSalido other) {
+        return 0;
     }
 }

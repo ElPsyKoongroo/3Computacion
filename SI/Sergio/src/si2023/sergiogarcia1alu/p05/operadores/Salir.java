@@ -1,6 +1,7 @@
 package si2023.sergiogarcia1alu.p05.operadores;
 
 import si2023.sergiogarcia1alu.p05.recursos.*;
+import si2023.sergiogarcia1alu.strips.ConjuncionMeta;
 import si2023.sergiogarcia1alu.strips.Meta;
 import si2023.sergiogarcia1alu.strips.Operador;
 import si2023.sergiogarcia1alu.strips.StripsState;
@@ -8,6 +9,7 @@ import tools.Vector2d;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -28,8 +30,12 @@ public class Salir extends Operador {
         this.jugador_pos = pos;
         this.puerta = puerta;
 
-        this.precondiciones.add(new Jugador(this.jugador_pos));
-        this.precondiciones.add(new Puerta(this.puerta));
+        ConjuncionMeta cm = new ConjuncionMeta(
+                new Jugador(this.jugador_pos),
+                new Puerta(this.puerta)
+        );
+
+        this.precondiciones.add(cm);
 
         this.lista_adicion.add(new Jugador(this.puerta));
         this.lista_adicion.add(new HeSalido());
@@ -47,7 +53,7 @@ public class Salir extends Operador {
         if (!(m instanceof HeSalido)) return operadores;
 
         Vector2d posicion_puerta = estado_actual
-                .get_estado_actual()
+                .get_raw_estado_actual()
                 .get(RecursosTypes.Puerta.Value)
                 .stream()
                 .map(met-> (Puerta)met)
@@ -58,7 +64,7 @@ public class Salir extends Operador {
                 .map(posicion -> posicion_puerta.copy().add(posicion))
                 .collect(Collectors.toList());
 
-        ArrayList<Vector2d> posiciones_paredes_adyacentes = (ArrayList<Vector2d>) estado_actual.get_estado_actual()
+        ArrayList<Vector2d> posiciones_paredes_adyacentes = (ArrayList<Vector2d>) estado_actual.get_raw_estado_actual()
                 .get(RecursosTypes.Pared.Value)
                 .stream()
                 .map(p -> ((Pared)p).posicion)
@@ -73,6 +79,25 @@ public class Salir extends Operador {
 
         return operadores;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+
+        Salir other = (Salir) obj;
+        return this.puerta.equals(other.puerta) && this.jugador_pos.equals(other.jugador_pos);
+    }
+
+    @Override
+    public int hashCode(){
+        return Objects.hash(this.jugador_pos.x, this.jugador_pos.y, this.puerta.x, this.puerta.y, 3);
+    }
+
 
     @Override
     public Operador clone() {

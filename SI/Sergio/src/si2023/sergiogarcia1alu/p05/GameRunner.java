@@ -14,7 +14,7 @@ public class GameRunner {
         String[][] games = Utils.readGames(spGamesCollection);
 
         int gameIdx = 4;
-        int levelIdx = 0;
+        int levelIdx = 1;
 
         String gameName = games[gameIdx][1];
         String game = games[gameIdx][0];
@@ -24,6 +24,7 @@ public class GameRunner {
 
         //ArcadeMachine.playOneGame(game, level1, null, 33);
         ArcadeMachine.runOneGame(game, level1, visuals, p0, null, 2, 0);
+        
         // Game and level to play
 
 //        int levelIdx = 4; // level names from 0 to 4 (game_lvlN.txt).

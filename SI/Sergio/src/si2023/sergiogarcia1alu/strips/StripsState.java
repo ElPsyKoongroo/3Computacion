@@ -91,7 +91,9 @@ public class StripsState {
 
     public boolean es_ejecutable(Operador a) {
         return a.precondiciones.stream().allMatch(precondicion ->{
-            return this.estado_actual.get((precondicion).type).contains(precondicion);
+            if(precondicion instanceof Meta)
+                return this.cumple((Meta)precondicion);
+            return this.cumple((ConjuncionMeta)precondicion);
         });
     }
 
@@ -110,8 +112,7 @@ public class StripsState {
      * </p>
      */
     public void add_pre_requisitos(Operador a) {
-        ConjuncionMeta c = new ConjuncionMeta(a.get_precondiciones());
-        this.stack_objetivos.add(c);
+        this.stack_objetivos.addAll(a.get_precondiciones());
 //        this.stack_objetivos.addAll(a.get_precondiciones());
     }
 
@@ -225,7 +226,7 @@ public class StripsState {
             return false;
 
         // Activar para better performance en discos < 4
-        if (false) {
+        if (true) {
             return this.hashCode() == other.hashCode();
         }
 
@@ -241,7 +242,7 @@ public class StripsState {
                 return false;
             }
             int finalI = i;
-            if (!(this.get_estado_actual().get(i).stream().allMatch(meta -> other.get_estado_actual().get(finalI).contains(meta)))) {
+            if (!(other.get_estado_actual().get(finalI).containsAll(this.get_estado_actual().get(i)))) {
                 return false;
             }
         }

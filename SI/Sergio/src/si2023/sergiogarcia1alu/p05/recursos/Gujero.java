@@ -6,7 +6,7 @@ import tools.Vector2d;
 
 import java.util.Objects;
 
-public class Gujero extends Meta {
+public class Gujero extends Meta implements Comparable<Gujero> {
 
     public Vector2d posicion;
     public Gujero(Vector2d pos) {
@@ -14,9 +14,10 @@ public class Gujero extends Meta {
         type = RecursosTypes.Gujero.Value;
     }
     @Override
-    protected int calcule_hash()
-    {
-        return Objects.hash(RecursosTypes.Gujero.Value, posicion.x, posicion.y);
+    protected int calcule_hash() {
+        this.cached_hash = Objects.hash(RecursosTypes.Gujero.Value, posicion.x, posicion.y);
+        this.cached = true;
+        return cached_hash;
     }
 
     @Override
@@ -28,7 +29,16 @@ public class Gujero extends Meta {
         if (this.getClass() != obj.getClass())
             return false;
 
-        return this.hashCode() == obj.hashCode();
+        Gujero other = (Gujero) obj;
+        return this.posicion.equals(other.posicion);
 
+    }
+
+    @Override
+    public int compareTo(Gujero other) {
+        if(this.posicion.x < other.posicion.x) return -1;
+        if(this.posicion.x > other.posicion.x) return 1;
+
+        return Double.compare(this.posicion.y, other.posicion.y);
     }
 }

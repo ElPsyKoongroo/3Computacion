@@ -25,6 +25,9 @@ public abstract class Meta implements IStackeable {
         return this;
     }
 
+    @Override
+    public abstract boolean equals(Object o);
+
     protected abstract int calcule_hash();
 
     public int hashCode() {

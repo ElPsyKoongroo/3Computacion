@@ -100,7 +100,7 @@ public class AgenteSuperInteligente extends AbstractPlayer {
 		ArrayList<Meta> objetivos_finales = new ArrayList<>();
 		objetivos_finales.add(new HeSalido());
 		objetivos_finales.add(new TengoLlave());
-		Strips super_solver = new Strips(estado_inicial, acciones, objetivos_finales, Strips.TipoRecorrido.Anchura);
+		Strips super_solver = new Strips(estado_inicial, acciones, objetivos_finales, Strips.TipoRecorrido.Profundidad);
 		super_solver.resolver();
 
 		// this.solucion = super_solver.solucion; // new ArrayList<>()
@@ -108,8 +108,10 @@ public class AgenteSuperInteligente extends AbstractPlayer {
 		for(Operador op : super_solver.solucion)
 		{
 			ACTIONS ac = op.GetAction();
+			//System.out.println(ac.name());
 			solucion.add(ac);
 		}
+		System.out.println("Resuelto");
 
 		//mundo.print_map();
 	}

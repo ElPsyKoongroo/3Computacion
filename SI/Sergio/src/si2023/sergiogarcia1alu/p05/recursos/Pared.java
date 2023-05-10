@@ -6,7 +6,7 @@ import tools.Vector2d;
 
 import java.util.Objects;
 
-public class Pared extends Meta {
+public class Pared extends Meta implements Comparable<Pared> {
     public Vector2d posicion;
     public Pared(Vector2d pos) {
         posicion = pos;
@@ -22,12 +22,23 @@ public class Pared extends Meta {
         if (this.getClass() != obj.getClass())
             return false;
 
-        return this.hashCode() == obj.hashCode();
+
+        Pared other = (Pared) obj;
+        return this.posicion.equals(other.posicion);
     }
 
     @Override
-    protected int calcule_hash()
-    {
-        return Objects.hash(RecursosTypes.Pared.Value, posicion.x, posicion.y);
+    protected int calcule_hash() {
+        this.cached_hash = Objects.hash(RecursosTypes.Pared.Value, posicion.x, posicion.y);
+        this.cached = true;
+        return cached_hash;
+    }
+
+    @Override
+    public int compareTo(Pared other) {
+        if(this.posicion.x < other.posicion.x) return -1;
+        if(this.posicion.x > other.posicion.x) return 1;
+
+        return Double.compare(this.posicion.y, other.posicion.y);
     }
 }

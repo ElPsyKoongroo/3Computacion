@@ -1,8 +1,9 @@
 package si2023.sergiogarcia1alu.strips;
 
 import java.util.HashSet;
+import java.util.TreeSet;
 
-public class HashSetMetas extends HashSet<Meta> {
+public class HashSetMetas extends TreeSet<Meta> {
 
     public HashSetMetas(){
         super();

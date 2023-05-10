@@ -9,9 +9,24 @@ public class ConjuncionMeta implements IStackeable {
 
         public ConjuncionMeta(ArrayList<Meta> recursos) {
             this.recursos = new ArrayList<>();
-            for(Meta meta: recursos) {
-                this.recursos.add(meta);
-            }
+            this.recursos.addAll(recursos);
+        }
+
+        public ConjuncionMeta(Meta meta_1) {
+            this.recursos = new ArrayList<>();
+            this.recursos.add(meta_1);
+        }
+        public ConjuncionMeta(Meta meta_1, Meta meta_2) {
+            this.recursos = new ArrayList<>();
+            this.recursos.add(meta_1);
+            this.recursos.add(meta_2);
+        }
+
+        public ConjuncionMeta(Meta meta_1, Meta meta_2, Meta meta_3) {
+            this.recursos = new ArrayList<>();
+            this.recursos.add(meta_1);
+            this.recursos.add(meta_2);
+            this.recursos.add(meta_3);
         }
 
         public ConjuncionMeta(ConjuncionMeta other) {

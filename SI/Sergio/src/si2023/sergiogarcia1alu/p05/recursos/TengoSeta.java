@@ -3,7 +3,7 @@ package si2023.sergiogarcia1alu.p05.recursos;
 import si2023.sergiogarcia1alu.p05.operadores.RecursosTypes;
 import si2023.sergiogarcia1alu.strips.Meta;
 
-public class TengoSeta extends Meta {
+public class TengoSeta extends Meta implements Comparable <TengoSeta> {
     public TengoSeta(){
         type = RecursosTypes.TengoSeta.Value;
     }
@@ -22,7 +22,13 @@ public class TengoSeta extends Meta {
         if (this.getClass() != obj.getClass())
             return false;
 
-        return this.hashCode() == obj.hashCode();
+        TengoSeta other = (TengoSeta) obj;
+        return this.type == other.type;
 
+    }
+
+    @Override
+    public int compareTo(TengoSeta other) {
+        return 0;
     }
 }

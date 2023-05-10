@@ -6,7 +6,7 @@ import tools.Vector2d;
 
 import java.util.Objects;
 
-public class Seta extends Meta {
+public class Seta extends Meta implements Comparable<Seta>{
     public Vector2d posicion;
     public Seta(Vector2d pos) {
         posicion = pos;
@@ -22,12 +22,22 @@ public class Seta extends Meta {
         if (this.getClass() != obj.getClass())
             return false;
 
-        return this.hashCode() == obj.hashCode();
+        Seta other = (Seta) obj;
+        return this.posicion.equals(other.posicion);
+
     }
 
     @Override
     protected int calcule_hash()
     {
         return Objects.hash(RecursosTypes.Seta.Value, posicion.x, posicion.y);
+    }
+
+    @Override
+    public int compareTo(Seta other) {
+        if(this.posicion.x < other.posicion.x) return -1;
+        if(this.posicion.x > other.posicion.x) return 1;
+
+        return Double.compare(this.posicion.y, other.posicion.y);
     }
 }

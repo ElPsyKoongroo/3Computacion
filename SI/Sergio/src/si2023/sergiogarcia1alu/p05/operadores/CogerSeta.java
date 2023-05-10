@@ -1,6 +1,7 @@
 package si2023.sergiogarcia1alu.p05.operadores;
 
 import si2023.sergiogarcia1alu.p05.recursos.*;
+import si2023.sergiogarcia1alu.strips.ConjuncionMeta;
 import si2023.sergiogarcia1alu.strips.Meta;
 import si2023.sergiogarcia1alu.strips.Operador;
 import si2023.sergiogarcia1alu.strips.StripsState;
@@ -27,8 +28,9 @@ public class CogerSeta extends Operador {
         this.jugador_pos = pos;
         this.next_bloque = next_bloque;
 
-        this.precondiciones.add(new Jugador(pos));
-        this.precondiciones.add(new Seta(next_bloque));
+        this.precondiciones.add(new Jugador(this.jugador_pos));
+        this.precondiciones.add(new BloqueLibre(this.jugador_pos));
+        this.precondiciones.add(new Seta(this.next_bloque));
 
         this.lista_adicion.add(new Jugador(next_bloque));
         this.lista_adicion.add(new BloqueLibre(this.next_bloque));
@@ -47,7 +49,7 @@ public class CogerSeta extends Operador {
         if (!(m instanceof TengoSeta)) return operadores;
 
         Optional<Seta> seta = estado_actual
-                .get_estado_actual()
+                .get_raw_estado_actual()
                 .get(RecursosTypes.Seta.Value)
                 .stream()
                 .map(met-> (Seta)met)
@@ -63,7 +65,7 @@ public class CogerSeta extends Operador {
                 .map(posicion -> posicion_seta.copy().add(posicion))
                 .collect(Collectors.toList());
 
-        ArrayList<Vector2d> posiciones_paredes_adyacentes = (ArrayList<Vector2d>) estado_actual.get_estado_actual()
+        ArrayList<Vector2d> posiciones_paredes_adyacentes = (ArrayList<Vector2d>) estado_actual.get_raw_estado_actual()
                 .get(RecursosTypes.Pared.Value)
                 .stream()
                 .map(p -> ((Pared)p).posicion)
@@ -78,6 +80,9 @@ public class CogerSeta extends Operador {
 
         return operadores;
     }
+
+
+
     @Override
     public Operador clone() {
         return this;

@@ -15,7 +15,7 @@ public class Strips {
         Profundidad
     }
 
-    // Hecho de menos los Enums algebraicos de Rust :(
+    // Echo de menos los Enums algebraicos de Rust :(
     /**
     * Este enum indica lo que va sucediendo cuando se comprueban las metas, si hay:<br><br>
     *   Bucle           => Si hay Bucle<br>
@@ -165,6 +165,10 @@ public class Strips {
         while (!estados.isEmpty()) {
             StripsState estado_actual = estados.poll();
 
+            if (n_estados == 60){
+                System.out.println('-');
+            }
+
             if ( this.es_meta(estado_actual) ) {
                 final long end = System.currentTimeMillis();
 
@@ -182,10 +186,10 @@ public class Strips {
             if (visitados.contains(estado_actual)) {
                 continue;
             }
+            this.visitados.add(estado_actual);
 
             this.n_visitas++;
-//            if (n_visitas%1000 == 0) System.out.println(n_visitas);
-            this.visitados.add(estado_actual);
+
             this.prueba_estado(estado_actual);
         }
         System.out.println("No hemos resuelto nada, iteraciones: " + n_estados);

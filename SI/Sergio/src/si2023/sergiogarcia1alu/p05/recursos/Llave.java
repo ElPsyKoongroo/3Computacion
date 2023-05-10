@@ -6,7 +6,7 @@ import tools.Vector2d;
 
 import java.util.Objects;
 
-public class Llave extends Meta {
+public class Llave extends Meta implements Comparable<Llave>{
     public Vector2d posicion;
     public Llave(Vector2d pos) {
         posicion = pos;
@@ -22,12 +22,21 @@ public class Llave extends Meta {
         if (this.getClass() != obj.getClass())
             return false;
 
-        return this.hashCode() == obj.hashCode();
+        Llave other = (Llave) obj;
+        return this.posicion.equals(other.posicion);
     }
 
     @Override
     protected int calcule_hash()
     {
         return Objects.hash(RecursosTypes.Llave.Value, posicion.x, posicion.y);
+    }
+
+    @Override
+    public int compareTo(Llave other) {
+        if(this.posicion.x < other.posicion.x) return -1;
+        if(this.posicion.x > other.posicion.x) return 1;
+
+        return Double.compare(this.posicion.y, other.posicion.y);
     }
 }
