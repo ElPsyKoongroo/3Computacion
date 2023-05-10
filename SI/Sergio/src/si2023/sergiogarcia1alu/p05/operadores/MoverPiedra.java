@@ -49,39 +49,46 @@ public class MoverPiedra extends Operador {
     public ArrayList<Operador> gen_posibilidades(Meta m, StripsState estado_actual) {
         ArrayList<Operador> operadores = new ArrayList<>();
 
-        if (!(m instanceof TengoLlave)) return operadores;
+        if (!(m instanceof BloqueLibre)) return operadores;
 
-        Optional<Llave> llave = estado_actual
-                .get_estado_actual()
-                .get(RecursosTypes.Llave.Value)
+        boolean hay_piedra =  estado_actual.get_estado_actual()
+                .get(RecursosTypes.BloquePiedra.Value)
                 .stream()
-                .map(met-> (Llave)met)
-                .findFirst();
+                .map(obj -> ((BloquePiedra)obj).posicion)
+                .anyMatch(pos_piedra -> pos_piedra.equals(((BloqueLibre)m).posicion));
 
-        // En principio siempre deberia haber una llave en el mapa
-        // si queremos coger la llave pero por si acaso.
-        if(!llave.isPresent()) return operadores;
+        if (!hay_piedra) return operadores;
 
-        Vector2d posicion_llave = llave.get().posicion;
+        Vector2d posicion_piedra = ((BloqueLibre)m).posicion;
 
-        ArrayList<Vector2d> pos_adyacentes =(ArrayList<Vector2d>) Arrays.stream(POSICIONES)
-                .map(posicion -> posicion_llave.copy().add(posicion))
-                .collect(Collectors.toList());
+        /*
 
-        ArrayList<Vector2d> posiciones_paredes_adyacentes = (ArrayList<Vector2d>) estado_actual.get_estado_actual()
-                .get(RecursosTypes.Pared.Value)
-                .stream()
-                .map(p -> ((Pared)p).posicion)
-                .filter(pos_adyacentes::contains)
-                .collect(Collectors.toList());
+                    U
+                  L S Wall
+                    D
 
-        operadores.addAll(
-                pos_adyacentes.stream()
-                        .filter(pos -> !posiciones_paredes_adyacentes.contains(pos))
-                        .map(pos -> new CogerLlave(pos, posicion_llave))
-                        .collect(Collectors.toList()));
+                    [Up, Down]
+         */
+
+
+        Arrays.stream(POSICIONES)
+                .filter(pos -> estado_actual.get_estado_actual()
+                        .get(RecursosTypes.Pared.Value)
+                        .stream()
+                        .map(obj -> ((Pared)obj).posicion)
+                        .noneMatch(pared_pos -> pared_pos.equals(pos.copy().add(posicion_piedra)) && pared_pos.equals(pos.copy().subtract(posicion_piedra))))
+                .forEach(dir_libre -> operadores.add(
+                        new MoverPiedra(
+                                posicion_piedra.copy().add(dir_libre),
+                                posicion_piedra,
+                                posicion_piedra.copy().subtract(dir_libre)
+                        )
+                ));
+
+
 
         return operadores;
+
     }
     @Override
     public Operador clone() {

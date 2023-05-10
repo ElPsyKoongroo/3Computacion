@@ -169,10 +169,10 @@ public class Strips {
                 final long end = System.currentTimeMillis();
 
                 System.out.println("Meta: " + n_estados + " || visitas: " + n_visitas);
-                for (final Operador a : estado_actual.get_solucion()) {
-                    System.out.println(a);
-                }
-                System.out.println(end - start + "ms");
+//                for (final Operador a : estado_actual.get_solucion()) {
+//                    System.out.println(a);
+//                }
+                System.out.println("Solucion: " + (end - start) + "ms");
                 this.solucion = estado_actual.get_solucion();
                 return;
             }
@@ -184,7 +184,7 @@ public class Strips {
             }
 
             this.n_visitas++;
-
+//            if (n_visitas%1000 == 0) System.out.println(n_visitas);
             this.visitados.add(estado_actual);
             this.prueba_estado(estado_actual);
         }

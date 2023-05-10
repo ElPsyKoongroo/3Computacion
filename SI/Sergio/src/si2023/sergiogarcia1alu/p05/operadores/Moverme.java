@@ -63,6 +63,8 @@ public class Moverme extends Operador {
         operadores.addAll(
                 pos_adyacentes.stream()
                         .filter(pos -> !posiciones_paredes_adyacentes.contains(pos))
+                        .filter(posicion -> !(posicion.x < 0 || posicion.x > 4))
+                        .filter(posicion -> !(posicion.y < 0 || posicion.y > 5))
                         .map(pos -> new Moverme(pos, posicion_final.posicion))
                         .collect(Collectors.toList()));
 

@@ -171,10 +171,9 @@ public class AgenteSuperInteligente extends AbstractPlayer {
 //		}
 		try {
 
-			ACTIONS action = solucion.get(0);
+			//ACTIONS action = solucion.get(0);
 			//System.out.println(action.name());
-			solucion.remove(0);
-			return action;
+			return solucion.remove(0);
 		} catch (Exception e) {
 			return ACTIONS.ACTION_NIL;
 		}
