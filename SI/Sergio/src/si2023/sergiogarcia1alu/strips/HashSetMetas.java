@@ -9,9 +9,10 @@ public class HashSetMetas extends TreeSet<Meta> {
         super();
     }
 
-    public HashSetMetas(HashSetMetas metas){
-        super();
-        this.addAll(metas);
+    @Override
+    public Object clone()
+    {
+        return super.clone();
     }
 
     @Override

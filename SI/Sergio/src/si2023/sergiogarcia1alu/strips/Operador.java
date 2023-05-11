@@ -100,7 +100,6 @@ public abstract class Operador implements IStackeable {
         StripsState copia = new StripsState(estado);
 
         copia.get_stack_objetivos().poll();
-        //this.lista_supresion.forEach(copia.get_raw_estado_actual()::remove);
         this.lista_supresion.forEach(supr -> {
             copia.get_raw_estado_actual_type(supr.type).remove(supr);
         });

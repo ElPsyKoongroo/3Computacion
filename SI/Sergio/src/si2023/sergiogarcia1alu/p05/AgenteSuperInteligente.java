@@ -72,6 +72,7 @@ public class AgenteSuperInteligente extends AbstractPlayer {
 						break;
 					case Seta:
 						recursos_iniciales.add(new Seta(new Vector2d(i,j)));
+						//recursos_iniciales.add(new BloqueLibre(new Vector2d(i,j)));
 						break;
 					case Vacio:
 						recursos_iniciales.add(new Gujero(new Vector2d(i,j)));
@@ -105,8 +106,7 @@ public class AgenteSuperInteligente extends AbstractPlayer {
 
 		// this.solucion = super_solver.solucion; // new ArrayList<>()
 		this.solucion = new ArrayList<>();
-		for(Operador op : super_solver.solucion)
-		{
+		for(Operador op : super_solver.solucion) {
 			ACTIONS ac = op.GetAction();
 			//System.out.println(ac.name());
 			solucion.add(ac);

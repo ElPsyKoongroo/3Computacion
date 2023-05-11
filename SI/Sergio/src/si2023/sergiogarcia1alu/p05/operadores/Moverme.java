@@ -62,7 +62,7 @@ public class Moverme extends Operador {
         Jugador posicion_final = (Jugador)m;
 
         if(
-                estado_actual.get_raw_estado_actual().get(RecursosTypes.BloquePiedra.Value)
+                estado_actual.get_raw_estado_actual_type(RecursosTypes.BloquePiedra.Value)
                         .stream().anyMatch(p -> ((BloquePiedra)p).posicion.equals(posicion_final.posicion))
         ) {
             return operadores;

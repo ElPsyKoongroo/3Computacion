@@ -162,6 +162,7 @@ public class Strips {
     public void resolver() {
         final long start = System.currentTimeMillis();
         int n_estados = 0;
+        int repetidos = 0;
         while (!estados.isEmpty()) {
             StripsState estado_actual = estados.poll();
 
@@ -172,7 +173,7 @@ public class Strips {
             if ( this.es_meta(estado_actual) ) {
                 final long end = System.currentTimeMillis();
 
-                System.out.println("Meta: " + n_estados + " || visitas: " + n_visitas);
+                System.out.println("Meta: " + n_estados + " || visitas: " + n_visitas + " || repes: " + repetidos);
 //                for (final Operador a : estado_actual.get_solucion()) {
 //                    System.out.println(a);
 //                }
@@ -184,6 +185,7 @@ public class Strips {
             n_estados++;
 
             if (visitados.contains(estado_actual)) {
+                repetidos++;
                 continue;
             }
             this.visitados.add(estado_actual);

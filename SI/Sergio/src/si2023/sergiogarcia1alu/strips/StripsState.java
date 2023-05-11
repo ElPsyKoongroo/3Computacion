@@ -7,6 +7,14 @@ import si2023.sergiogarcia1alu.shared.utils.StripsStack;
 
 public class StripsState {
 
+    // Esto añade una mejora del 200%
+    static final int[] orden_check_recursos = new int[]{
+            RecursosTypes.Jugador.Value,
+            RecursosTypes.BloquePiedra.Value,
+            RecursosTypes.TengoLlave.Value,
+            RecursosTypes.TengoSeta.Value,
+    };
+
     private ArrayList<Operador> solucion;
     private final HashMap<Integer,HashSetMetas> estado_actual;
     private final StripsStack<IStackeable> stack_objetivos;
@@ -50,19 +58,17 @@ public class StripsState {
 
     @SuppressWarnings({"unchecked", "CopyConstructorMissesField"})
     public StripsState(StripsState other) {
-        this.solucion = new ArrayList<>();
         this.solucion = (ArrayList<Operador>) other.solucion.clone();
-
-        //this.estado_actual = (HashMap<Integer, HashSetMetas>) other.estado_actual.clone();
 
         this.estado_actual = new HashMap<>();
 
         for (int i = 0; i < RecursosTypes.SIZE; i++) {
-            estado_actual.put(i, new HashSetMetas(other.estado_actual.get(i)));
+            estado_actual.put(i,(HashSetMetas)(other.get_raw_estado_actual_type(i).clone()));
         }
 
         this.stack_objetivos = new StripsStack<>(other.stack_objetivos);
         this.cached = false;
+        this.cache_hash = other.cache_hash;
     }
 
     public ArrayList<Operador> get_solucion() {
@@ -82,7 +88,7 @@ public class StripsState {
     }
 
     public HashSetMetas get_estado_actual_type(int type) {
-        return new HashSetMetas(estado_actual.get(type));
+        return (HashSetMetas)(estado_actual.get(type).clone());
     }
 
     public StripsStack<IStackeable> get_stack_objetivos() {
@@ -90,7 +96,7 @@ public class StripsState {
     }
 
     public boolean es_ejecutable(Operador a) {
-        return a.precondiciones.stream().allMatch(precondicion ->{
+        return a.precondiciones.stream().allMatch(precondicion -> {
             if(precondicion instanceof Meta)
                 return this.cumple((Meta)precondicion);
             return this.cumple((ConjuncionMeta)precondicion);
@@ -154,7 +160,8 @@ public class StripsState {
     }
 
     public void elimina_meta(ConjuncionMeta metas) {
-        metas.get_recursos().forEach(this.estado_actual::remove);
+        metas.get_recursos()
+                .forEach(m -> this.get_raw_estado_actual_type(m.type).remove(m));
     }
 
     /**
@@ -192,7 +199,7 @@ public class StripsState {
 
         int hash = 1;
         int counter = 1;
-        for (int i = 0; i < RecursosTypes.SIZE; i++) {
+        for (int i: orden_check_recursos) {
             for (Meta m : this.estado_actual.get(i)) {
                 hash = (hash * m.hashCode()) + counter;
                 counter++;
@@ -209,6 +216,7 @@ public class StripsState {
     }
     @Override
     public boolean equals(Object obj) {
+
         if (obj == null)
             return false;
         if (this.getClass() != obj.getClass())
@@ -225,26 +233,23 @@ public class StripsState {
         if (other.stack_objetivos.size() != this.stack_objetivos.size())
             return false;
 
+        // Es mejor comprobar primero el stack, mejora en PC SERGIO ~4.16%
         for (int i = 0; i < this.stack_objetivos.size(); i++) {
             if (!other.stack_objetivos.get_index(i).equals(this.stack_objetivos.get_index(i))) {
                 return false;
             }
         }
 
-
-        for(int i = 0; i < RecursosTypes.SIZE; ++i) {
-            if (this.get_estado_actual().get(i).size() != other.get_estado_actual().get(i).size()) {
+        for(int i : orden_check_recursos) {
+            if (this.get_raw_estado_actual_type(i).size() != other.get_raw_estado_actual_type(i).size()) {
                 return false;
             }
-            int finalI = i;
-            if (!(other.get_estado_actual().get(finalI).containsAll(this.get_estado_actual().get(i)))) {
+            //int finalI = i;
+            if (!(other.get_raw_estado_actual_type(i).containsAll(this.get_raw_estado_actual_type(i)))) {
                 return false;
             }
         }
 
-
-
-        int a = 0;
         return true;
 
     }
