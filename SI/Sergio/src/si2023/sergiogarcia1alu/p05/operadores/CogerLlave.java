@@ -34,6 +34,7 @@ public class CogerLlave extends Operador {
         this.precondiciones.add(new BloqueLibre(this.jugador_pos));
         this.precondiciones.add(new Llave(this.bloque_llave));
 
+
         this.lista_adicion.add(new Jugador(this.bloque_llave));
         this.lista_adicion.add(new BloqueLibre(this.bloque_llave));
         this.lista_adicion.add(new TengoLlave());
@@ -51,7 +52,7 @@ public class CogerLlave extends Operador {
     public ArrayList<Operador> gen_posibilidades(Meta m, StripsState estado_actual) {
         ArrayList<Operador> operadores = new ArrayList<>();
 
-        if (!(m instanceof TengoLlave)) return operadores;
+        if (m.type != RecursosTypes.TengoLlave.Value) return operadores;
 
         Optional<Llave> llave = estado_actual
                         .get_raw_estado_actual()

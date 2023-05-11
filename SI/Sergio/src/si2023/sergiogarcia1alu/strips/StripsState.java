@@ -66,7 +66,7 @@ public class StripsState {
     }
 
     public ArrayList<Operador> get_solucion() {
-        return solucion;
+        return this.solucion;
     }
 
     public HashMap<Integer, HashSetMetas> get_raw_estado_actual() {
@@ -224,11 +224,6 @@ public class StripsState {
 
         if (other.stack_objetivos.size() != this.stack_objetivos.size())
             return false;
-
-        // Activar para better performance en discos < 4
-        if (true) {
-            return this.hashCode() == other.hashCode();
-        }
 
         for (int i = 0; i < this.stack_objetivos.size(); i++) {
             if (!other.stack_objetivos.get_index(i).equals(this.stack_objetivos.get_index(i))) {

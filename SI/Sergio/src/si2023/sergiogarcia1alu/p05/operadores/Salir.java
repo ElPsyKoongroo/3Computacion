@@ -30,12 +30,15 @@ public class Salir extends Operador {
         this.jugador_pos = pos;
         this.puerta = puerta;
 
-        ConjuncionMeta cm = new ConjuncionMeta(
-                new Jugador(this.jugador_pos),
-                new Puerta(this.puerta)
-        );
+//        ConjuncionMeta cm = new ConjuncionMeta(
+//                new Jugador(this.jugador_pos),
+//                new Puerta(this.puerta)
+//        );
 
-        this.precondiciones.add(cm);
+//        this.precondiciones.add(cm);
+
+        precondiciones.add(new Jugador(this.jugador_pos));
+        precondiciones.add(new Puerta(this.puerta));
 
         this.lista_adicion.add(new Jugador(this.puerta));
         this.lista_adicion.add(new HeSalido());
@@ -50,7 +53,7 @@ public class Salir extends Operador {
 
         ArrayList<Operador> operadores = new ArrayList<>();
 
-        if (!(m instanceof HeSalido)) return operadores;
+        if (m.type != RecursosTypes.HeSalido.Value) return operadores;
 
         Vector2d posicion_puerta = estado_actual
                 .get_raw_estado_actual()

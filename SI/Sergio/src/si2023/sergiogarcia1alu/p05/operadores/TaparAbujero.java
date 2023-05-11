@@ -38,9 +38,8 @@ public class TaparAbujero extends Operador {
 
         this.precondiciones.add(new Jugador(pos));
         this.precondiciones.add(new BloquePiedra(bloque_piedra));
-
-        this.precondiciones.add(new Gujero(bloque_bujero));
 //        this.precondiciones.add(cm);
+        this.precondiciones.add(new Gujero(bloque_bujero));
 
         this.lista_adicion.add(new Jugador(bloque_piedra));
         this.lista_adicion.add(new BloqueLibre(bloque_piedra));

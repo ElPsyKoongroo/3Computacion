@@ -14,6 +14,7 @@ import tools.Vector2d;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Vector;
 import java.util.stream.Collectors;
 
 public class Moverme extends Operador {
@@ -56,7 +57,7 @@ public class Moverme extends Operador {
     public ArrayList<Operador> gen_posibilidades(Meta m, StripsState estado_actual) {
         ArrayList<Operador> operadores = new ArrayList<>();
 
-        if (!(m instanceof Jugador)) return operadores;
+        if (m.type != RecursosTypes.Jugador.Value) return operadores;
 
         Jugador posicion_final = (Jugador)m;
 
@@ -67,47 +68,52 @@ public class Moverme extends Operador {
             return operadores;
         }
 
-        ArrayList<Vector2d> pos_adyacentes = (ArrayList<Vector2d>) Arrays.stream(POSICIONES)
-                .map(posicion -> posicion_final.posicion.copy().add(posicion))
-                .collect(Collectors.toList());
+        ArrayList<Vector2d> pos_adyacentes = new ArrayList<>();
+        for(Vector2d pos: POSICIONES) {
+            pos_adyacentes.add(posicion_final.posicion.copy().add(pos));
+        }
 
-        ArrayList<Moverme> posiciones_libres_adyacentes = (ArrayList<Moverme>) estado_actual.get_raw_estado_actual()
-                .get(RecursosTypes.BloqueLibre.Value)
-                .stream()
-                .map(p -> ((BloqueLibre)p).posicion)
-                .filter(pos_adyacentes::contains)
-                .map(p -> new Moverme(p, posicion_final.posicion))
-                //.filter(p -> !p.Contrario(estado_actual.get_solucion().get(estado_actual.get_solucion().size()-1)))
-                .collect(Collectors.toList());
-
-        ArrayList<Moverme> posiciones_gujero_adyacentes = (ArrayList<Moverme>) estado_actual.get_raw_estado_actual()
-                .get(RecursosTypes.Gujero.Value)
-                .stream()
-                .map(p -> ((Gujero)p).posicion)
-                .filter(pos_adyacentes::contains)
-                .map(p -> new Moverme(p, posicion_final.posicion))
-                //.filter(p -> !p.Contrario(estado_actual.get_solucion().get(estado_actual.get_solucion().size()-1)))
-                .collect(Collectors.toList());
-
-        operadores.addAll(posiciones_libres_adyacentes);
-        operadores.addAll(posiciones_gujero_adyacentes);
-
-
-        /*
-        *         operadores.addAll(
-                pos_adyacentes.stream()
-                        .filter(posiciones_libres_adyacentes::contains)
-                        .map(pos -> new Moverme(pos, posicion_final.posicion))
-                        .collect(Collectors.toList()));
-        operadores.addAll(
-                pos_adyacentes.stream()
-                        .filter(posiciones_gujero_adyacentes::contains)
-                        .map(pos -> new Moverme(pos, posicion_final.posicion))
-                        .collect(Collectors.toList()));
-
-        * */
-
+        for(Meta actual : estado_actual.get_raw_estado_actual_type(RecursosTypes.BloqueLibre.Value)) {
+            Vector2d bloque_libre_actual = ((BloqueLibre) actual).posicion;
+            for(Vector2d pos_ad : pos_adyacentes) {
+                if(pos_ad.equals(bloque_libre_actual)) {
+                    operadores.add(new Moverme(pos_ad, posicion_final.posicion));
+                    break;
+                }
+            }
+        }
+        for(Meta actual : estado_actual.get_raw_estado_actual_type(RecursosTypes.Gujero.Value)) {
+            Vector2d bloque_libre_actual = ((Gujero) actual).posicion;
+            for(Vector2d pos_ad : pos_adyacentes) {
+                if(pos_ad.equals(bloque_libre_actual)) {
+                    operadores.add(new Moverme(pos_ad, posicion_final.posicion));
+                    break;
+                }
+            }
+        }
         return operadores;
+
+//        ArrayList<Vector2d> pos_adyacentes = (ArrayList<Vector2d>) Arrays.stream(POSICIONES)
+//                .map(posicion -> posicion_final.posicion.copy().add(posicion))
+//                .collect(Collectors.toList());
+//        ArrayList<Moverme> posiciones_libres_adyacentes = (ArrayList<Moverme>) estado_actual.get_raw_estado_actual()
+//                .get(RecursosTypes.BloqueLibre.Value)
+//                .stream()
+//                .map(p -> ((BloqueLibre)p).posicion)
+//                .filter(pos_adyacentes::contains)
+//                .map(p -> new Moverme(p, posicion_final.posicion))
+//                .collect(Collectors.toList());
+//
+//        ArrayList<Moverme> posiciones_gujero_adyacentes = (ArrayList<Moverme>) estado_actual.get_raw_estado_actual()
+//                .get(RecursosTypes.Gujero.Value)
+//                .stream()
+//                .map(p -> ((Gujero)p).posicion)
+//                .filter(pos_adyacentes::contains)
+//                .map(p -> new Moverme(p, posicion_final.posicion))
+//                .collect(Collectors.toList());
+//        operadores.addAll(posiciones_libres_adyacentes);
+//        operadores.addAll(posiciones_gujero_adyacentes);
+//        return  operadores;
     }
 
 

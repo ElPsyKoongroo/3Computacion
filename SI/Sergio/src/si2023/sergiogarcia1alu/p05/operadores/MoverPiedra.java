@@ -33,13 +33,22 @@ public class MoverPiedra extends Operador {
         this.siguiente_bloque = siguiente_bloque;
 
         ConjuncionMeta cm = new ConjuncionMeta(
-                new Jugador(this.jugador_pos),
+          //      new Jugador(this.jugador_pos),
                 new BloquePiedra(this.bloque_piedra),
                 new BloqueLibre(this.siguiente_bloque)
         );
 
 
+
         this.precondiciones.add(cm);
+        this.precondiciones.add(new Jugador(jugador_pos));
+
+
+
+
+
+
+
 
         this.lista_adicion.add(new Jugador(this.bloque_piedra));
         this.lista_adicion.add(new BloqueLibre(this.bloque_piedra));
