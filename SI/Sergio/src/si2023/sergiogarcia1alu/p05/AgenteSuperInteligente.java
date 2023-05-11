@@ -46,12 +46,12 @@ public class AgenteSuperInteligente extends AbstractPlayer {
 		int x = dimensiones[0];
 		int y = dimensiones[1];
 
-		if (!((x == 13 && y == 9) || (x == 5 && y == 6))) {
-			return ;
-		}
+//		if (!((x == 13 && y == 9) || (x == 5 && y == 6))) {
+//			return ;
+//		}
 
-		System.out.println(x);
-		System.out.println(y);
+//		System.out.println(x);
+//		System.out.println(y);
 
 		ArrayList<Meta> recursos_iniciales = new ArrayList<>();
 
@@ -93,12 +93,14 @@ public class AgenteSuperInteligente extends AbstractPlayer {
 		objetivos.add(new TengoLlave());
 
 		ArrayList<Operador> acciones = new ArrayList<>();
+
 		acciones.add(new Moverme());
-		acciones.add(new MoverPiedra());
 		acciones.add(new CogerSeta());
+		acciones.add(new TaparAbujero());
 		acciones.add(new CogerLlave());
 		acciones.add(new Salir());
-		acciones.add(new TaparAbujero());
+		acciones.add(new MoverPiedra());
+
 
 		StripsState estado_inicial = new StripsState(recursos_iniciales, objetivos);
 
@@ -116,7 +118,7 @@ public class AgenteSuperInteligente extends AbstractPlayer {
 			//System.out.println(ac.name());
 			solucion.add(ac);
 		}
-		System.out.println("Resuelto");
+		//System.out.println("Resuelto");
 
 		//mundo.print_map();
 	}

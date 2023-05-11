@@ -1,9 +1,14 @@
 package si2023.sergiogarcia1alu.strips;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.util.*;
 
 import si2023.sergiogarcia1alu.p05.operadores.RecursosTypes;
+import si2023.sergiogarcia1alu.p05.recursos.*;
 import si2023.sergiogarcia1alu.shared.utils.StripsStack;
+import tools.Vector2d;
 
 public class StripsState {
 
@@ -252,5 +257,91 @@ public class StripsState {
 
         return true;
 
+    }
+
+
+    public void to_file(int acciones) {
+        BufferedWriter writer;
+        try{
+            writer = new BufferedWriter(new FileWriter("Trace.txt", true));
+        } catch(Exception e){
+            System.out.println("you got an error");
+            return ;
+        }
+
+        int MAX_X = 13;
+        int MAX_Y = 9;
+
+        char[][] map = new char[MAX_X][MAX_Y];
+
+        for(int x = 0; x<MAX_X; x++) {
+            for(int y = 0; y<MAX_Y; y++){
+                map[x][y] = ' ';
+            }
+        }
+
+        for(int type = 0; type < RecursosTypes.SIZE; type++){
+            for(Meta m: this.get_raw_estado_actual_type(type)){
+                Vector2d pos;
+                switch (type) {
+                    case 0: {
+                        pos = ((BloqueLibre) m).posicion;
+                        map[(int) pos.x][(int) pos.y] = '.';
+                        break;
+                    }
+                    case 1: {
+                        pos = ((BloquePiedra) m).posicion;
+                        map[(int) pos.x][(int) pos.y] = 'S';
+                        break;
+                    }
+                    case 2: {
+                        pos = ((Gujero) m).posicion;
+                        map[(int) pos.x][(int) pos.y] = 'H';
+                        break;
+                    }
+                    case 3: {
+                        pos = ((Seta) m).posicion;
+                        map[(int) pos.x][(int) pos.y] = 'm';
+                        break;
+                    }
+                    case 4: {
+                        pos = ((Llave) m).posicion;
+                        map[(int) pos.x][(int) pos.y] = 'k';
+                        break;
+                    }
+                    case 6: {
+                        pos = ((Puerta) m).posicion;
+                        map[(int) pos.x][(int) pos.y] = 'D';
+                        break;
+                    }
+                    case 7: {
+                        pos = ((Jugador) m).posicion;
+                        map[(int) pos.x][(int) pos.y] = 'A';
+                        break;
+                    }
+                    case 9: {
+                        pos = ((Pared) m).posicion;
+                        map[(int) pos.x][(int) pos.y] = 'W';
+                        break;
+                    }
+                }
+
+            }
+        }
+        try {
+            for(int j = 0; j<MAX_Y; j++) {
+                for (int i = 0; i < MAX_X; i++) {
+                    writer.write(map[i][j]);
+                }
+                writer.write('\n');
+            }
+            writer.write("\n");
+            writer.write(String.valueOf(acciones));
+            writer.write("\n");
+            writer.flush();
+            writer.close();
+        } catch (Exception e) {
+            System.err.println("Error al escribir");
+        }
     }
 }

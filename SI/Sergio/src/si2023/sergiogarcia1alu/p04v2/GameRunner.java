@@ -7,7 +7,7 @@ public class GameRunner {
     public static void main(String[] args) {
 
 //        int ejecuciones = 100;
-        String p0 = "si2023.sergiogarcia1alu.p05.AgenteSuperInteligente";
+        String p0 = "si2023.sergiogarcia1alu.p04v2.AgenteSuperInteligente";
 
         // Load available games
         String spGamesCollection = "examples/all_games_sp.csv";

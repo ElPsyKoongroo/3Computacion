@@ -30,9 +30,10 @@ public class CogerLlave extends Operador {
         this.jugador_pos = pos;
         this.bloque_llave = bloque_llave;
 
-        this.precondiciones.add(new Jugador(this.jugador_pos));
-        this.precondiciones.add(new BloqueLibre(this.jugador_pos));
         this.precondiciones.add(new Llave(this.bloque_llave));
+        this.precondiciones.add(new BloqueLibre(this.jugador_pos));
+        this.precondiciones.add(new Jugador(this.jugador_pos));
+
 
 
         this.lista_adicion.add(new Jugador(this.bloque_llave));

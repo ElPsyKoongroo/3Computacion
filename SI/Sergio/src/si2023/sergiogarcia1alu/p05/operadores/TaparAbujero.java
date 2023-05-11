@@ -36,10 +36,12 @@ public class TaparAbujero extends Operador {
 //        );
 
 
-        this.precondiciones.add(new Jugador(pos));
-        this.precondiciones.add(new BloquePiedra(bloque_piedra));
-//        this.precondiciones.add(cm);
         this.precondiciones.add(new Gujero(bloque_bujero));
+        this.precondiciones.add(new BloquePiedra(bloque_piedra));
+        this.precondiciones.add(new Jugador(pos));
+
+//        this.precondiciones.add(cm);
+
 
         this.lista_adicion.add(new Jugador(bloque_piedra));
         this.lista_adicion.add(new BloqueLibre(bloque_piedra));
@@ -60,9 +62,11 @@ public class TaparAbujero extends Operador {
             case 0: { // BloqueLibre
                 return tapar(((BloqueLibre)m).posicion, estado_actual);
             }
+
             case 7: { // Jugador
                 return mover_piedra(((Jugador)m).posicion, estado_actual);
             }
+
             default: return new ArrayList<>();
         }
 

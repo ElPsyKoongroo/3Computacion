@@ -8,10 +8,7 @@ import si2023.sergiogarcia1alu.strips.Operador;
 import si2023.sergiogarcia1alu.strips.StripsState;
 import tools.Vector2d;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class MoverPiedra extends Operador {
@@ -34,14 +31,15 @@ public class MoverPiedra extends Operador {
 
         ConjuncionMeta cm = new ConjuncionMeta(
                 new Jugador(this.jugador_pos),
-                new BloquePiedra(this.bloque_piedra),
+                //new BloquePiedra(this.bloque_piedra),
                 new BloqueLibre(this.siguiente_bloque)
         );
 
 
 
-//        this.precondiciones.add(new Jugador(jugador_pos));
+
         this.precondiciones.add(cm);
+        this.precondiciones.add(new BloquePiedra(this.bloque_piedra));
 
 
 
@@ -80,6 +78,11 @@ public class MoverPiedra extends Operador {
 
     public ArrayList<Operador> desplaza_piedra(Vector2d posicion_dst, StripsState estado_actual) {
 
+        Vector2d pos_jugador = ((Jugador)(estado_actual
+                .get_raw_estado_actual_type(RecursosTypes.Jugador.Value)
+                .first())).posicion;
+
+
         ArrayList<Vector2d> paredes_pos = (ArrayList<Vector2d>)
                 estado_actual.get_raw_estado_actual_type(RecursosTypes.Pared.Value)
                 .stream().map(par -> ((Pared)par).posicion)
@@ -89,13 +92,19 @@ public class MoverPiedra extends Operador {
         ArrayList<Vector2d[]> posiciones_validas = (ArrayList<Vector2d[]>) Arrays.stream(POSICIONES)
             .map(dir -> new Vector2d[]{posicion_dst.copy().add(dir), posicion_dst.copy().add(dir.copy().mul(2))})
             .filter(pareja -> Arrays.stream(pareja).noneMatch(paredes_pos::contains))
+            .sorted(Comparator.comparingDouble(pos -> pos[0].dist(pos_jugador)))
             .collect(Collectors.toList());
 
         ArrayList<Operador> operadores = new ArrayList<>();
 
+
+
         for(Vector2d[] posiciones : posiciones_validas) {
             operadores.add(new MoverPiedra(posiciones[1], posiciones[0], posicion_dst));
         }
+
+        Collections.reverse(operadores);
+
         return operadores;
     }
 

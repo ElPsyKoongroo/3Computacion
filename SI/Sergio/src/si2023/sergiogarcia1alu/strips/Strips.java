@@ -1,11 +1,13 @@
 package si2023.sergiogarcia1alu.strips;
 
+import si2023.sergiogarcia1alu.p05.GameRunner;
 import si2023.sergiogarcia1alu.shared.utils.Polleable;
 import si2023.sergiogarcia1alu.shared.utils.Queue;
 import si2023.sergiogarcia1alu.shared.utils.Stack;
 import si2023.sergiogarcia1alu.shared.utils.StripsStack;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 public class Strips {
@@ -45,6 +47,9 @@ public class Strips {
     static ArrayList<Meta> objetivo_meta = new ArrayList<>();
     public ArrayList<Operador> solucion = new ArrayList<>();
 
+    public HashMap<HashMap<Integer,HashSetMetas>, ArrayList<Operador>> camino = new HashMap<>();
+    private int contador_acciones = 0;
+
     private int n_visitas = 0;
 
     public Strips(StripsState estado_inicial, ArrayList<Operador> acciones, ArrayList<Meta> meta, TipoRecorrido t) {
@@ -67,8 +72,8 @@ public class Strips {
         // el valor tiene que ser (2^n) - 1. Este es el numero de movimientos
         // optimos para el juego "Torres de Hanoi"
 
-        // boolean solucion_bucle = estado_actual.get_solucion().size() > 20;
-        return estado_actual.contiene_meta(meta_actual);
+        boolean solucion_bucle = estado_actual.get_solucion().size() > 43;
+        return estado_actual.contiene_meta(meta_actual) ;
     }
 
     private EstadoMeta meta_simple(final StripsState estado_actual, Meta meta_actual) {
@@ -108,7 +113,6 @@ public class Strips {
             return EstadoMeta.Bucle;
         }
 
-
         ArrayList<IStackeable> copia = new ArrayList<>(meta_actual.get_recursos());
 
         ArrayList<ArrayList<IStackeable>> permutaciones = this.generatePerm(copia);
@@ -144,6 +148,9 @@ public class Strips {
             StripsState copia;
             if (estado_actual.es_ejecutable(operador_actual)) {
                 copia = operador_actual.aplica_accion(estado_actual);
+                //this.camino.put(copia.get_raw_estado_actual(), copia.get_solucion());
+                contador_acciones++;
+                copia.to_file(contador_acciones);
             } else {
                 copia = operador_actual.add_prerequisitos(estado_actual);
             }
@@ -179,6 +186,7 @@ public class Strips {
 //                }
                 System.out.println("Solucion: " + (end - start) + "ms");
                 this.solucion = estado_actual.get_solucion();
+                GameRunner.times.add(end-start);
                 return;
             }
 
