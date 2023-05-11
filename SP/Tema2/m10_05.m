@@ -64,7 +64,7 @@ YoI = Y;
 XoI(YCuad, :) = []
 YoI(YCuad) = []
 
-indiceJ(XoI, YoI);
+separabilidad = indiceJ(XoI, YoI);
 
 clases_oi = [1,3];
 nombres_problemas_oi = nombres_problema.clases(clases_oi);
@@ -78,4 +78,3 @@ nombres_problemas_oi = nombres_problema.clases(clases_oi);
 nombres_problema_oi  = nombres_problema.descriptores(espacioCCas);
 simbolos_problema_oi = nombres_problema.simbolos(clases_oi);
 %}
-
