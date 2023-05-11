@@ -34,7 +34,7 @@ public class AgenteSuperInteligente extends AbstractPlayer {
 	public AgenteSuperInteligente(StateObservation state, ElapsedCpuTimer timer) {
 
 		ArrayList<Observation>[][] estados = state.getObservationGrid();
-
+		this.solucion = new ArrayList<>();
 		int x_size = estados.length;
 		int y_size = estados[0].length;
 		map = new String[x_size][y_size];
@@ -46,8 +46,12 @@ public class AgenteSuperInteligente extends AbstractPlayer {
 		int x = dimensiones[0];
 		int y = dimensiones[1];
 
-//		System.out.println(x);
-//		System.out.println(y);
+		if (!((x == 13 && y == 9) || (x == 5 && y == 6))) {
+			return ;
+		}
+
+		System.out.println(x);
+		System.out.println(y);
 
 		ArrayList<Meta> recursos_iniciales = new ArrayList<>();
 
@@ -104,8 +108,9 @@ public class AgenteSuperInteligente extends AbstractPlayer {
 		Strips super_solver = new Strips(estado_inicial, acciones, objetivos_finales, Strips.TipoRecorrido.Profundidad);
 		super_solver.resolver();
 
+
 		// this.solucion = super_solver.solucion; // new ArrayList<>()
-		this.solucion = new ArrayList<>();
+
 		for(Operador op : super_solver.solucion) {
 			ACTIONS ac = op.GetAction();
 			//System.out.println(ac.name());
@@ -157,24 +162,8 @@ public class AgenteSuperInteligente extends AbstractPlayer {
 	public ACTIONS act(StateObservation stateObs, ElapsedCpuTimer elapsedTimer) {
 
 		update_map(stateObs);
-
-		//
-
-
-		// Descomentar esto para que se muestre el mapa por consola.
-//		print_map();
-//		while (!this.acciones.isEmpty()) {
-//		    int a = stateObs.getAvatarType();
-//		    if (a == JUGADOR_NORMAL) {
-//		        ACTIONS ac = this.acciones.poll();
-//		        return ac;
-//		    }
-//		    return ACTIONS.ACTION_NIL;
-//		}
 		try {
 
-			//ACTIONS action = solucion.get(0);
-			//System.out.println(action.name());
 			return solucion.remove(0);
 		} catch (Exception e) {
 			return ACTIONS.ACTION_NIL;

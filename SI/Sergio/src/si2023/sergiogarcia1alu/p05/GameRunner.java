@@ -14,16 +14,21 @@ public class GameRunner {
         String[][] games = Utils.readGames(spGamesCollection);
 
         int gameIdx = 4;
-        int levelIdx = 1;
+
 
         String gameName = games[gameIdx][1];
         String game = games[gameIdx][0];
-        String level1 = game.replace(gameName, gameName + "_lvl" + levelIdx);
         // Game settings
         boolean visuals = true;
 
-        //ArcadeMachine.playOneGame(game, level1, null, 33);
-        ArcadeMachine.runOneGame(game, level1, visuals, p0, null, 2, 0);
+        for(int i = 0; i<5; i++) {
+            int levelIdx = i;
+            String level1 = game.replace(gameName, gameName + "_lvl" + levelIdx);
+            //ArcadeMachine.playOneGame(game, level1, null, 33);
+            ArcadeMachine.runOneGame(game, level1, visuals, p0, null, 2, 0);
+        }
+
+        //
         
         // Game and level to play
 
