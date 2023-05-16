@@ -26,11 +26,12 @@ dim = 4;
 nombres_problema_oi.clases = nombresProblema.clases(clases_oi);
 nombres_problema_oi.descriptores = nombresProblema.descriptores(espacio_ccas_j);
 nombres_problema_oi.simbolos = nombresProblema.simbolos(clases_oi);
+nombres_problema_oi.codif = codif_clases_oi;
 
 XoI = XoI(:, espacio_ccas_j);
 %funcion_representa_datos(XoI, YoI, 1:dim, nombres_problema_oi);
 
 
-save("DatosGenerados/espacio_ccas_circulos_cuadrados.mat", "espacio_ccas_j", "j_valor", "XoI", "YoI", "nombres_problema_oi");
+save("DatosGenerados/espacio_ccas_circulos_cuadrados_triangulos.mat", "espacio_ccas_j", "j_valor", "XoI", "YoI", "nombres_problema_oi");
 rmpath("../../Funciones/")
 
