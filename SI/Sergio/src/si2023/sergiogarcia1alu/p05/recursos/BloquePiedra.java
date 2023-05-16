@@ -8,14 +8,18 @@ import java.util.Objects;
 
 public class BloquePiedra extends Meta implements Comparable<BloquePiedra> {
     public Vector2d posicion;
-    public BloquePiedra(Vector2d pos)
-    {
+    public BloquePiedra(Vector2d pos) {
         posicion = pos;
         type = RecursosTypes.BloquePiedra.Value;
     }
     @Override
     protected int calcule_hash(){
-        this.cached_hash = Objects.hash(RecursosTypes.BloquePiedra.Value, posicion.x, posicion.y);
+        long hash = RecursosTypes.BloquePiedra.Value;
+
+        hash ^= (long)(this.posicion.x + 0x9e3779b9 + (hash<<6) + (hash>>2));
+        hash ^= (long)(this.posicion.y + 0x9e3779b9 + (hash<<6) + (hash>>2));
+
+        this.cached_hash = (int)hash;
         this.cached = true;
         return this.cached_hash;
     }

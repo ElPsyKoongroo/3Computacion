@@ -31,12 +31,15 @@ public class AgenteSuperInteligente extends AbstractPlayer {
 	String[][] map;
 	Stack<ACTIONS> acciones;
 	private static final int JUGADOR_NORMAL = 9;
+
+	public static int x_size = 0;
+	public static int y_size = 0;
 	public AgenteSuperInteligente(StateObservation state, ElapsedCpuTimer timer) {
 
 		ArrayList<Observation>[][] estados = state.getObservationGrid();
 		this.solucion = new ArrayList<>();
-		int x_size = estados.length;
-		int y_size = estados[0].length;
+		AgenteSuperInteligente.x_size = estados.length;
+		AgenteSuperInteligente.y_size = estados[0].length;
 		map = new String[x_size][y_size];
 
 		full_update(state);
@@ -54,11 +57,12 @@ public class AgenteSuperInteligente extends AbstractPlayer {
 //		System.out.println(y);
 
 		ArrayList<Meta> recursos_iniciales = new ArrayList<>();
-
+		StripsState.pos_paredes.clear();
 		for(int i = 0; i<x; i++) {
 			for(int j = 0; j<y;j++) {
 				switch (mundo.get_pos_type(i,j)) {
 					case Pared:
+						StripsState.pos_paredes.add(new Vector2d(i,j));
 						recursos_iniciales.add(new Pared(new Vector2d(i,j)));;
 						break;
 					case Puerta:
@@ -107,7 +111,7 @@ public class AgenteSuperInteligente extends AbstractPlayer {
 		ArrayList<Meta> objetivos_finales = new ArrayList<>();
 		objetivos_finales.add(new HeSalido());
 		objetivos_finales.add(new TengoLlave());
-		Strips super_solver = new Strips(estado_inicial, acciones, objetivos_finales, Strips.TipoRecorrido.Profundidad);
+		Strips super_solver = new Strips(estado_inicial, acciones, objetivos_finales, Strips.TipoRecorrido.Anchura);
 		super_solver.resolver();
 
 

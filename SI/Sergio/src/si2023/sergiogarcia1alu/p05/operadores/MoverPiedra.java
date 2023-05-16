@@ -36,10 +36,11 @@ public class MoverPiedra extends Operador {
         );
 
 
-
-
-        this.precondiciones.add(cm);
+        this.precondiciones.add(new BloqueLibre(this.siguiente_bloque));
         this.precondiciones.add(new BloquePiedra(this.bloque_piedra));
+        this.precondiciones.add(new Jugador(this.jugador_pos));
+        //this.precondiciones.add(cm);
+
 
 
 
@@ -83,18 +84,16 @@ public class MoverPiedra extends Operador {
                 .first())).posicion;
 
 
-        ArrayList<Vector2d> paredes_pos = (ArrayList<Vector2d>)
-                estado_actual.get_raw_estado_actual_type(RecursosTypes.Pared.Value)
-                .stream().map(par -> ((Pared)par).posicion)
-                .collect(Collectors.toList());
+        //ArrayList<Vector2d> paredes_pos = new ArrayList<>(StripsState.pos_paredes);
+
 
 
         ArrayList<Vector2d[]> posiciones_validas = (ArrayList<Vector2d[]>) Arrays.stream(POSICIONES)
             .map(dir -> new Vector2d[]{posicion_dst.copy().add(dir), posicion_dst.copy().add(dir.copy().mul(2))})
-            .filter(pareja -> Arrays.stream(pareja).noneMatch(paredes_pos::contains))
-            .sorted(Comparator.comparingDouble(pos -> pos[0].dist(pos_jugador)))
+            .filter(pareja -> Arrays.stream(pareja).noneMatch(StripsState.pos_paredes::contains))
+            //.sorted(Comparator.comparingDouble(pos -> Math.abs(pos[0].x-pos_jugador.x)+Math.abs(pos[0].y-pos_jugador.y)))
             .collect(Collectors.toList());
-
+//pos[0].dist(pos_jugador)
         ArrayList<Operador> operadores = new ArrayList<>();
 
 
@@ -103,7 +102,7 @@ public class MoverPiedra extends Operador {
             operadores.add(new MoverPiedra(posiciones[1], posiciones[0], posicion_dst));
         }
 
-        Collections.reverse(operadores);
+        //Collections.reverse(operadores);
 
         return operadores;
     }
@@ -152,11 +151,20 @@ public class MoverPiedra extends Operador {
 
     @Override
     public int hashCode(){
-        int hash = 33;
-        hash = Objects.hash(this.bloque_piedra.x, this.bloque_piedra.y, hash);
-        hash = Objects.hash(this.jugador_pos.x, this.jugador_pos.y, hash);
-        hash = Objects.hash(this.siguiente_bloque.x, this.siguiente_bloque.y, hash);
-        return hash;
+        // 1779670600858735404  | 2104287431
+        long hash = 33;
+
+        // seed ^= hasher(v) + 0x9e3779b9 + (seed<<6) + (seed>>2); // Cortesia de la libreria BOOST
+        hash ^= (long)(this.bloque_piedra.x + 0x9e3779b9 + (hash<<6) + (hash>>2));
+        hash ^= (long)(this.bloque_piedra.y + 0x9e3779b9 + (hash<<6) + (hash>>2));
+
+        hash ^= (long)(this.jugador_pos.x + 0x9e3779b9 + (hash<<6) + (hash>>2));
+        hash ^= (long)(this.jugador_pos.y + 0x9e3779b9 + (hash<<6) + (hash>>2));
+
+        hash ^= (long)(this.siguiente_bloque.x + 0x9e3779b9 + (hash<<6) + (hash>>2));
+        hash ^= (long)(this.siguiente_bloque.y + 0x9e3779b9 + (hash<<6) + (hash>>2));
+
+        return (int)hash;
         //return Objects.hash(this.jugador_pos.x, this.jugador_pos.y, this.next_bloque.x, this.next_bloque.y, 14);
     }
 

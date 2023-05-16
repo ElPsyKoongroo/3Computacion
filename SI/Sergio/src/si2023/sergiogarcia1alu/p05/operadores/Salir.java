@@ -98,7 +98,14 @@ public class Salir extends Operador {
 
     @Override
     public int hashCode(){
-        return Objects.hash(this.jugador_pos.x, this.jugador_pos.y, this.puerta.x, this.puerta.y, 3);
+        long hash = 47;
+
+        hash ^= (long)(this.jugador_pos.x + 0x9e3779b9 + (hash<<6) + (hash>>2));
+        hash ^= (long)(this.jugador_pos.y + 0x9e3779b9 + (hash<<6) + (hash>>2));
+
+        hash ^= (long)(this.puerta.x + 0x9e3779b9 + (hash<<6) + (hash>>2));
+        hash ^= (long)(this.puerta.y + 0x9e3779b9 + (hash<<6) + (hash>>2));
+        return (int)hash;
     }
 
 

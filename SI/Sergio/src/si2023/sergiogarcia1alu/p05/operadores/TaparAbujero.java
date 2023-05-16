@@ -9,6 +9,7 @@ import tools.Vector2d;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -36,11 +37,15 @@ public class TaparAbujero extends Operador {
 //        );
 
 
-        this.precondiciones.add(new Gujero(bloque_bujero));
-        this.precondiciones.add(new BloquePiedra(bloque_piedra));
-        this.precondiciones.add(new Jugador(pos));
+
+//
+//
 
 //        this.precondiciones.add(cm);
+        this.precondiciones.add(new Jugador(pos));
+        this.precondiciones.add(new BloquePiedra(bloque_piedra));
+        this.precondiciones.add(new Gujero(bloque_bujero));
+
 
 
         this.lista_adicion.add(new Jugador(bloque_piedra));
@@ -81,13 +86,10 @@ public class TaparAbujero extends Operador {
                     .stream()
                     .map(obj -> ((Gujero)obj).posicion)
                     .anyMatch(gujero_pos -> gujero_pos.equals(posicion_piedra.copy().add(pos))))
-            .filter(pos -> estado_actual.get_raw_estado_actual()
-                    .get(RecursosTypes.Pared.Value)
+            .filter(pos -> StripsState.pos_paredes
                     .stream()
-                    .map(obj -> ((Pared)obj).posicion)
                     .noneMatch(pos_pared -> pos_pared.equals(posicion_piedra.copy().subtract(pos))))
-            .forEach(dir_libre ->
-            {
+            .forEach(dir_libre -> {
                 operadores.add(
                 new TaparAbujero(
                         posicion_piedra.copy().subtract(dir_libre),
@@ -99,7 +101,7 @@ public class TaparAbujero extends Operador {
         return operadores;
     }
 
-    public ArrayList<Operador> tapar(Vector2d posicion_dst, StripsState estado_actual) {
+    public ArrayList<Operador> tapar(Vector2d posicion_gujero, StripsState estado_actual) {
 
         ArrayList<Operador> operadores = new ArrayList<>();
 
@@ -107,23 +109,36 @@ public class TaparAbujero extends Operador {
                 .get(RecursosTypes.Gujero.Value)
                 .stream()
                 .map(obj -> ((Gujero)obj).posicion)
-                .anyMatch(pos_gujero -> pos_gujero.equals(posicion_dst));
+                .anyMatch(pos_gujero -> pos_gujero.equals(posicion_gujero));
+
+        boolean quieren_tapar = estado_actual.get_stack_objetivos()
+                .get_elementos()
+                .stream()
+                .filter(objetivo -> objetivo.getClass() == TaparAbujero.class)
+                .map(obj -> ((TaparAbujero)obj).bloque_bujero)
+                .anyMatch(pos_gujero -> pos_gujero.equals(posicion_gujero));
 
         if (!hay_gujero) return operadores;
+        if (quieren_tapar) return operadores;
 
-        ArrayList<Vector2d> paredes_pos = (ArrayList<Vector2d>)
-                estado_actual.get_raw_estado_actual_type(RecursosTypes.Pared.Value)
-                        .stream().map(par -> ((Pared)par).posicion)
-                        .collect(Collectors.toList());
+//        ArrayList<Vector2d> paredes_pos = (ArrayList<Vector2d>)
+//                estado_actual.get_raw_estado_actual_type(RecursosTypes.Pared.Value)
+//                        .stream().map(par -> ((Pared)par).posicion)
+//                        .collect(Collectors.toList());
 
+
+//        if (posicion_gujero.x == 3 && posicion_gujero.y == 2) {
+//            System.out.println(" ");
+//        }
 
         ArrayList<Vector2d[]> posiciones_validas = (ArrayList<Vector2d[]>) Arrays.stream(POSICIONES)
-                .map(dir -> new Vector2d[]{posicion_dst.copy().add(dir), posicion_dst.copy().add(dir.copy().mul(2))})
-                .filter(pareja -> Arrays.stream(pareja).noneMatch(paredes_pos::contains))
+                .map(dir -> new Vector2d[]{posicion_gujero.copy().add(dir), posicion_gujero.copy().add(dir.copy().mul(2))})
+                .filter(pareja -> Arrays.stream(pareja).noneMatch(StripsState.pos_paredes::contains))
+                .sorted(Comparator.comparingDouble(pos -> pos[0].x))
                 .collect(Collectors.toList());
 
         for(Vector2d[] posiciones : posiciones_validas) {
-            operadores.add(new TaparAbujero(posiciones[1], posiciones[0], posicion_dst));
+            operadores.add(new TaparAbujero(posiciones[1], posiciones[0], posicion_gujero));
         }
         return operadores;
     }
@@ -138,18 +153,28 @@ public class TaparAbujero extends Operador {
             return false;
         TaparAbujero other = (TaparAbujero) obj;
 
-        return  this.bloque_piedra.equals(other.bloque_piedra) &&
-                this.bloque_bujero.equals(other.bloque_bujero) &&
-                this.jugador_pos.equals(other.jugador_pos);
+
+        return this.bloque_bujero.equals(other.bloque_bujero);
+//        return  this.bloque_piedra.equals(other.bloque_piedra) &&
+//                this.bloque_bujero.equals(other.bloque_bujero) &&
+//                this.jugador_pos.equals(other.jugador_pos);
     }
 
     @Override
     public int hashCode(){
-        int hash = 31;
-        hash = Objects.hash(this.bloque_piedra.x, this.bloque_piedra.y, hash);
-        hash = Objects.hash(this.jugador_pos.x, this.jugador_pos.y, hash);
-        hash = Objects.hash(this.bloque_bujero.x, this.bloque_bujero.y, hash);
-        return hash;
+        long hash = 31;
+
+        // seed ^= hasher(v) + 0x9e3779b9 + (seed<<6) + (seed>>2); // Cortesia de la libreria BOOST
+//        hash ^= (long)(this.bloque_piedra.x + 0x9e3779b9L + (hash<<6) + (hash>>2));
+//        hash ^= (long)(this.bloque_piedra.y + 0x9e3779b9L + (hash<<6) + (hash>>2));
+//
+//        hash ^= (long)(this.jugador_pos.x + 0x9e3779b9L + (hash<<6) + (hash>>2));
+//        hash ^= (long)(this.jugador_pos.y + 0x9e3779b9L + (hash<<6) + (hash>>2));
+
+        hash ^= (long)(this.bloque_bujero.x + 0x9e3779b9L + (hash<<6) + (hash>>2));
+        hash ^= (long)(this.bloque_bujero.y + 0x9e3779b9L + (hash<<6) + (hash>>2));
+
+        return (int)hash;
     }
 
 

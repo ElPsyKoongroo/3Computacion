@@ -9,6 +9,7 @@ import tools.Vector2d;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -81,6 +82,17 @@ public class CogerSeta extends Operador {
         return operadores;
     }
 
+    @Override
+    public int hashCode(){
+        long hash = 97;
+
+        hash ^= (long)(this.jugador_pos.x + 0x9e3779b9L + (hash<<6) + (hash>>2));
+        hash ^= (long)(this.jugador_pos.y + 0x9e3779b9L + (hash<<6) + (hash>>2));
+
+        hash ^= (long)(this.next_bloque.x + 0x9e3779b9L + (hash<<6) + (hash>>2));
+        hash ^= (long)(this.next_bloque.y + 0x9e3779b9L + (hash<<6) + (hash>>2));
+        return (int)hash;
+    }
 
 
     @Override

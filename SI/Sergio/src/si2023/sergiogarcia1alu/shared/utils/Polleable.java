@@ -1,12 +1,13 @@
 package si2023.sergiogarcia1alu.shared.utils;
 
+import java.util.AbstractCollection;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 
 public interface Polleable<E> {
     void add(E e);
 
-    ArrayDeque<E> get_elementos();
+    AbstractCollection<E> get_elementos();
 
     default boolean isEmpty() {
         return this.get_elementos().isEmpty();

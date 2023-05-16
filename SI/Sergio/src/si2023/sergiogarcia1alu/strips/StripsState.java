@@ -5,12 +5,17 @@ import java.io.File;
 import java.io.FileWriter;
 import java.util.*;
 
+import si2023.sergiogarcia1alu.p05.AgenteSuperInteligente;
 import si2023.sergiogarcia1alu.p05.operadores.RecursosTypes;
+import si2023.sergiogarcia1alu.p05.operadores.TaparAbujero;
 import si2023.sergiogarcia1alu.p05.recursos.*;
+import si2023.sergiogarcia1alu.shared.utils.MyPair;
 import si2023.sergiogarcia1alu.shared.utils.StripsStack;
 import tools.Vector2d;
 
-public class StripsState {
+public class StripsState implements Comparable<StripsState>{
+
+    public static final ArrayList<Vector2d> pos_paredes = new ArrayList<>();
 
     // Esto añade una mejora del 200%
     static final int[] orden_check_recursos = new int[]{
@@ -23,6 +28,7 @@ public class StripsState {
     private ArrayList<Operador> solucion;
     private final HashMap<Integer,HashSetMetas> estado_actual;
     private final StripsStack<IStackeable> stack_objetivos;
+    public Integer stack_hash = null, recursos_hash = null;
 
     private Integer cache_hash = null;
     private boolean cached;
@@ -42,6 +48,7 @@ public class StripsState {
         this.stack_objetivos.addAll(objetivos);
         this.solucion = new ArrayList<>();
         this.cached = false;
+        //CalculateHashes();
     }
 
     public StripsState(ArrayList<Meta> ea, ConjuncionMeta objetivos) {
@@ -59,6 +66,7 @@ public class StripsState {
         this.stack_objetivos.add(objetivos);
         this.solucion = new ArrayList<>();
         this.cached = false;
+        //CalculateHashes();
     }
 
     @SuppressWarnings({"unchecked", "CopyConstructorMissesField"})
@@ -73,7 +81,8 @@ public class StripsState {
 
         this.stack_objetivos = new StripsStack<>(other.stack_objetivos);
         this.cached = false;
-        this.cache_hash = other.cache_hash;
+
+        //this.cache_hash = other.cache_hash;
     }
 
     public ArrayList<Operador> get_solucion() {
@@ -108,6 +117,21 @@ public class StripsState {
         });
     }
 
+    public boolean es_bucle_previo(Operador a) {
+        for(int i = 0; i<this.stack_objetivos.size(); i++){
+            IStackeable elemento_actual = this.stack_objetivos.get_index(i);
+            if (elemento_actual instanceof Operador){
+                if (a.equals((Operador)elemento_actual)) return true;
+            }
+        }
+        return false;
+//        return a.precondiciones.stream().anyMatch(precondicion -> {
+//            if(precondicion instanceof Operador)
+//                return this.contiene_meta((Meta)precondicion);
+//            return this.contiene_meta((ConjuncionMeta)precondicion);
+//        });
+    }
+
     public void add_solucion(Operador a) {
         this.solucion.add(a);
     }
@@ -122,10 +146,10 @@ public class StripsState {
      *     como Conjunto, es mejor añadirlas como metas individuales en el orden correcto.
      * </p>
      */
-    public void add_pre_requisitos(Operador a) {
-        this.stack_objetivos.addAll(a.get_precondiciones());
+//    public void add_pre_requisitos(Operador a) {
 //        this.stack_objetivos.addAll(a.get_precondiciones());
-    }
+//        this.stack_objetivos.addAll(a.get_precondiciones());
+//    }
 
     public void add_metas(ArrayList<IStackeable> metas) {
         this.stack_objetivos.addAll(metas);
@@ -188,36 +212,78 @@ public class StripsState {
 
     public boolean contiene_meta(ConjuncionMeta con_meta) {
         for(int i = 0; i<this.get_stack_objetivos().size()-1; i++){
-            if(!(this.get_stack_objetivos().get_index(i) instanceof Meta)) continue;
-            if(con_meta.contains((Meta)this.get_stack_objetivos().get_index(i))){
-                return true;
+            IStackeable elemento_actual = this.get_stack_objetivos().get_index(i);
+            if (elemento_actual instanceof Meta) {
+                if(con_meta.contains((Meta)elemento_actual)){
+                    return true;
+                }
+            } else if (elemento_actual instanceof ConjuncionMeta) {
+                ConjuncionMeta other_conj = (ConjuncionMeta) elemento_actual;
+                if (con_meta.get_recursos().stream().anyMatch(other_conj::contains)) {
+                    return true;
+                }
             }
+
         }
         return false;
     }
 
-    @Override
-    public int hashCode() {
-        if (this.cached) {
-            return this.cache_hash;
+
+    public MyPair<Integer> get_hashses() {
+        if (this.recursos_hash == null) {
+            this.CalculateHashes();
         }
 
-        int hash = 1;
+        return new MyPair<>(this.recursos_hash, this.stack_hash);
+    }
+    private void CalculateHashes() {
+        long hash = 1;
         int counter = 1;
         for (int i: orden_check_recursos) {
             for (Meta m : this.estado_actual.get(i)) {
-                hash = (hash * m.hashCode()) + counter;
+                hash ^= (m.hashCode() + 0x9e3779b9L + (hash<<6) + (hash>>2));
+                hash ^= (counter + 0x9e3779b9L + (hash<<6) + (hash>>2));
                 counter++;
             }
         }
+        this.recursos_hash = (int)hash;
+        counter = 0;
+        hash = 1;
         for (int j = 0; j < this.stack_objetivos.size(); j++) {
-            hash = (hash * this.stack_objetivos.get_index(j).hashCode()) + counter;
+            hash ^= (this.stack_objetivos.get_index(j).hashCode() + 0x9e3779b9L + (hash<<6) + (hash>>2));
+            hash ^= (counter + 0x9e3779b9L + (hash<<6) + (hash>>2));
             counter++;
         }
+        this.stack_hash = (int)hash;
+        //this.cache_hash = Objects.hash(recursos_hash, stack_hash);
 
-        this.cache_hash = hash;
+    }
+
+    @Override
+    public int hashCode() {
+        if(this.cached)
+            return this.cache_hash;
+
+        long hash = 1;
+        int counter = 1;
+        for (int i: orden_check_recursos) {
+            for (Meta m : this.estado_actual.get(i)) {
+                hash ^= (m.hashCode() + 0x9e3779b9L + (hash<<6) + (hash>>2));
+                hash ^= (counter + 0x9e3779b9L + (hash<<6) + (hash>>2));
+                counter++;
+            }
+        }
+        //counter = 0;
+        for (int j = 0; j < this.stack_objetivos.size(); j++) {
+            //hash = Objects.hash(hash, this.stack_objetivos.get_index(j).hashCode(), counter);
+            hash ^= (this.stack_objetivos.get_index(j).hashCode() + 0x9e3779b9L + (hash<<6) + (hash>>2));
+            hash ^= (counter + 0x9e3779b9L + (hash<<6) + (hash>>2));
+            counter++;
+        }
+        hash = Objects.hash(hash, counter);
+        this.cache_hash = (int)hash;
         this.cached = true;
-        return hash;
+        return (int)hash;
     }
     @Override
     public boolean equals(Object obj) {
@@ -269,8 +335,8 @@ public class StripsState {
             return ;
         }
 
-        int MAX_X = 13;
-        int MAX_Y = 9;
+        int MAX_X = AgenteSuperInteligente.x_size;
+        int MAX_Y = AgenteSuperInteligente.y_size;
 
         char[][] map = new char[MAX_X][MAX_Y];
 
@@ -343,5 +409,24 @@ public class StripsState {
         } catch (Exception e) {
             System.err.println("Error al escribir");
         }
+    }
+
+    @Override
+    public int compareTo(StripsState other) {
+        int this_agujeros_tapados = 0;
+        int other_agujeros_tapados = 0;
+
+       this_agujeros_tapados = this.get_estado_actual_type(RecursosTypes.Gujero.Value).size();
+       other_agujeros_tapados = other.get_estado_actual_type(RecursosTypes.Gujero.Value).size();
+
+       if (this_agujeros_tapados > other_agujeros_tapados) {
+           return -1;
+       }
+       else if (this_agujeros_tapados == other_agujeros_tapados) {
+           return 0;
+       }  else {
+           return 1;
+       }
+        //return Integer.compare(other_agujeros_tapados, this_agujeros_tapados);
     }
 }

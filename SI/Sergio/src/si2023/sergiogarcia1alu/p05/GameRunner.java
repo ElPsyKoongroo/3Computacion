@@ -31,12 +31,12 @@ public class GameRunner {
         boolean visuals = false;
 //        String level1 = game.replace(gameName, gameName + "_lvl" + 4);
 //        ArcadeMachine.playOneGame(game, level1, null, 33);
-        for(int i = 0; i<2; i++) {
-            String level1 = game.replace(gameName, gameName + "_lvl" + i);
-            ArcadeMachine.runOneGame(game, level1, visuals, p0, null, 2, 0);
-        }
+//        for(int i = 0; i<3; i++) {
+//            String level1 = game.replace(gameName, gameName + "_lvl" + i);
+//            ArcadeMachine.runOneGame(game, level1, visuals, p0, null, 2, 0);
+//        }
 
-        String level1 = game.replace(gameName, gameName + "_lvl" + 4);
+        String level1 = game.replace(gameName, gameName + "_lvl" + 2);
         ArcadeMachine.runOneGame(game, level1, visuals, p0, null, 2, 0);
 
 //        final int totalTimes = 25;

@@ -114,11 +114,23 @@ public abstract class Operador implements IStackeable {
 
         return copia;
     }
-    
     public StripsState add_prerequisitos(StripsState estado) {
         StripsState copia = new StripsState(estado);
+
         copia.get_stack_objetivos().addAll(this.get_precondiciones());
         return copia;
+    }
+
+    public boolean hay_bucle(StripsState estado) {
+        for(IStackeable pre: this.get_precondiciones()){
+            if (pre.getClass() == ConjuncionMeta.class) {
+                if (estado.contiene_meta((ConjuncionMeta)pre)) return true;
+            }
+//            else if(pre instanceof Meta) {
+//                if (estado.contiene_meta((Meta)pre)) return true;
+//            }
+        }
+        return false;
     }
 
     public final boolean is_accion() {
@@ -126,6 +138,9 @@ public abstract class Operador implements IStackeable {
     }
 
     public abstract Operador clone();
+
+    @Override
+    public abstract int hashCode();
 
     /*
     @Override

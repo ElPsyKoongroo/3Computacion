@@ -136,7 +136,14 @@ public class Moverme extends Operador {
 
     @Override
     public int hashCode(){
-        return Objects.hash(this.jugador_pos.x, this.jugador_pos.y, this.next_bloque.x, this.next_bloque.y, 14);
+        long hash = 69;
+
+        hash ^= (long)(this.jugador_pos.x + 0x9e3779b9 + (hash<<6) + (hash>>2));
+        hash ^= (long)(this.jugador_pos.y + 0x9e3779b9 + (hash<<6) + (hash>>2));
+
+        hash ^= (long)(this.next_bloque.x + 0x9e3779b9 + (hash<<6) + (hash>>2));
+        hash ^= (long)(this.next_bloque.y + 0x9e3779b9 + (hash<<6) + (hash>>2));
+        return (int)hash;
     }
 
     @Override

@@ -15,9 +15,14 @@ public class Gujero extends Meta implements Comparable<Gujero> {
     }
     @Override
     protected int calcule_hash() {
-        this.cached_hash = Objects.hash(RecursosTypes.Gujero.Value, posicion.x, posicion.y);
+        long hash = RecursosTypes.Gujero.Value;
+
+        hash ^= (long)(this.posicion.x + 0x9e3779b9 + (hash<<6) + (hash>>2));
+        hash ^= (long)(this.posicion.y + 0x9e3779b9 + (hash<<6) + (hash>>2));
+
+        this.cached_hash = (int)hash;
         this.cached = true;
-        return cached_hash;
+        return this.cached_hash;
     }
 
     @Override

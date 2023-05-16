@@ -15,7 +15,12 @@ public class BloqueLibre extends Meta implements Comparable<BloqueLibre>{
 
     @Override
     protected int calcule_hash() {
-        this.cached_hash = Objects.hash(RecursosTypes.BloqueLibre.Value, posicion.x, posicion.y);
+        long hash = RecursosTypes.BloqueLibre.Value;
+
+        hash ^= (long)(this.posicion.x + 0x9e3779b9 + (hash<<6) + (hash>>2));
+        hash ^= (long)(this.posicion.y + 0x9e3779b9 + (hash<<6) + (hash>>2));
+
+        this.cached_hash = (int)hash;
         this.cached = true;
         return this.cached_hash;
     }

@@ -31,10 +31,16 @@ public class CogerLlave extends Operador {
         this.bloque_llave = bloque_llave;
 
         this.precondiciones.add(new Llave(this.bloque_llave));
-        this.precondiciones.add(new BloqueLibre(this.jugador_pos));
-        this.precondiciones.add(new Jugador(this.jugador_pos));
 
+        ConjuncionMeta cm = new ConjuncionMeta(
+            new BloqueLibre(this.jugador_pos),
+            new Jugador(this.jugador_pos)
+        );
 
+//        this.precondiciones.add(new BloqueLibre(this.jugador_pos));
+//        this.precondiciones.add(new Jugador(this.jugador_pos));
+
+        this.precondiciones.add(cm);
 
         this.lista_adicion.add(new Jugador(this.bloque_llave));
         this.lista_adicion.add(new BloqueLibre(this.bloque_llave));
@@ -105,7 +111,14 @@ public class CogerLlave extends Operador {
 
     @Override
     public int hashCode(){
-        return Objects.hash(this.jugador_pos.x, this.jugador_pos.y, this.bloque_llave.x, this.bloque_llave.y, 7);
+        long hash = 331;
+
+        hash ^= (long)(this.jugador_pos.x + 0x9e3779b9 + (hash<<6) + (hash>>2));
+        hash ^= (long)(this.jugador_pos.y + 0x9e3779b9 + (hash<<6) + (hash>>2));
+
+        hash ^= (long)(this.bloque_llave.x + 0x9e3779b9 + (hash<<6) + (hash>>2));
+        hash ^= (long)(this.bloque_llave.y + 0x9e3779b9 + (hash<<6) + (hash>>2));
+        return (int)hash;
     }
 
 
