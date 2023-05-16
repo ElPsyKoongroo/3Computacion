@@ -2,7 +2,6 @@ function extension = funcion_calcula_extension_1objeto(Ib)
     Ib_centrada = Funcion_Centra_Objeto(Ib);
     
     regionprops(Ib_centrada, 'Extent');
-
     
 
     ang = 0:5:355;
@@ -24,6 +23,5 @@ function extension = funcion_calcula_extension_1objeto(Ib)
     end
 
     extension = max(extensiones);
-
 end
 

@@ -31,8 +31,8 @@
 |     |--> Funciones
 |     |
 |     |--> Paso1_SeleccionDescriptores.m
-|     |--> Paso2_clasificadorQDA_3clases.m
-|     +
+|     +--> Paso2_clasificadorQDA_3clases.m
+|     
 |
 |--> 02_FaseEntrenamiento_CASO3_knn_3clases
 |     |
@@ -48,8 +48,8 @@
 |     |     |
 |     |     |--> DatosGenerados
 |     |     |--> Funciones
-|     |     |--> Paso1_2_SeleccionDescriptores_GeneracionDatosClasificador.m
-|     |     +
+|     |     +--> Paso1_2_SeleccionDescriptores_GeneracionDatosClasificador.m
+|     |     
 |     |
 |     | 
 |     +--> 02_LDA_Circulos_Triangulos
