@@ -12,11 +12,14 @@ addpath("../../Funciones/");
 addpath("../ImagenesPractica5/Test/");
 
 numImagenes = 2;
+vecinos_mas_cercanos = 5;
 
 [espacio_ccas, j_valor] = funcion_selecciona_vector_ccas(XTrain, YTrain, 5);
 
 XTrain_oi = XTrain(:, espacio_ccas);
 XTest_oi = XTest(:, espacio_ccas);
+
+YTest = funcion_knn(XTest_oi, XTrain_oi, YTrain, vecinos_mas_cercanos);
 
 % XTest = [];
 % 
