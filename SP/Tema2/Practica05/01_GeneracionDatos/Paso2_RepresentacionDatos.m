@@ -55,3 +55,5 @@ for j=1:23
     title(nombreClases{i})
     end
 end
+
+close all

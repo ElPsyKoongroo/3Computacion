@@ -3,6 +3,7 @@ addpath("../../Funciones/");
 load("../01_GeneracionDatos/DatosGenerados/conjunto_datos_estandarizados.mat");
 load("../01_GeneracionDatos/DatosGenerados/datos_estandarizacion.mat");
 load("DatosGenerados/DatosTestNormalizados.mat")
+load("../01_GeneracionDatos/DatosGenerados/nombres_problema.mat");
 XTrain = Z;
 XTest = ZTest;
 YTrain = Y;
@@ -30,7 +31,8 @@ YTest = funcion_knn(XTest_oi, XTrain_oi, YTrain, vecinos_mas_cercanos);
 %     I = imread(nombre_imagen);
 % 
 %     Ib = I < 255*graythresh(I);
-%     Ib_filtrada = funcion_elimina_regiones_ruidosas(Ib);
+%     % Ib_filtrada = funcion_elimina_regiones_ruidosas(Ib);
+%     Ib_filtrada = Ib;
 %     [IEtiq, N] = bwlabel(Ib_filtrada);
 %     
 %     XImagen = funcion_calcula_descriptores_objetos(IEtiq, N);
@@ -52,4 +54,4 @@ YTest = funcion_knn(XTest_oi, XTrain_oi, YTrain, vecinos_mas_cercanos);
 %     ZTest(:, i) = (XTest(:, i) - mu_i) / sigma_i;
 % end
 % ZTest(:, num_descriptores) = XTest(:, num_descriptores);
-save("DatosGenerados/DatosTestNormalizados.mat", "ZTest");
+% save("DatosGenerados/DatosTestNormalizados.mat", "ZTest");

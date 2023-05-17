@@ -35,7 +35,7 @@ end
 nombresProblema.clases = nombre_clases;
 nombresProblema.descriptores = nombre_descriptores;
 nombresProblema.simbolos = simbolos_clases;
-nombresProblema.num_datos = num_clases;
+nombresProblema.num_clases = num_clases;
 nombresProblema.codif_clases = codif_clases;
 
 % Comentado para que no me sobreescriba los datos

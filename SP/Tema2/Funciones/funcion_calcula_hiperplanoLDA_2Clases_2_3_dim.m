@@ -24,11 +24,11 @@ function [d1, d2, d12, coeficientes_d12] = funcion_calcula_hiperplanoLDA_2Clases
 
     M1 = medias(1,:)';
     pi1 = prob_priori(1);
-	d1 = expand( -0.5*(Xsym-M1)' * pinv(m_cov)*(Xsym-M1) + log(pi1));
+	d1 = expand( -0.5*(Xsym-M1)' * inv(m_cov)*(Xsym-M1) + log(pi1));
 	
 	M2 = medias(2,:)';
     pi2 = prob_priori(2);
-	d2 = expand( -0.5*(Xsym-M2)' * pinv(m_cov)*(Xsym-M2) + log(pi2));
+	d2 = expand( -0.5*(Xsym-M2)' * inv(m_cov)*(Xsym-M2) + log(pi2));
 	
 	d12 = d1-d2;
     
@@ -43,7 +43,6 @@ function [d1, d2, d12, coeficientes_d12] = funcion_calcula_hiperplanoLDA_2Clases
 		x1 = 0; x2 = 1; x3 = 0; B = eval(d12);
 		x1 = 1; x2 = 0; x3 = 0; A = eval(d12);		
 		coeficientes_d12 = [A, B, C, D];
-		
 	end
 
 end

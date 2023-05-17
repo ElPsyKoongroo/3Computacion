@@ -5,7 +5,7 @@ function [Ib_corregida]= funcion_elimina_regiones_ruidosas(Ib)
     areas = cat(1, stats.Area);
     
     [rows, cols, ~] = size(Ib);
-    filtro_por_pixel = round((rows*cols)* 0.001);
+    filtro_por_pixel = round((rows*cols)* (0.1/100));
     filtro_por_area5 = round(max(areas)/5);
 
     mejor_filtro = 0;

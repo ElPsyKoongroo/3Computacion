@@ -7,7 +7,7 @@ function [vector_medias, matrices_covarianzas, probabilidad_priori] = funcion_aj
     % distintos de Y).
     
     [num_muestras, num_descripores] = size(X);
-    codif_clases                    = unique(Y, "rows", "stable");
+    codif_clases                    = unique(Y);
     num_clases                      = length(codif_clases);
     
     %num_muestras_clase_k = zeros(num_clases, 1);
@@ -16,7 +16,7 @@ function [vector_medias, matrices_covarianzas, probabilidad_priori] = funcion_aj
     probabilidad_priori = zeros(num_clases, 1);
     
     for i = 1:num_clases
-        % Calculo nk
+        % Calculo numero de muestras de la clase k
         bin = Y == codif_clases(i);
         num_muestras_clase_k = sum(bin);
     
