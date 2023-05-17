@@ -1,6 +1,7 @@
 clear, clc;
 addpath("../../Funciones/");
 load("../01_GeneracionDatos/DatosGenerados/conjunto_datos_estandarizados.mat");
+load("../01_GeneracionDatos/DatosGenerados/datos_estandarizacion.mat");
 load("DatosGenerados/DatosTestNormalizados.mat")
 XTrain = Z;
 XTest = ZTest;
@@ -21,6 +22,7 @@ XTest_oi = XTest(:, espacio_ccas);
 
 YTest = funcion_knn(XTest_oi, XTrain_oi, YTrain, vecinos_mas_cercanos);
 
+% load("DatosGenerados\DatosTest.mat")
 % XTest = [];
 % 
 % for imagen = 1:numImagenes
@@ -38,15 +40,10 @@ YTest = funcion_knn(XTest_oi, XTrain_oi, YTrain, vecinos_mas_cercanos);
 
 %save("DatosGenerados/DatosTest.mat", "XTest");
 
-% medias = mean(XTest);
-% desviaciones = std(XTest);
-% 
-% %Cambiar Euler
-% desviaciones(23) = eps;
-% 
+
+%% Estandarizacion de XTest
+
 % [rows, num_descriptores] = size(XTest);
-% 
-% %% Estandarizacion de X
 % 
 % ZTest = zeros(size(XTest));
 % for i = 1:(num_descriptores-1)
@@ -55,4 +52,4 @@ YTest = funcion_knn(XTest_oi, XTrain_oi, YTrain, vecinos_mas_cercanos);
 %     ZTest(:, i) = (XTest(:, i) - mu_i) / sigma_i;
 % end
 % ZTest(:, num_descriptores) = XTest(:, num_descriptores);
-% save("DatosGenerados/DatosTestNormalizados.mat", "ZTest");
+save("DatosGenerados/DatosTestNormalizados.mat", "ZTest");

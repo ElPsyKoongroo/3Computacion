@@ -22,5 +22,6 @@ funcion_representa_datos(XoI, YoI, 1:dim, nombres_problema_oi);
 hold on;
 surf(x1,x2, x3), legend([nombres_problema_oi.clases "d12 LDA"]);
 
+save("DatosGenerados/coeficientes_LDA.mat", "d12", "coeficientes");
 
 rmpath("../../../Funciones/");

@@ -9,4 +9,5 @@ load("DatosGenerados/espacio_ccas_circulos_cuadrados_triangulos.mat")
     prob_priori, nombres_problema_oi.codif);
 
 
+
 rmpath("../../../Funciones/");
