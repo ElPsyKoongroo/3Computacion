@@ -1,6 +1,6 @@
 clear all, clc
 
-addpath("../../Funciones/");
+addpath("../Funciones/");
 addpath("../ImagenesPractica5/Entrenamiento/")
 
 nombre_clases        = {'Circulo', 'Cuadrado', 'Triangulo'};

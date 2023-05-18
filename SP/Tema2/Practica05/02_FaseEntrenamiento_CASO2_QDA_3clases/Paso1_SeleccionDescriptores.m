@@ -2,7 +2,7 @@ clear, clc;
 
 load("../01_GeneracionDatos/DatosGenerados/conjunto_datos_estandarizados.mat");
 load("../01_GeneracionDatos/DatosGenerados/nombres_problema.mat");
-addpath("../../Funciones/");
+addpath("../Funciones/");
 
 X = Z;
 clear Z;

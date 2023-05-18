@@ -1,5 +1,5 @@
 clear, clc;
-addpath("../../Funciones/");
+addpath("../Funciones/");
 load("../01_GeneracionDatos/DatosGenerados/conjunto_datos_estandarizados.mat");
 load("../01_GeneracionDatos/DatosGenerados/datos_estandarizacion.mat");
 load("DatosGenerados/DatosTestNormalizados.mat")

@@ -1,6 +1,6 @@
 clear, clc;
 
-addpath("../../../Funciones/");
+addpath("../../Funciones/");
 load("DatosGenerados/espacio_ccas_cuadrados_triangulos.mat")
 
 [d1, d2, d12, coeficientes] = funcion_calcula_hiperplanoLDA_2Clases_2_3_dim(XoI, YoI);

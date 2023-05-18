@@ -1,6 +1,6 @@
 clear all, clc
 
-addpath("Funciones/");
+addpath("../Funciones/");
 load("DatosGenerados/conjunto_datos.mat"); 
 load("DatosGenerados/nombres_problema.mat")
 

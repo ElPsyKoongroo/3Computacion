@@ -1,6 +1,6 @@
 clear, clc;
 
-addpath("../../Funciones/");
+addpath("../Funciones/");
 load("DatosGenerados/espacio_ccas_circulos_cuadrados_triangulos.mat")
 
 [medias, m_covarianza, prob_priori] = funcion_ajusta_QDA(XoI, YoI);

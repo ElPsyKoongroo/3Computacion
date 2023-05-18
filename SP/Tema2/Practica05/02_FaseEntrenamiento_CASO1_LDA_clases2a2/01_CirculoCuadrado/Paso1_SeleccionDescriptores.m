@@ -2,11 +2,10 @@ clear all, clc;
 
 load("../../01_GeneracionDatos/DatosGenerados/conjunto_datos_estandarizados.mat");
 load("../../01_GeneracionDatos/DatosGenerados/nombres_problema.mat");
-addpath("../../../Funciones/");
+addpath("../../Funciones/");
 
 X = Z;
 clear Z;
-
 
 %% Circulos vs Cuadrados
 codif_clases = unique(Y);
