@@ -22,7 +22,7 @@ XTrain_oi = XTrain(:, espacio_ccas);
 XTest_oi = XTest(:, espacio_ccas);
 
 YTest = funcion_knn(XTest_oi, XTrain_oi, YTrain, vecinos_mas_cercanos);
-
+save("DatosGenerados/DatosKNN");
 % load("DatosGenerados\DatosTest.mat")
 % XTest = [];
 % 

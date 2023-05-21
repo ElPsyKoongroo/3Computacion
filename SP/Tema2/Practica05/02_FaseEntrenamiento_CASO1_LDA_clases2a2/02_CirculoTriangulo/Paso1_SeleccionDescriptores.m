@@ -1,4 +1,4 @@
-clear all, clc;
+clear, clc;
 
 load("../../01_GeneracionDatos/DatosGenerados/conjunto_datos_estandarizados.mat");
 load("../../01_GeneracionDatos/DatosGenerados/nombres_problema.mat");
@@ -32,5 +32,5 @@ funcion_representa_datos(XoI, YoI, 1:dim, nombres_problema_oi);
 
 
 save("DatosGenerados/espacio_ccas_circulos_triangulos.mat", "espacio_ccas_j", "j_valor", "XoI", "YoI", "nombres_problema_oi");
-rmpath("../../../Funciones/")
+rmpath("../../Funciones/")
 

@@ -9,5 +9,5 @@ load("DatosGenerados/espacio_ccas_circulos_cuadrados_triangulos.mat")
     prob_priori, nombres_problema_oi.codif);
 
 
-
-rmpath("../../../Funciones/");
+save("DatosGenerados/datos_QDA.mat", "medias", "m_covarianza", "prob_priori");
+rmpath("../Funciones/");

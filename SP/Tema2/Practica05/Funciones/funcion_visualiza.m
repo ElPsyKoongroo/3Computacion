@@ -1,7 +1,14 @@
 function [Io] = funcion_visualiza(Ii, Ib, Color, flagRepresenta)
     % Comprobar que Ii es de intensidad o RGB mirando las dimensiones
     % y despues construir la imagen
-    Io = Ii;
+    [~, ~, dim] = size(Ii);
+    if dim == 2
+        Io = repmat(Ii, 1, 1, 3);
+    else 
+        Io = Ii;
+    end
+
+    %Io = Ii;
     [n_rows, n_cols] = size(Ib);
 
     if nargin == 3
@@ -14,11 +21,11 @@ function [Io] = funcion_visualiza(Ii, Ib, Color, flagRepresenta)
     B = zeros(n_rows, n_cols);
 
 
-    R(Ib) = Color(1);
-    G(Ib) = Color(2);
-    B(Ib) = Color(3);
+    R(Ib) = uint8(Color(1));
+    G(Ib) = uint8(Color(2));
+    B(Ib) = uint8(Color(3));
 
-    Io = Io + cat(3,R,G,B);    
+    Io = double(Io) + cat(3,R,G,B);    
 
     if flagRepresenta
         imshow(uint8(Io));

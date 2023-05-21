@@ -29,13 +29,9 @@ function [d1, d2, d12, coeficientes_d12] = funcion_calcula_hiperplanoLDA_2Clases
     pi2 = prob_priori(2);
 
 
-    if pi1 == pi2
-        d1 = expand( -0.5*(Xsym-M1)' * inv(m_cov)*(Xsym-M1));
-	    d2 = expand( -0.5*(Xsym-M2)' * inv(m_cov)*(Xsym-M2));
-    else
-        d1 = expand( -0.5*(Xsym-M1)' * inv(m_cov)*(Xsym-M1) + log(pi1));
-	    d2 = expand( -0.5*(Xsym-M2)' * inv(m_cov)*(Xsym-M2) + log(pi2));
-    end
+    d1 = expand( -0.5*(Xsym-M1)' * inv(m_cov)*(Xsym-M1) + log(pi1));
+    d2 = expand( -0.5*(Xsym-M2)' * inv(m_cov)*(Xsym-M2) + log(pi2));
+    
 
 	
 	
