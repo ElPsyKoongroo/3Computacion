@@ -4,11 +4,11 @@
 #include <glm/glm.hpp>
 
 //
-// CLASE: CGShaderProgram
+// CLASE: ShaderProgram
 //
 // DESCRIPCIÓN: Clase que desarrolla un programa GLSL
 // 
-class CGShaderProgram {
+class ShaderProgram {
 private:
 	GLuint program;
 	GLuint vertexShader;
@@ -19,8 +19,8 @@ private:
 	char** GetShaderCodeFromResource(int idr);
 
 public:
-	CGShaderProgram();
-	~CGShaderProgram();
+	ShaderProgram();
+	~ShaderProgram();
 	GLboolean IsLinked();
 	char* GetLog();
 	GLvoid Use();

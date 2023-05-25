@@ -13,8 +13,7 @@ Clases:
 	Scene		-> la escena con todas las cosas -> coches, circuito, luz, camaras
 	Luz			-> no se ticher no he estudiao todavia
 	Material	-> eso
-	Circuito	-> circuito + suelo
-
+	Circuito	-> circuito + suelo	
 */
 
 auto main() -> int {
@@ -27,5 +26,6 @@ auto main() -> int {
 		std::cerr << e.what() << std::endl;
 		return EXIT_FAILURE;
 	}
+
 	return EXIT_SUCCESS;
 }
