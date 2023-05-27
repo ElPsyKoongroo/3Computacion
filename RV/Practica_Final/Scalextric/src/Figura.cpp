@@ -1,7 +1,5 @@
 #include "Figura.h"
-#include <GL/glew.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+
 
 Figura::~Figura()
 {
@@ -46,11 +44,21 @@ void Figura::InitBuffers()
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 }
 
-void Figura::Draw(ShaderProgram* program, glm::mat4 transform)
+void Figura::Draw(ShaderProgram* program, glm::mat4 projection, glm::mat4 view)
 {
-	glm::mat4 matrix = transform;
-	program->SetUniformMatrix4("Transform", transform);
+	glm::mat4 mvp = projection * view * location;
+	program->SetUniformMatrix4("MVP", mvp);
 
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, numFaces * 3, GL_UNSIGNED_SHORT, NULL);
+}
+
+void Figura::Translate(glm::vec3 t)
+{
+	location = glm::translate(location, t);
+}
+
+void Figura::Rotate(GLfloat angle, glm::vec3 axis)
+{
+	location = glm::rotate(location, glm::radians(angle), axis);
 }

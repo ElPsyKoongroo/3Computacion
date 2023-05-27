@@ -6,19 +6,15 @@
 #include <ShaderProgram.h>
 #include <Figura.h>
 #include <Curva.h>
+#include <Camara.h>
+#include <Escena.h>
+#include <Recta.h>
 #include <iostream>
 
 class Model {
 	ShaderProgram* program;
-	Figura* fig0;
-
-	GLfloat xAngle;
-	GLfloat yAngle;
-	int figure;
-	GLint p;
-	GLint m;
-	GLfloat r0;
-	GLfloat r1;
+	Camara* camera;
+	Escena* scene;
 
 	glm::mat4 projection;
 public:
@@ -30,5 +26,4 @@ public:
 	void mouse_button(int button, int action);
 	void mouse_move(double xpos, double ypos);
 	void resize(int w, int h);
-	void changeCurve(int opc, GLint par, GLfloat parf);
 };

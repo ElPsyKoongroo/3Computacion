@@ -144,17 +144,23 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Aplicacion.cpp" />
+    <ClCompile Include="src\Camara.cpp" />
     <ClCompile Include="src\Curva.cpp" />
+    <ClCompile Include="src\Escena.cpp" />
     <ClCompile Include="src\Figura.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Model.cpp" />
+    <ClCompile Include="src\Recta.cpp" />
     <ClCompile Include="src\ShaderProgram.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\Aplicacion.h" />
+    <ClInclude Include="inc\Camara.h" />
     <ClInclude Include="inc\Curva.h" />
+    <ClInclude Include="inc\Escena.h" />
     <ClInclude Include="inc\Figura.h" />
     <ClInclude Include="inc\Model.h" />
+    <ClInclude Include="inc\Recta.h" />
     <ClInclude Include="inc\resource.h" />
     <ClInclude Include="inc\ShaderProgram.h" />
   </ItemGroup>

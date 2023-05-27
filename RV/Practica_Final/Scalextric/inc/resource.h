@@ -1,14 +1,15 @@
 const char* VertexShader = R""""(
 #version 400
 
- in vec3 VertexPosition;
+in vec3 VertexPosition;
 
- uniform mat4 Transform;
+uniform mat4 MVP;
 
- void main()
- {
-   gl_Position = Transform * vec4(VertexPosition, 1.0);
- }
+void main()
+{
+	gl_Position = MVP * vec4(VertexPosition, 1.0);
+}
+
 )"""";
 
 const char* FragmentShader = R""""(
