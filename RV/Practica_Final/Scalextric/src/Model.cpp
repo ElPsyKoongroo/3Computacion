@@ -15,10 +15,11 @@ void Model::initialize(int w, int h)
 
     // Crea la cámara
     camera = new Camara();
-    camera->SetPosition(0.0f, 5.0f, 150.0f);
+    camera->SetPosition(0.0f, 5.0f, 15.0f);
 
     // Crea la escena
-    scene = new Escena();
+    Circuito Monaco;
+    scene = new Escena(Monaco);
 
 
     // Asigna el viewport y el clipping volume
@@ -112,33 +113,29 @@ void Model::key_pressed(int key)
         case GLFW_KEY_S:
             camera->SetMoveStep(0.0f);
             break;
-        case GLFW_KEY_RIGHT_BRACKET:
         case GLFW_KEY_KP_ADD:
-            camera->SetMoveStep(camera->GetMoveStep() + 0.1f);
+            camera->SetMoveStep(camera->GetMoveStep() + 0.5f);
             break;
-        case GLFW_KEY_MINUS:
+        case GLFW_KEY_B:
+            camera->MoveBack();
+            break;
         case GLFW_KEY_KP_SUBTRACT:
-            camera->SetMoveStep(camera->GetMoveStep() - 0.1f);
+            camera->SetMoveStep(camera->GetMoveStep() - 0.5f);
+            break;
+        case GLFW_KEY_F:
+            camera->MoveFront();
             break;
         case GLFW_KEY_Q:
-            camera->SetMoveStep(0.1f);
             camera->MoveUp();
-            camera->SetMoveStep(0.0f);
             break;
         case GLFW_KEY_A:
-            camera->SetMoveStep(0.1f);
             camera->MoveDown();
-            camera->SetMoveStep(0.0f);
             break;
         case GLFW_KEY_O:
-            camera->SetMoveStep(0.1f);
             camera->MoveLeft();
-            camera->SetMoveStep(0.0f);
             break;
         case GLFW_KEY_P:
-            camera->SetMoveStep(0.1f);
             camera->MoveRight();
-            camera->SetMoveStep(0.0f);
             break;
         case GLFW_KEY_K:
             camera->TurnLeft();

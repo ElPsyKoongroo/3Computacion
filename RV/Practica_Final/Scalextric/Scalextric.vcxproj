@@ -116,7 +116,7 @@
       <AdditionalIncludeDirectories>.\inc;..\Vendor\GLFW\include;..\Vendor\GLM\include;..\Vendor\GLEW\include;..\Vendor\FreeImage\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\Vendor\FreeImage\lib;..\Vendor\GLEW\lib\Release\;..\Vendor\GLFW\lib-vc2019;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glew32.lib;glfw3.lib;opengl32.lib;FreeImage.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -151,6 +151,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Model.cpp" />
     <ClCompile Include="src\Recta.cpp" />
+    <ClCompile Include="src\Circuito.cpp" />
     <ClCompile Include="src\ShaderProgram.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -162,6 +163,7 @@
     <ClInclude Include="inc\Model.h" />
     <ClInclude Include="inc\Recta.h" />
     <ClInclude Include="inc\resource.h" />
+    <ClInclude Include="inc\Circuito.h" />
     <ClInclude Include="inc\ShaderProgram.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
