@@ -7,23 +7,6 @@
 #include "Recta.h"
 #include "Curva.h"
 
-/*
-    
-    Tipo:
-        Curva
-        Recta
-
-    Posicion:
-        Inicio
-        Fin
-        Angulo
-
-    [(Tipo, Posicion)]
-
-
-*/
-
-
 Escena::Escena()
 {
 
@@ -40,17 +23,18 @@ Escena::Escena()
 
 
 Escena::Escena(Circuito c) {
+    CreateTextures();
     anchura = 1.0;
     figuras = new Figura*[c.instrucciones.size()];
     numFiguras = c.instrucciones.size();
   
     for(int i = 0; i < numFiguras; i++) {
         FiguraData& variantActual = c.instrucciones[i];
-
         switch (variantActual.index()) {
             case 0: {   // RectaData
                 RectaData datosFiguraActual = std::get<RectaData>(variantActual);
                 figuras[i] = new Recta(datosFiguraActual.Size);
+                figuras[i]->SetMaterial(&(materiales[0]));
                 figuras[i]->Translate(datosFiguraActual.PosIni);
                 figuras[i]->Rotate(datosFiguraActual.Rot.first, datosFiguraActual.Rot.second);
                 break;
@@ -59,18 +43,18 @@ Escena::Escena(Circuito c) {
             case 1:  {  // CurvaData
                 CurvaData datosFiguraActual = std::get<CurvaData>(variantActual);
                 figuras[i] = new Curva(datosFiguraActual.Angulo);
+                figuras[i]->SetMaterial(&(materiales[0]));
 
                 figuras[i]->Translate(datosFiguraActual.PosIni);
 
                 figuras[i]->Rotate(datosFiguraActual.Rot.first, datosFiguraActual.Rot.second);
+                
                 if (datosFiguraActual.isClockwise) {
                     figuras[i]->Translate(glm::vec3(3.5,0,0));
                     figuras[i]->Rotate((180.f - datosFiguraActual.Angulo), glm::vec3(0,0,1));
                 }
                 else
                     figuras[i]->Translate(glm::vec3(-3.5,0,0));
-                
-     
                 break;
             }
         }
@@ -94,7 +78,31 @@ Escena::~Escena()
 void Escena::Draw(ShaderProgram* program, glm::mat4 proj, glm::mat4 view)
 {
     // ground->Draw(program, proj, view);
+    light->SetUniforms(program);
+
     for (size_t i = 0; i < numFiguras; ++i) {
         figuras[i]->Draw(program, proj, view);
     }
+}
+
+void Escena::CreateTextures()
+{
+    glm::vec3 Ldir = glm::vec3(0.7f, 0.3f, -1.0f);
+    Ldir = glm::normalize(Ldir);
+    light = new Light();
+    light->SetLightDirection(Ldir);
+    light->SetAmbientLight(glm::vec3(0.2f, 0.2f, 0.2f));
+    light->SetDifusseLight(glm::vec3(0.8f, 0.8f, 0.8f));
+    light->SetSpecularLight(glm::vec3(1.0f, 1.0f, 1.0f));
+
+    Material m0;
+    m0.SetAmbientReflect(0.5f, 0.5f, 0.5f);
+    m0.SetDifusseReflect(0.5f, 0.5f, 0.5f);
+    m0.SetSpecularReflect(0.8f, 0.8f, 0.8f);
+    m0.SetShininess(16.0f);
+    m0.InitTexture("textures/TexturaCarretera2.png");
+
+    materiales.push_back(m0);
+
+
 }

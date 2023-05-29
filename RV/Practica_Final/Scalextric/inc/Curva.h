@@ -12,5 +12,4 @@
 class Curva : public Figura {
 public:
 	Curva(double angle);
-	Curva(GLint p, GLint m, GLfloat r0, GLfloat r1, GLfloat startAngle, GLfloat endAngle);
 };

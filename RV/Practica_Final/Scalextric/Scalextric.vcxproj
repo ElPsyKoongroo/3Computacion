@@ -148,6 +148,7 @@
     <ClCompile Include="src\Curva.cpp" />
     <ClCompile Include="src\Escena.cpp" />
     <ClCompile Include="src\Figura.cpp" />
+    <ClCompile Include="src\Light.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Material.cpp" />
     <ClCompile Include="src\Model.cpp" />
@@ -161,6 +162,7 @@
     <ClInclude Include="inc\Curva.h" />
     <ClInclude Include="inc\Escena.h" />
     <ClInclude Include="inc\Figura.h" />
+    <ClInclude Include="inc\Light.h" />
     <ClInclude Include="inc\Material.h" />
     <ClInclude Include="inc\Model.h" />
     <ClInclude Include="inc\Recta.h" />
