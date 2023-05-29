@@ -24,8 +24,14 @@ Curva::Curva(double angle)
     vertices = new GLfloat[numVertices * 3];
     indexes = new GLushort[numFaces * 3];
 
+    normals = new GLfloat[numVertices * 3];
+    textures = new GLfloat[numVertices * 2];
+
     int verticesIndex = 0;
     int indexesIndex = 0;
+
+    int normalsIndex = 0;
+    int texturesIndex = 0;
 
     double angle_step = (angle) / m;
     for (int i = 0; i <= p; i++)
@@ -40,6 +46,15 @@ Curva::Curva(double angle)
             vertices[verticesIndex + 1] = mSin * r;
             vertices[verticesIndex + 2] = 0.0f;
             verticesIndex += 3;
+
+            normals[normalsIndex] =  0.0f;
+            normals[normalsIndex + 1] = 0.0f;
+            normals[normalsIndex + 2] = 1.0f;
+            normalsIndex += 3;
+
+            textures[texturesIndex] = ((GLfloat)j) / m;
+            textures[texturesIndex + 1] = ((GLfloat)i) / p;
+            texturesIndex += 2;
         }
     }
 

@@ -48,6 +48,7 @@ Escena::Escena(Circuito c) {
                 figuras[i]->Translate(datosFiguraActual.PosIni);
 
                 figuras[i]->Rotate(datosFiguraActual.Rot.first, datosFiguraActual.Rot.second);
+
                 
                 if (datosFiguraActual.isClockwise) {
                     figuras[i]->Translate(glm::vec3(3.5,0,0));
@@ -55,6 +56,8 @@ Escena::Escena(Circuito c) {
                 }
                 else
                     figuras[i]->Translate(glm::vec3(-3.5,0,0));
+
+
                 break;
             }
         }
