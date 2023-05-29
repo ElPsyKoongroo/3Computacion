@@ -1,15 +1,16 @@
 #include "Recta.h"
 
-Recta::Recta(GLfloat width, GLfloat heigth)
+Recta::Recta(GLfloat heigth)
 {
+    GLfloat width = 2.0f;
     numFaces = 2; // Number of faces
     numVertices = 4; // Number of vertices
 
     GLfloat p_vertices[4][3] = {
-       { +width, +heigth, +width }, // A0 // Positive Z
-       { -width, +heigth, +width }, // B0 
-       { -width, -heigth, +width }, // C0 
-       { +width, -heigth, +width }, // D0 
+       { -width/2, 0, 0.0 },        //DL
+       { +width/2, 0, 0.0 },        //DR
+       { +width/2, heigth, 0.0 },   //UR
+       { -width/2, heigth, 0.0 }    //UL
     };
 
     GLushort p_indexes[2][3] = { // Array of indexes

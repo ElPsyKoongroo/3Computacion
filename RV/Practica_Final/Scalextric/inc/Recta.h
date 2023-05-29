@@ -17,7 +17,7 @@ private:
 	GLuint VAO;
 
 public:
-	Recta(GLfloat width, GLfloat heigth);
+	Recta(GLfloat heigth);
 	~Recta();
 	void Draw(ShaderProgram* program, GLfloat posX, GLfloat posY, GLfloat size);
 };

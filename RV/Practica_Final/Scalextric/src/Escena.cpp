@@ -45,28 +45,34 @@ Escena::Escena(Circuito c) {
     numFiguras = c.instrucciones.size();
   
     for(int i = 0; i < numFiguras; i++) {
-        Figurita& datosFiguraActual = c.instrucciones[i];
+        FiguraData& variantActual = c.instrucciones[i];
 
-        if (datosFiguraActual.Tipo == TipoFigura::Recta) {
-            GLfloat altura = datosFiguraActual.PosFin.y - datosFiguraActual.PosIni.y;
-            figuras[i] = new Recta(this->anchura, altura);
-            figuras[i]->Translate(datosFiguraActual.PosIni);
-        } else {
+        switch (variantActual.index()) {
+            case 0: {   // RectaData
+                RectaData datosFiguraActual = std::get<RectaData>(variantActual);
+                figuras[i] = new Recta(datosFiguraActual.Size);
+                figuras[i]->Translate(datosFiguraActual.PosIni);
+                figuras[i]->Rotate(datosFiguraActual.Rot.first, datosFiguraActual.Rot.second);
+                break;
+            }
+            
+            case 1:  {  // CurvaData
+                CurvaData datosFiguraActual = std::get<CurvaData>(variantActual);
+                figuras[i] = new Curva(datosFiguraActual.Angulo);
 
-            GLfloat dx = datosFiguraActual.PosFin.x - datosFiguraActual.PosIni.x;
-            GLfloat dy = datosFiguraActual.PosFin.y - datosFiguraActual.PosIni.y;
+                figuras[i]->Translate(datosFiguraActual.PosIni);
 
-            double distancia = std::sqrt(dx * dx + dy * dy);
-
-            double radio = distancia / 2;
-
-            double angulo = 0;
-
-            if (dy == 0) { angulo = 180.0; }
-            else { angulo = std::atan2(dy, dx); angulo = glm::degrees(angulo); }
-
-            figuras[i] = new Curva(10, 33, 3 , 5 , angulo);
-            figuras[i]->Translate(datosFiguraActual.PosIni + glm::vec3(3.7,-0.1,0));
+                figuras[i]->Rotate(datosFiguraActual.Rot.first, datosFiguraActual.Rot.second);
+                if (datosFiguraActual.isClockwise) {
+                    figuras[i]->Translate(glm::vec3(3.5,0,0));
+                    figuras[i]->Rotate((180.f - datosFiguraActual.Angulo), glm::vec3(0,0,1));
+                }
+                else
+                    figuras[i]->Translate(glm::vec3(-3.5,0,0));
+                
+     
+                break;
+            }
         }
     }
 }

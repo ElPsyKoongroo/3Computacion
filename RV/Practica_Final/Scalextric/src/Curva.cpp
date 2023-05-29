@@ -13,8 +13,12 @@ Cosos:
     angle: angulo del arco del circulo
 
 */
-Curva::Curva(GLint p, GLint m, GLfloat r0, GLfloat r1, double angle)
+Curva::Curva(double angle)
 {
+    GLint p = 2;
+    GLint m = 33;
+    GLfloat r0 = 2.5, r1 = 4.5;
+
     numFaces = (2 * (m+1) * p); // Number of faces
     numVertices = ((m+1) * (p + 1)); // Number of vertices
     vertices = new GLfloat[numVertices * 3];
@@ -41,7 +45,7 @@ Curva::Curva(GLint p, GLint m, GLfloat r0, GLfloat r1, double angle)
 
     for (int i = 0; i < p; i++)
     {
-        for (int j = 0; j <= m; j++)
+        for (int j = 0; j < m; j++)
         {
             indexes[indexesIndex] = (m+1) * i + j;
             indexes[indexesIndex + 1] = (m + 1) *(i + 1) + j;

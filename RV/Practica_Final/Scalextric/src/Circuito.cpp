@@ -21,31 +21,61 @@ Circuito::Circuito()
        0,0
     */
 
-    float posZ = 0.0f;
+    const float posZ = 0.5f;
+
     posInicial = glm::vec3(-2.50f, 0.0f, posZ);
+    FiguraData r1p1 = RectaData {
+        posInicial, 
+        4, 
+        std::make_pair<GLfloat,glm::vec3>(0.0, glm::vec3(0,0,1))
+    };
 
-    Figurita recta1_parte1 { TipoFigura::Recta,   
-                             posInicial, glm::vec3(-2.50f, 2.0f, posZ), 
-                             std::make_pair<GLfloat,glm::vec3>(0.0, glm::vec3(0,0,0)) };
-
-    Figurita recta1_parte2 { TipoFigura::Recta,   
-                             glm::vec3(-2.50f, 4.00f, posZ), 
-                             glm::vec3(-2.50f, 6.00f, posZ),
-                             std::make_pair<GLfloat,glm::vec3>(0.0, glm::vec3(0,0,0)) };
-
-    
-
-
-    instrucciones.push_back(recta1_parte1);
-    instrucciones.push_back(recta1_parte2);
+    FiguraData r1p2 = RectaData {
+        glm::vec3(-2.50f, 4.00f, posZ), 
+        4,
+        std::make_pair<GLfloat,glm::vec3>(0.0, glm::vec3(0,0,1))
+    };
 
 
-    Figurita curva1 {
-        TipoFigura::Curva,
-        glm::vec3(-2.5f, 6.0f, posZ),
-        glm::vec3(+7.5f, 6.0f, posZ),
-        std::make_pair<GLfloat,glm::vec3>(0.0, glm::vec3(0,0,0)) };
+    instrucciones.push_back(r1p1);
+    instrucciones.push_back(r1p2);
 
 
-    instrucciones.push_back(curva1);
+    FiguraData c1 = CurvaData {
+        glm::vec3(-2.5f, 8.00f, posZ),
+        180.0f,
+        true,
+        std::make_pair<GLfloat,glm::vec3>(0.0f, glm::vec3(0,0,1))
+    };
+
+
+    instrucciones.push_back(c1);
+
+
+    FiguraData r2p1 = RectaData{
+        glm::vec3(4.5f, 8.00f, posZ),
+        4,
+        std::make_pair<GLfloat,glm::vec3>(180.f, glm::vec3(0,0,1))
+    };
+
+    FiguraData r2p2 = RectaData{
+        glm::vec3(4.5f, 4.00f, posZ),
+        4,
+        std::make_pair<GLfloat,glm::vec3>(180.f, glm::vec3(0,0,1))
+    };
+
+    instrucciones.push_back(r2p1);
+    instrucciones.push_back(r2p2);
+
+
+    FiguraData c2 = CurvaData {
+        glm::vec3(4.5f, 0.00f, posZ),
+        180.0f,
+        true,
+        std::make_pair<GLfloat,glm::vec3>(180.0, glm::vec3(0,0,1))
+    };
+
+
+    instrucciones.push_back(c2);
+
 }

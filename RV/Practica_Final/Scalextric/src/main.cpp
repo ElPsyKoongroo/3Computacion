@@ -16,9 +16,8 @@ Clases:
 	Circuito	-> circuito + suelo	
 
 TODOS:
-	La clase curva si le pasas un angulo que no sea 180-270 genera una cara mal
-	Hacer que la figura se dibuje de izquierda a derecha ( se hace al reves ahora mismo )
-	Sacar a partir de 2 puntos el radio y el angulo de una curva.
+
+
 	*/
 
 auto WinMain() -> int {

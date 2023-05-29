@@ -4,26 +4,31 @@
 #include <vector>
 #include <utility>
 #include "Figura.h"
-
-enum class TipoFigura {
-	Curva = 0,
-	Recta = 1
-};
+#include <variant>
 
 using Rotacion = std::pair<GLfloat, glm::vec3>;
 
-struct Figurita {
-	TipoFigura Tipo;
+
+struct RectaData {
 	glm::vec3 PosIni;
-	glm::vec3 PosFin;
+	GLfloat Size;
 	Rotacion Rot;
 };
-// PosIni, PosFin, Rotacion
+
+struct CurvaData {
+	glm::vec3 PosIni;
+	double   Angulo;
+	bool isClockwise;
+	Rotacion  Rot;
+};
+
+using FiguraData = std::variant<RectaData, CurvaData>;
+
 
 class Circuito {
 
 public:
-	std::vector<Figurita> instrucciones;
+	std::vector<FiguraData> instrucciones;
 	glm::vec3 posInicial;
 
 	Circuito();
