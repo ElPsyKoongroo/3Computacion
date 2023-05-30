@@ -58,6 +58,7 @@ Escena::Escena(Circuito c) {
     nano->Translate(glm::vec3(-0.8f, 4.0f, 0.7f));
     nano->Rotate(180, glm::vec3(0.0f, 0.0f, 1.0f));
 
+
 }
 
 Escena::~Escena()
@@ -99,7 +100,6 @@ void Escena::Draw(ShaderProgram* program, glm::mat4 proj, glm::mat4 view)
 void Escena::CreateTextures()
 {
     etsi = new Cubemah();
-    
 
     fog = new Fog();
     fog->SetMaxDistance(500.0f);

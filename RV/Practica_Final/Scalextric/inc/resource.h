@@ -8,7 +8,7 @@ layout(location = 2) in vec2 VertexTexCoord;
 uniform mat4 MVP;
 uniform mat4 ViewMatrix;
 uniform mat4 ModelViewMatrix;
-uniform bool DrawSkybox;
+uniform bool DrawCubemah;
 
 out vec3 Position;
 out vec3 Normal;
@@ -16,7 +16,7 @@ out vec2 TexCoord;
 
 void main()
 {
-  if(DrawSkybox)
+  if(DrawCubemah)
   {
     Normal = vec3(1.0,0.0,0.0);
     TexCoord = vec2(0.0,0.0);
@@ -92,11 +92,11 @@ vec3 fog(vec3 Color) {
 
 out vec4 FragColor;
 uniform samplerCube CubemapTex;
-uniform bool DrawSkybox;
+uniform bool DrawCubemah;
 
 void main()
 {
-  if(DrawSkybox)
+  if(DrawCubemah)
   {
     FragColor = texture(CubemapTex,Position);
   }

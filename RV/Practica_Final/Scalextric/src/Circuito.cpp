@@ -122,6 +122,40 @@ Circuito::Circuito(int config) {
             piezas.push_back(DataPieza {0, -90});
             break;
         }
+        case 2 :{ 
+            piezas.push_back(DataPieza {30, 0});
+            piezas.push_back(DataPieza {0, -90});
+            piezas.push_back(DataPieza {0, 80});
+            piezas.push_back(DataPieza {0, -20});
+            piezas.push_back(DataPieza {7, 0});
+            piezas.push_back(DataPieza {0, -30});
+            piezas.push_back(DataPieza {7, 0});
+            piezas.push_back(DataPieza {0, -30});
+            piezas.push_back(DataPieza {7, 0});
+            piezas.push_back(DataPieza {0, -30});
+            piezas.push_back(DataPieza {7, 0});
+            piezas.push_back(DataPieza {0, -30});
+            piezas.push_back(DataPieza {7, 0});
+            piezas.push_back(DataPieza {0, -30});
+            piezas.push_back(DataPieza {10, 0});
+            piezas.push_back(DataPieza {0, -180});
+            piezas.push_back(DataPieza {5, 0});
+            piezas.push_back(DataPieza {0, 160});
+            piezas.push_back(DataPieza {5, 0});
+            piezas.push_back(DataPieza {0, 20});
+            piezas.push_back(DataPieza {2, 0});
+            piezas.push_back(DataPieza {0, 90});
+            piezas.push_back(DataPieza {0, -20});
+            piezas.push_back(DataPieza {6, 0});
+            piezas.push_back(DataPieza {0, -90});
+            piezas.push_back(DataPieza {16, 0});
+            //
+            piezas.push_back(DataPieza {0, -70});
+            piezas.push_back(DataPieza {24.3, 0});
+            piezas.push_back(DataPieza {0, -90});
+            piezas.push_back(DataPieza {2, 0});
+            break;
+        }
     }
     
 
@@ -172,7 +206,8 @@ GLfloat CorrigeAngulo(GLfloat angulo) {
 
 void Circuito::CrearConPistas(std::vector<DataPieza> piezas) {
     constexpr GLfloat CIRCUITO_Z = 0.5;
-    glm::vec3 posActual = glm::vec3(0, 0.0f, CIRCUITO_Z);
+    //glm::vec3 posActual = glm::vec3(0, 0.0f, CIRCUITO_Z);
+    glm::vec3 posActual = glm::vec3(-30, -30.0f, CIRCUITO_Z);
     GLfloat rotacionActual = 0.f;
 
     for(int i = 0; i < piezas.size(); ++i) {

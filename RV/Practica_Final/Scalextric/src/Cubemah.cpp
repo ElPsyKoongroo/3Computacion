@@ -104,12 +104,15 @@ void Cubemah::InitCubemap()
 
     glGenTextures(1, &cubemap);
     glBindTexture(GL_TEXTURE_CUBE_MAP, cubemap);
-    InitTexture(GL_TEXTURE_CUBE_MAP_POSITIVE_X, "textures/ETSIposx.png");
-    InitTexture(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, "textures/ETSInegx.png");
-    InitTexture(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, "textures/ETSIposy.png");
-    InitTexture(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, "textures/ETSInegy.png");
-    InitTexture(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, "textures/ETSIposz.png");
-    InitTexture(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, "textures/SueloTextura2.png");
+    InitTexture(GL_TEXTURE_CUBE_MAP_POSITIVE_X, "textures/posx.jpg");
+    InitTexture(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, "textures/negx.jpg");
+    InitTexture(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, "textures/posy.jpg");
+    InitTexture(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, "textures/negy.jpg");
+    InitTexture(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, "textures/posz.jpg");
+    InitTexture(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, "textures/negz.jpg");
+
+    //InitTexture(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, "textures/cubemap/SueloTextura2.jpg");
+    //InitTexture(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, "textures/SueloTextura2.jpg");
 
     // Typical cube map settings
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
