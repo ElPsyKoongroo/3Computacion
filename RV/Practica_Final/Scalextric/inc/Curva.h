@@ -2,6 +2,7 @@
 
 #include <GL/glew.h>
 #include "Figura.h"
+#include "Constantes.h"
 
 //
 // CLASE: CGDisk

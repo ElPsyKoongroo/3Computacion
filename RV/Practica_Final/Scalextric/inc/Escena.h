@@ -7,6 +7,8 @@
 #include "Circuito.h"
 #include "Material.h"
 #include "Light.h"
+#include "Car.h"
+#include "Constantes.h"
 
 
 class Escena {
@@ -19,8 +21,9 @@ public:
 
 private:
     Figura** figuras;
+    Figura* suelo;
+    Car* nano;
     std::vector<Material> materiales;
     Light* light;
-    GLfloat anchura;
     size_t numFiguras;
 };

@@ -3,6 +3,7 @@
 #include <GL/glew.h>
 #include "ShaderProgram.h"
 #include "Figura.h"
+#include "Constantes.h"
 
 //
 // CLASE: Recta
@@ -17,7 +18,7 @@ private:
 	GLuint VAO;
 
 public:
-	Recta(GLfloat heigth);
+	Recta(GLfloat heigth, GLfloat w = -1.0f);
 	~Recta();
 	void Draw(ShaderProgram* program, GLfloat posX, GLfloat posY, GLfloat size);
 };

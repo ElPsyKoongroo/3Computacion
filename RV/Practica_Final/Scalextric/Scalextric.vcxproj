@@ -145,6 +145,8 @@
   <ItemGroup>
     <ClCompile Include="src\Aplicacion.cpp" />
     <ClCompile Include="src\Camara.cpp" />
+    <ClCompile Include="src\Car.cpp" />
+    <ClCompile Include="src\Car_pieces.cpp" />
     <ClCompile Include="src\Curva.cpp" />
     <ClCompile Include="src\Escena.cpp" />
     <ClCompile Include="src\Figura.cpp" />
@@ -152,6 +154,8 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Material.cpp" />
     <ClCompile Include="src\Model.cpp" />
+    <ClCompile Include="src\Object.cpp" />
+    <ClCompile Include="src\Piece.cpp" />
     <ClCompile Include="src\Recta.cpp" />
     <ClCompile Include="src\Circuito.cpp" />
     <ClCompile Include="src\ShaderProgram.cpp" />
@@ -159,12 +163,17 @@
   <ItemGroup>
     <ClInclude Include="inc\Aplicacion.h" />
     <ClInclude Include="inc\Camara.h" />
+    <ClInclude Include="inc\Car.h" />
+    <ClInclude Include="inc\Car_pieces.h" />
+    <ClInclude Include="inc\Constantes.h" />
     <ClInclude Include="inc\Curva.h" />
     <ClInclude Include="inc\Escena.h" />
     <ClInclude Include="inc\Figura.h" />
     <ClInclude Include="inc\Light.h" />
     <ClInclude Include="inc\Material.h" />
     <ClInclude Include="inc\Model.h" />
+    <ClInclude Include="inc\Object.h" />
+    <ClInclude Include="inc\Piece.h" />
     <ClInclude Include="inc\Recta.h" />
     <ClInclude Include="inc\resource.h" />
     <ClInclude Include="inc\Circuito.h" />

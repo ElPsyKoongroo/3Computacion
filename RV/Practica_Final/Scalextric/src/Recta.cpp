@@ -1,8 +1,11 @@
 #include "Recta.h"
 
-Recta::Recta(GLfloat heigth)
+Recta::Recta(GLfloat heigth, GLfloat w)
 {
-    GLfloat width = 2.0f;
+    GLfloat width;
+    if (w == -1.0f) { width = ANCHURA_PISTA; }
+    else { width = w; }
+
     numFaces = 2; // Number of faces
     numVertices = 4; // Number of vertices
 

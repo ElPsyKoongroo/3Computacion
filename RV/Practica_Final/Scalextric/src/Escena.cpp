@@ -7,24 +7,11 @@
 #include "Recta.h"
 #include "Curva.h"
 
-Escena::Escena()
-{
-
-    //fig0 = new Recta(10.0f, 20.0f);
-    //fig0->Translate(glm::vec3(-25.0f, 5.0f, 25.0f));
-    //fig0->Rotate(-0.0f, glm::vec3(0.0f, 0.0f, 1.0f));
-
-
-    //fig1 = new Curva(5, 50, 30.5f, 50.0f, 70.0);
-    //fig1->Translate(glm::vec3(25.0f, 5.0f, 25.0f));
-    //fig1->Rotate(-90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-
-}
+Escena::Escena() {}
 
 
 Escena::Escena(Circuito c) {
     CreateTextures();
-    anchura = 1.0;
     figuras = new Figura*[c.instrucciones.size()];
     numFiguras = c.instrucciones.size();
   
@@ -51,17 +38,26 @@ Escena::Escena(Circuito c) {
 
                 
                 if (datosFiguraActual.isClockwise) {
-                    figuras[i]->Translate(glm::vec3(3.5,0,0));
+                    figuras[i]->Translate(glm::vec3(DESPLAZAMIENTO_CURVA,0,0));
                     figuras[i]->Rotate((180.f - datosFiguraActual.Angulo), glm::vec3(0,0,1));
                 }
                 else
-                    figuras[i]->Translate(glm::vec3(-3.5,0,0));
+                    figuras[i]->Translate(glm::vec3(-DESPLAZAMIENTO_CURVA,0,0));
 
 
                 break;
             }
         }
     }
+
+    suelo = new Recta(100.f,100.f);
+    suelo->Translate(glm::vec3(0.f, -50.f, 0.f));
+    suelo->SetMaterial(&(materiales[1]));
+
+    nano = new Car();
+    nano->Translate(glm::vec3(-0.8f, 4.0f, 0.7f));
+    nano->Rotate(180, glm::vec3(0.0f, 0.0f, 1.0f));
+
 }
 
 Escena::~Escena()
@@ -70,6 +66,9 @@ Escena::~Escena()
         delete figuras[i];
 
     delete [] figuras;
+    delete nano;
+    delete suelo;
+
 
 }
 
@@ -86,6 +85,8 @@ void Escena::Draw(ShaderProgram* program, glm::mat4 proj, glm::mat4 view)
     for (size_t i = 0; i < numFiguras; ++i) {
         figuras[i]->Draw(program, proj, view);
     }
+    suelo->Draw(program, proj, view);
+    nano->Draw(program, proj, view);
 }
 
 void Escena::CreateTextures()
@@ -105,7 +106,15 @@ void Escena::CreateTextures()
     m0.SetShininess(16.0f);
     m0.InitTexture("textures/TexturaCarretera2.png");
 
+    Material m1;
+    m1.SetAmbientReflect(0.5f, 0.5f, 0.5f);
+    m1.SetDifusseReflect(0.5f, 0.5f, 0.5f);
+    m1.SetSpecularReflect(0.8f, 0.8f, 0.8f);
+    m1.SetShininess(16.0f);
+    m1.InitTexture("textures/SueloTextura2.jpg");
+
     materiales.push_back(m0);
+    materiales.push_back(m1);
 
 
 }

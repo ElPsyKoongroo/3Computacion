@@ -2,6 +2,7 @@
 #include <GL/glew.h>
 #include <math.h>
 #include "Figura.h"
+#include "Constantes.h"
 
 /**
 Cosos:
@@ -15,12 +16,11 @@ Cosos:
 */
 Curva::Curva(double angle)
 {
-    GLint p = 2;
-    GLint m = 33;
-    GLfloat r0 = 2.5, r1 = 4.5;
+    GLfloat r1 = CURVA_RADIO_EXTERIOR;
+    GLfloat r0 = CURVA_RADIO_INTERIOR;
 
-    numFaces = (2 * (m+1) * p); // Number of faces
-    numVertices = ((m+1) * (p + 1)); // Number of vertices
+    numFaces = (2 * (CURVA_M+1) * CURVA_P); // Number of faces
+    numVertices = ((CURVA_M+1) * (CURVA_P + 1)); // Number of vertices
     vertices = new GLfloat[numVertices * 3];
     indexes = new GLushort[numFaces * 3];
 
@@ -33,12 +33,12 @@ Curva::Curva(double angle)
     int normalsIndex = 0;
     int texturesIndex = 0;
 
-    double angle_step = (angle) / m;
-    for (int i = 0; i <= p; i++)
+    double angle_step = (angle) / CURVA_M;
+    for (int i = 0; i <= CURVA_P; i++)
     {
-        GLfloat r = r0 + (r1 - r0)*i / p;
+        GLfloat r = r0 + (r1 - r0)*i / CURVA_P;
 
-        for (int j = 0; j <= m; j++)
+        for (int j = 0; j <= CURVA_M; j++)
         {
             GLfloat mCos = (GLfloat)cos(glm::radians(j * angle_step));
             GLfloat mSin = (GLfloat)sin(glm::radians(j * angle_step));
@@ -52,24 +52,24 @@ Curva::Curva(double angle)
             normals[normalsIndex + 2] = 1.0f;
             normalsIndex += 3;
 
-            textures[texturesIndex] = ((GLfloat)j) / m;
-            textures[texturesIndex + 1] = ((GLfloat)i) / p;
+            textures[texturesIndex] = ((GLfloat)j) / CURVA_M;
+            textures[texturesIndex + 1] = ((GLfloat)i) / CURVA_P;
             texturesIndex += 2;
         }
     }
 
-    for (int i = 0; i < p; i++)
+    for (int i = 0; i < CURVA_P; i++)
     {
-        for (int j = 0; j < m; j++)
+        for (int j = 0; j < CURVA_M; j++)
         {
-            indexes[indexesIndex] = (m+1) * i + j;
-            indexes[indexesIndex + 1] = (m + 1) *(i + 1) + j;
-            indexes[indexesIndex + 2] = ((m + 1) *(i + 1) + j + 1);
+            indexes[indexesIndex] = (CURVA_M+1) * i + j;
+            indexes[indexesIndex + 1] = (CURVA_M + 1) *(i + 1) + j;
+            indexes[indexesIndex + 2] = ((CURVA_M + 1) *(i + 1) + j + 1);
             indexesIndex += 3;
 
-            indexes[indexesIndex] = (m + 1) *i + j;
-            indexes[indexesIndex + 1] = ((m + 1) * (i + 1) + j + 1);
-            indexes[indexesIndex + 2] = ((m + 1) * i + j + 1);
+            indexes[indexesIndex] = (CURVA_M + 1) *i + j;
+            indexes[indexesIndex + 1] = ((CURVA_M + 1) * (i + 1) + j + 1);
+            indexes[indexesIndex + 2] = ((CURVA_M + 1) * i + j + 1);
             indexesIndex += 3;
         }
     }
