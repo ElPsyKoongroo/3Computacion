@@ -9,6 +9,8 @@
 #include "Light.h"
 #include "Car.h"
 #include "Constantes.h"
+#include "Cubemah.h"
+#include "Fog.h"
 
 
 class Escena {
@@ -23,7 +25,11 @@ private:
     Figura** figuras;
     Figura* suelo;
     Car* nano;
-    std::vector<Material> materiales;
+    Cubemah* etsi;
+
+    Fog* fog;
     Light* light;
+
+    std::vector<Material> materiales;
     size_t numFiguras;
 };

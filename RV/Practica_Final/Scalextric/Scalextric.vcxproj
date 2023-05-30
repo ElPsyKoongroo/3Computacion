@@ -147,9 +147,11 @@
     <ClCompile Include="src\Camara.cpp" />
     <ClCompile Include="src\Car.cpp" />
     <ClCompile Include="src\Car_pieces.cpp" />
+    <ClCompile Include="src\Cubemah.cpp" />
     <ClCompile Include="src\Curva.cpp" />
     <ClCompile Include="src\Escena.cpp" />
     <ClCompile Include="src\Figura.cpp" />
+    <ClCompile Include="src\Fog.cpp" />
     <ClCompile Include="src\Light.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Material.cpp" />
@@ -166,9 +168,11 @@
     <ClInclude Include="inc\Car.h" />
     <ClInclude Include="inc\Car_pieces.h" />
     <ClInclude Include="inc\Constantes.h" />
+    <ClInclude Include="inc\Cubemah.h" />
     <ClInclude Include="inc\Curva.h" />
     <ClInclude Include="inc\Escena.h" />
     <ClInclude Include="inc\Figura.h" />
+    <ClInclude Include="inc\Fog.h" />
     <ClInclude Include="inc\Light.h" />
     <ClInclude Include="inc\Material.h" />
     <ClInclude Include="inc\Model.h" />

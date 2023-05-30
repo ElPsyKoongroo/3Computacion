@@ -18,7 +18,7 @@ void Model::initialize(int w, int h)
     camera->SetPosition(0.0f, 5.0f, 15.0f);
 
     // Crea la escena
-    Circuito Monaco;
+    Circuito Monaco(0);
     scene = new Escena(Monaco);
 
 

@@ -73,13 +73,13 @@ Circuito::Circuito()
 
 
     FiguraData r2p1 = RectaData{
-        glm::vec3(izq + DESPLAZAMIENTO_CURVA * 2, 16.00f, posZ),
+        glm::vec3(izq + CURVA_RADIO_CENTRO * 2, 16.00f, posZ),
         8,
         std::make_pair<GLfloat,glm::vec3>(180.f, glm::vec3(0,0,1))
     };
 
     FiguraData r2p2 = RectaData{
-        glm::vec3(izq + DESPLAZAMIENTO_CURVA * 2, 8.00f, posZ),
+        glm::vec3(izq + CURVA_RADIO_CENTRO * 2, 8.00f, posZ),
         8,
         std::make_pair<GLfloat,glm::vec3>(180.f, glm::vec3(0,0,1))
     };
@@ -89,7 +89,7 @@ Circuito::Circuito()
 
 
     FiguraData c2 = CurvaData {
-        glm::vec3(izq + DESPLAZAMIENTO_CURVA * 2, 0.00f, posZ),
+        glm::vec3(izq + CURVA_RADIO_CENTRO * 2, 0.00f, posZ),
         180.0f,
         true,
         std::make_pair<GLfloat,glm::vec3>(180.0, glm::vec3(0,0,1))
@@ -97,5 +97,119 @@ Circuito::Circuito()
 
 
     instrucciones.push_back(c2);
+
+}
+
+Circuito::Circuito(int config) {
+    std::vector<DataPieza> piezas;
+
+    switch (config) {
+        case 0: {
+            piezas.push_back(DataPieza {16, 0});
+            piezas.push_back(DataPieza {0, -180});
+            piezas.push_back(DataPieza {16, 0});
+            piezas.push_back(DataPieza {0, -180});
+            break;
+        }
+        case 1: {
+            piezas.push_back(DataPieza {16, 0});
+            piezas.push_back(DataPieza {0, -90});
+            piezas.push_back(DataPieza {0, 90});
+            piezas.push_back(DataPieza {0, -180});
+            piezas.push_back(DataPieza {16 + 9*2, 0});
+            piezas.push_back(DataPieza {0, -90});
+            piezas.push_back(DataPieza {18, 0});
+            piezas.push_back(DataPieza {0, -90});
+            break;
+        }
+    }
+    
+
+    
+    CrearConPistas(piezas);
+}
+
+
+int Sector(float rotacion) {
+    if (rotacion < 90) return 1;
+    if (rotacion < 180) return 2;
+    if (rotacion < 270) return 3;
+    if (rotacion < 360) return 4; 
+}
+
+glm::vec3 Circuito::CalculaCentro(glm::vec3 posActual, float rotacion, float longitud){
+
+    float rotacion_radianes = glm::radians(rotacion);
+
+    float new_x = posActual.x + longitud*sin(rotacion_radianes);
+    float new_y = posActual.y - longitud*cos(rotacion_radianes);
+    
+    return glm::vec3(new_x, new_y, posActual.z);
+}
+
+glm::vec3 Circuito::ActualizaPosicion(glm::vec3 posActual, float rotacion, float longitud) {
+    /*
+        Xx + R*sin(alfa) = Ax     =>    Xx = Ax - R*sin(alfa)
+        Xy + R*cos(alfa) = Ay     =>    Xy = Ay - R*cos(alfa)
+    */
+
+    float rotacion_radianes = glm::radians(rotacion);
+
+    float new_x = posActual.x - longitud*sin(rotacion_radianes);
+    float new_y = posActual.y + longitud*cos(rotacion_radianes);
+
+    return glm::vec3(new_x, new_y, posActual.z);
+}
+
+GLfloat CorrigeAngulo(GLfloat angulo) {
+    while ( angulo > 360 || angulo < 0 ) {
+        if(angulo > 360) angulo-=360;
+        else if(angulo < 0) angulo+=360;
+    }
+
+    return angulo;
+}
+
+void Circuito::CrearConPistas(std::vector<DataPieza> piezas) {
+    constexpr GLfloat CIRCUITO_Z = 0.5;
+    glm::vec3 posActual = glm::vec3(0, 0.0f, CIRCUITO_Z);
+    GLfloat rotacionActual = 0.f;
+
+    for(int i = 0; i < piezas.size(); ++i) {
+        if(!piezas[i].EsCurva()) {
+            instrucciones.push_back(
+                RectaData {
+                    posActual,
+                    piezas[i].Longitud,
+                    std::make_pair<GLfloat,glm::vec3>((GLfloat)rotacionActual, glm::vec3(0,0,1))
+            });
+            posActual = ActualizaPosicion(posActual, rotacionActual, piezas[i].Longitud);
+        } else {          
+            instrucciones.push_back(
+                CurvaData {
+                    posActual,
+                    std::abs(piezas[i].Angulo),
+                    piezas[i].Angulo < 0,
+                    std::make_pair<GLfloat,glm::vec3>((GLfloat)rotacionActual, glm::vec3(0,0,1))
+            });
+            GLfloat nuevaRotacion = rotacionActual + piezas[i].Angulo;
+            
+            nuevaRotacion = CorrigeAngulo(nuevaRotacion);
+
+            GLfloat anguloCircunferencia1 = rotacionActual + (piezas[i].Angulo < 0 ? 90 : -90);
+            
+            anguloCircunferencia1 = CorrigeAngulo(anguloCircunferencia1);
+
+            GLfloat anguloCircunferencia2 = anguloCircunferencia1 + (piezas[i].Angulo < 0 
+                                                                    ? -std::abs(piezas[i].Angulo)
+                                                                    : std::abs(piezas[i].Angulo));
+            
+            anguloCircunferencia2 = CorrigeAngulo(anguloCircunferencia2);
+
+            glm::vec3 centroCircunferencia = CalculaCentro(posActual, anguloCircunferencia1, CURVA_RADIO_CENTRO);
+            posActual = ActualizaPosicion(centroCircunferencia, anguloCircunferencia2, CURVA_RADIO_CENTRO);
+            rotacionActual = nuevaRotacion;
+        }
+    }
 
 }

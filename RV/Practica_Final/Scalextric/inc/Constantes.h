@@ -4,7 +4,7 @@
 constexpr GLfloat ANCHURA_PISTA = 7.0f;
 constexpr GLfloat CURVA_RADIO_EXTERIOR = 12.5;
 constexpr GLfloat CURVA_RADIO_INTERIOR = CURVA_RADIO_EXTERIOR-ANCHURA_PISTA;
-constexpr GLfloat DESPLAZAMIENTO_CURVA = CURVA_RADIO_INTERIOR+(ANCHURA_PISTA/2);
+constexpr GLfloat CURVA_RADIO_CENTRO = CURVA_RADIO_INTERIOR+(ANCHURA_PISTA/2);
 constexpr int CURVA_P = 2;
 constexpr int CURVA_M = 33;
 
@@ -30,3 +30,11 @@ constexpr int CURVA_M = 33;
            +------------------+
 
 */
+
+// COS, SEN
+static int SIGNOS_SECTORES[4][2] = {
+    {1,1},
+    {-1,1},
+    {-1,-1},
+    {1,-1}
+};

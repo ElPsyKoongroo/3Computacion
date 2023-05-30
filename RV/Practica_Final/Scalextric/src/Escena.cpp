@@ -38,11 +38,11 @@ Escena::Escena(Circuito c) {
 
                 
                 if (datosFiguraActual.isClockwise) {
-                    figuras[i]->Translate(glm::vec3(DESPLAZAMIENTO_CURVA,0,0));
+                    figuras[i]->Translate(glm::vec3(CURVA_RADIO_CENTRO,0,0));
                     figuras[i]->Rotate((180.f - datosFiguraActual.Angulo), glm::vec3(0,0,1));
                 }
                 else
-                    figuras[i]->Translate(glm::vec3(-DESPLAZAMIENTO_CURVA,0,0));
+                    figuras[i]->Translate(glm::vec3(-CURVA_RADIO_CENTRO,0,0));
 
 
                 break;
@@ -66,10 +66,13 @@ Escena::~Escena()
         delete figuras[i];
 
     delete [] figuras;
-    delete nano;
+
     delete suelo;
+    delete nano;
+    delete light;
 
-
+    delete fog;
+    delete etsi;
 }
 
 //
@@ -79,18 +82,30 @@ Escena::~Escena()
 //
 void Escena::Draw(ShaderProgram* program, glm::mat4 proj, glm::mat4 view)
 {
-    // ground->Draw(program, proj, view);
     light->SetUniforms(program);
+ 
+    fog->SetUniforms(program);
+    etsi->Draw(program, proj, view);
 
     for (size_t i = 0; i < numFiguras; ++i) {
         figuras[i]->Draw(program, proj, view);
     }
+
     suelo->Draw(program, proj, view);
     nano->Draw(program, proj, view);
+
 }
 
 void Escena::CreateTextures()
 {
+    etsi = new Cubemah();
+    
+
+    fog = new Fog();
+    fog->SetMaxDistance(500.0f);
+    fog->SetMinDistance(50.0f);
+    fog->SetFogColor(glm::vec3(0.8f, 0.8f, 0.8f));
+
     glm::vec3 Ldir = glm::vec3(0.7f, 0.3f, -1.0f);
     Ldir = glm::normalize(Ldir);
     light = new Light();
