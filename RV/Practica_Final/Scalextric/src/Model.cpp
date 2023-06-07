@@ -15,7 +15,7 @@ void Model::initialize(int w, int h)
 
     // Crea la cámara
     camera = new Camara();
-    camera->SetPosition(0.0f, 5.0f, 50.0f);
+    camera->SetPosition(0.0f, 5.0f, 160.0f);
 
     // Crea la escena
     Circuito Monaco(2);
@@ -86,18 +86,56 @@ void Model::render()
 //
 void Model::update()
 {
-    //camera->MoveFront();
+    scene->Update();
+    // switch (camera->camaraActiva) {
+    //     case CamaraEnum::Coche1 {
+
+    //     }
+    //     case CamaraEnum::Coche2 {
+            
+    //     }
+    //     case CamaraEnum::Circuito {
+            
+    //     }
+    // }
+
 }
+
+
 
 //
 // FUNCIÓN: Model::key_pressed(int)
 //
 // PROPÓSITO: Respuesta a acciones de teclado
 //
+
+
+
 void Model::key_pressed(int key)
 {
+    //CamaraEnum cam = ;
     switch (key)
     {
+        case GLFW_KEY_F1:{
+
+            break;
+        }
+        case GLFW_KEY_F2: {
+            break;
+        }
+        case GLFW_KEY_F3: {
+            break;
+        }
+
+        case GLFW_KEY_C:
+            scene->nano->speed += 0.01;
+            break;
+
+        case GLFW_KEY_X:
+            scene->nano->speed -= 0.01;
+            if (scene->nano->speed < 0) scene->nano->speed = 0;
+            break;
+
         case GLFW_KEY_UP:
             camera->TurnDown();
             break;

@@ -39,6 +39,7 @@ public:
 	void SetMaterial(Material* mat);
 	void ResetLocation();
 	void Translate(glm::vec3 t);
+	void SetLocation(glm::vec3 t);
 	void Rotate(GLfloat angle, glm::vec3 axis);
 	void Draw(ShaderProgram* program, glm::mat4 projection, glm::mat4 view);
 

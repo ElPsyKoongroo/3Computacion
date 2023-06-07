@@ -51,7 +51,9 @@ public:
 
 	Circuito();
 	Circuito(int config);
-	glm::vec3 CalculaCentro(glm::vec3 posActual, float rotacion, float longitud);
-	glm::vec3 ActualizaPosicion(glm::vec3 posActual, float rotacion, float longitud);
+	static glm::vec3 CalculaCentro(glm::vec3 posActual, float rotacion, float longitud);
+	static glm::vec3 ActualizaPosicionRecta(glm::vec3 posActual, float rotacion, float longitud);
+	static glm::vec3 ActualizaPosicionCurva(glm::vec3 posActual, float rotacion, float angulo);
+	static GLfloat CorrigeAngulo(GLfloat angulo);
 	void CrearConPistas(std::vector<DataPieza>);
 };

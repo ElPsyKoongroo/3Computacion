@@ -20,12 +20,17 @@ public:
     ~Escena();
     void Draw(ShaderProgram* program, glm::mat4 proj, glm::mat4 view);
     void CreateTextures();
+    void Update();
+    void ActualizaCoche(Car* piloto);
+    
+    Car* nano;
+    Car* sainz;
+    Figura** figuras;
 
 private:
-    Figura** figuras;
     Figura* suelo;
-    Car* nano;
     Cubemah* etsi;
+    Circuito circuito;
 
     Fog* fog;
     Light* light;

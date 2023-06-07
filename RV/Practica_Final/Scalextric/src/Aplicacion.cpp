@@ -89,7 +89,7 @@ void Aplicacion::timing()
         model.update();
         deltaTime--;
     }
-
+    //model.update();
     model.render();
 }
 

@@ -105,6 +105,25 @@ void Figura::Translate(glm::vec3 t)
 	location = glm::translate(location, t);
 }
 
+/*
+
+	X 0 0 0
+	0 Y 0 0
+	0 0 Z 0
+	0 0 0 A
+
+*/
+void Figura::SetLocation(glm::vec3 t) {
+	
+	glm::mat4 copy = location;
+
+	copy[0][0] = 0;
+	copy[1][1] = 0;
+	copy[2][2] = 0;
+	
+	location = glm::translate(copy, t);
+}
+
 //
 // FUNCIÓN: Figura::Rotate(GLfloat angle, glm::vec3 axis)
 //

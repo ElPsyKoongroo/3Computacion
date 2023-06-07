@@ -44,6 +44,28 @@ void Object::Translate(glm::vec3 t)
     model = glm::translate(model, t);
 }
 
+void Object::SetLocation(glm::vec3 t) {
+	
+    // glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), t);
+
+    // model = translationMatrix * model;
+
+    model[3][0] = t[0];
+    model[3][1] = t[1];
+    model[3][2] = 0.9;
+
+/*
+	glm::mat4 copy = model;
+
+	copy[0][3] = 0;
+	copy[1][3] = 0;
+	
+	model = glm::translate(copy, t);
+	copy[2][3] = 0.9;*/
+}
+
+
+
 //
 // FUNCIÓN: Object::Rotate(GLfloat angle, glm::vec3 axis)
 //

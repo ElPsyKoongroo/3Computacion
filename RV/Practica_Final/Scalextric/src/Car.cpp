@@ -6,6 +6,11 @@
 
 Car::Car()
 {
+
+	speed = 0.0;
+	piezaAct = 0;
+	distanciaRecorridaEnPieza = 0;
+
 	Material* mtl0 = new Material();
 	mtl0->SetAmbientReflect(0.0f, 0.0f, 0.0f);
 	mtl0->SetDifusseReflect(1.0f, 1.0f, 1.0f);

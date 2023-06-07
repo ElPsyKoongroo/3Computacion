@@ -308,3 +308,8 @@ void Camara::TurnCCW()
     // Right = Up x Dir
     Right = glm::cross(Up, Dir);
 }
+
+void Camara::ChangeCamaraView(CamaraEnum v)
+{
+    view = v;
+}

@@ -6,11 +6,16 @@
 #include "Figura.h"
 #include "Recta.h"
 #include "Curva.h"
+#include <cmath>
+#define MY_PI 3.14159265358979323846
 
 Escena::Escena() {}
 
 
-Escena::Escena(Circuito c) {
+Escena::Escena(Circuito c) 
+{
+    circuito = c;
+
     CreateTextures();
     figuras = new Figura*[c.instrucciones.size()];
     numFiguras = c.instrucciones.size();
@@ -55,9 +60,29 @@ Escena::Escena(Circuito c) {
     suelo->SetMaterial(&(materiales[1]));
 
     nano = new Car();
-    nano->Translate(glm::vec3(-0.8f, 4.0f, 0.7f));
-    nano->Rotate(180, glm::vec3(0.0f, 0.0f, 1.0f));
+    nano->piezaAct=0;
+    nano->distanciaRecorridaEnPieza = 0;
+    nano->speed = 0.1;
+    nano->isRight = true;
 
+    sainz = new Car();
+    sainz->piezaAct = 0;
+    sainz->distanciaRecorridaEnPieza = 0;
+    sainz->speed = 0.1;
+    sainz->isRight = false;
+
+
+    nano->position = std::get<RectaData>(circuito.instrucciones[0]).PosIni;
+    nano->position[2] = 0.7;
+    nano->rotation = 0;
+    nano->Translate(nano->position);
+    nano->Rotate(0, glm::vec3(0.0f, 0.0f, 1.0f));
+
+    sainz->position = std::get<RectaData>(circuito.instrucciones[0]).PosIni;
+    sainz->position[2] = 0.7;
+    sainz->rotation = 0;
+    sainz->Translate(sainz->position);
+    sainz->Rotate(0, glm::vec3(0.0f, 0.0f, 1.0f));
 
 }
 
@@ -70,6 +95,7 @@ Escena::~Escena()
 
     delete suelo;
     delete nano;
+    delete sainz;
     delete light;
 
     delete fog;
@@ -91,9 +117,10 @@ void Escena::Draw(ShaderProgram* program, glm::mat4 proj, glm::mat4 view)
     for (size_t i = 0; i < numFiguras; ++i) {
         figuras[i]->Draw(program, proj, view);
     }
-
     suelo->Draw(program, proj, view);
+
     nano->Draw(program, proj, view);
+    sainz->Draw(program, proj, view);
 
 }
 
@@ -132,4 +159,113 @@ void Escena::CreateTextures()
     materiales.push_back(m1);
 
 
+}
+
+void Escena::ActualizaCoche(Car* piloto) {
+    /*
+        PD  | CD  | Ventaja    
+          0 | 0   |   1
+          0 | 1   |   0  
+          1 | 0   |   0  
+          1 | 1   |   1
+    */
+    int indexActualPiece = piloto->piezaAct;
+
+    piloto->distanciaRecorridaEnPieza += piloto->speed;
+
+    bool correctPiece = false;
+    do {
+        int distanciaPiezaActual;
+
+        if (!circuito.instrucciones[indexActualPiece].index()) {
+            float size = std::get<RectaData>(circuito.instrucciones[indexActualPiece]).Size;
+            if (size <= piloto->distanciaRecorridaEnPieza) {
+                piloto->distanciaRecorridaEnPieza -= size;
+                indexActualPiece = (indexActualPiece+1) % circuito.instrucciones.size();
+            }
+            else correctPiece = true;
+        } else {
+            auto curvaActual = std::get<CurvaData>(circuito.instrucciones[indexActualPiece]);
+            float angulo = curvaActual.Angulo;
+            double radio_offset = (piloto->isRight == curvaActual.isClockwise) 
+                ? 0
+                : 1;
+            float circunferencia = 2 * MY_PI * (CURVA_RADIO_CENTRO + radio_offset);
+            float distanciaArco = circunferencia / 360 * angulo;
+
+            if (distanciaArco <= piloto->distanciaRecorridaEnPieza) {
+                piloto->distanciaRecorridaEnPieza -= distanciaArco;
+                indexActualPiece = (indexActualPiece+1) % circuito.instrucciones.size();
+            }
+            else correctPiece = true;
+        }
+    }while(!correctPiece);
+
+    piloto->piezaAct = indexActualPiece;
+    
+    glm::vec3 newPosition;
+    GLfloat newRotation = 0;
+    bool clockwise = false;
+    
+    switch (circuito.instrucciones[indexActualPiece].index()) {
+       case 0: {   // RectaData
+            RectaData rectaActual = std::get<RectaData>(circuito.instrucciones[indexActualPiece]);
+            newPosition = Circuito::ActualizaPosicionRecta(rectaActual.PosIni, rectaActual.Rot.first, piloto->distanciaRecorridaEnPieza);
+            newRotation = rectaActual.Rot.first;
+            break;
+       }
+       case 1:  {  // CurvaData
+            CurvaData curvaActual = std::get<CurvaData>(circuito.instrucciones[indexActualPiece]);
+       
+
+            double radio_offset = (piloto->isRight == curvaActual.isClockwise) 
+                ? 0
+                : 1;
+
+
+            float angulo = curvaActual.Angulo;
+            float circunferencia = 2 * MY_PI * (CURVA_RADIO_CENTRO + radio_offset);
+            float distanciaArco = circunferencia / 360 * angulo;
+
+            float anguloCoche = angulo * ( piloto->distanciaRecorridaEnPieza / distanciaArco );
+            if(curvaActual.isClockwise) {
+                clockwise = true;
+                anguloCoche = -anguloCoche;
+            }
+
+            newPosition = Circuito::ActualizaPosicionCurva(curvaActual.PosIni, curvaActual.Rot.first, anguloCoche);
+            newRotation = anguloCoche + curvaActual.Rot.first;
+            break;
+       }
+    }
+
+    piloto->ResetLocation();
+    piloto->Translate(newPosition);
+    piloto->Rotate(newRotation + 180, glm::vec3(0,0,1));
+    if(piloto->isRight)
+    {
+        piloto->Translate(glm::vec3(-1.7,0,0));
+    }
+    else
+    {
+        piloto->Translate(glm::vec3(+1.7,0,0));    
+    }
+    // if(clockwise) 
+    //     piloto->Rotate(newRotation+ 180, glm::vec3(0,0,1));
+
+    // glm::vec3 translation = newPosition - piloto->position;
+    // piloto->Translate(translation);
+    piloto->position = newPosition;
+    
+    // GLfloat rotation = newRotation - piloto->rotation;
+    // if(rotation != 0)
+    // {
+    //     piloto->Rotate(rotation, glm::vec3(0,0,1));  
+    piloto->rotation = newRotation;
+    // }
+}
+
+void Escena::Update(){
+    ActualizaCoche(sainz);
+    ActualizaCoche(nano);
 }

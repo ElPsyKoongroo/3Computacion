@@ -22,6 +22,8 @@ public:
 	void SetLocation(glm::mat4 loc);
 	glm::mat4 GetLocation();
 	void Draw(ShaderProgram* program, glm::mat4 projection, glm::mat4 view);
+	void SetLocation(glm::vec3 t);
+
 
 	virtual int GetNumPieces() = 0;
 	virtual Piece* GetPiece(int i) = 0;
