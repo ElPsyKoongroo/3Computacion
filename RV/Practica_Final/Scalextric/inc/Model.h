@@ -14,6 +14,7 @@
 class Model {
 	ShaderProgram* program;
 	Camara* camera;
+	CamaraEnum camaraActiva;
 	Escena* scene;
 
 	glm::mat4 projection;

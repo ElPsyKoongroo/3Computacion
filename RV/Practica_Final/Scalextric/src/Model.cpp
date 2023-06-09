@@ -16,6 +16,7 @@ void Model::initialize(int w, int h)
     // Crea la cámara
     camera = new Camara();
     camera->SetPosition(0.0f, 5.0f, 160.0f);
+    camaraActiva = CamaraEnum::Circuito;
 
     // Crea la escena
     Circuito Monaco(2);
@@ -53,7 +54,7 @@ void Model::finalize()
 //
 void Model::resize(int w, int h)
 {
-    double fov = glm::radians(15.0);
+    constexpr double fov = glm::radians(30.0);
     double sin_fov = sin(fov);
     double cos_fov = cos(fov);
     if (h == 0) h = 1;
@@ -87,17 +88,7 @@ void Model::render()
 void Model::update()
 {
     scene->Update();
-    // switch (camera->camaraActiva) {
-    //     case CamaraEnum::Coche1 {
-
-    //     }
-    //     case CamaraEnum::Coche2 {
-            
-    //     }
-    //     case CamaraEnum::Circuito {
-            
-    //     }
-    // }
+    scene->UpdateCamara(camaraActiva, camera);
 
 }
 
@@ -116,71 +107,87 @@ void Model::key_pressed(int key)
     //CamaraEnum cam = ;
     switch (key)
     {
-        case GLFW_KEY_F1:{
-
+        case GLFW_KEY_F1:
+            camaraActiva = CamaraEnum::Circuito;
             break;
-        }
-        case GLFW_KEY_F2: {
+        
+        case GLFW_KEY_F2:
+            camaraActiva = CamaraEnum::Nano;
             break;
-        }
-        case GLFW_KEY_F3: {
+       
+        case GLFW_KEY_F3:
+            camaraActiva = CamaraEnum::Sainz;
             break;
-        }
-
-        case GLFW_KEY_C:
-            scene->nano->speed += 0.01;
-            break;
-
-        case GLFW_KEY_X:
-            scene->nano->speed -= 0.01;
-            if (scene->nano->speed < 0) scene->nano->speed = 0;
-            break;
-
-        case GLFW_KEY_UP:
-            camera->TurnDown();
-            break;
-        case GLFW_KEY_DOWN:
-            camera->TurnUp();
-            break;
-        case GLFW_KEY_LEFT:
-            camera->TurnCCW();
-            break;
-        case GLFW_KEY_RIGHT:
-            camera->TurnCW();
-            break;
-        case GLFW_KEY_S:
-            camera->SetMoveStep(0.0f);
-            break;
-        case GLFW_KEY_KP_ADD:
-            camera->SetMoveStep(camera->GetMoveStep() + 0.5f);
-            break;
-        case GLFW_KEY_B:
-            camera->MoveBack();
-            break;
-        case GLFW_KEY_KP_SUBTRACT:
-            camera->SetMoveStep(camera->GetMoveStep() - 0.5f);
-            break;
-        case GLFW_KEY_F:
-            camera->MoveFront();
-            break;
-        case GLFW_KEY_Q:
-            camera->MoveUp();
-            break;
-        case GLFW_KEY_A:
-            camera->MoveDown();
-            break;
+        
         case GLFW_KEY_O:
-            camera->MoveLeft();
+            scene->nano->speed += (VELOCIDAD_MAXIMA/10);
+            if (scene->nano->speed > VELOCIDAD_MAXIMA)
+                scene->nano->speed = VELOCIDAD_MAXIMA;
             break;
-        case GLFW_KEY_P:
-            camera->MoveRight();
-            break;
-        case GLFW_KEY_K:
-            camera->TurnLeft();
-            break;
+
         case GLFW_KEY_L:
-            camera->TurnRight();
+            scene->nano->speed -= (VELOCIDAD_MAXIMA / 10);
+            if (scene->nano->speed < 0) 
+                scene->nano->speed = 0;
             break;
+
+        case GLFW_KEY_Q:
+            scene->sainz->speed += (VELOCIDAD_MAXIMA / 10);
+            if (scene->sainz->speed > VELOCIDAD_MAXIMA)
+                scene->sainz->speed = VELOCIDAD_MAXIMA;
+            break;
+
+        case GLFW_KEY_A:
+            scene->sainz->speed -= (VELOCIDAD_MAXIMA / 10);
+            if (scene->sainz->speed < 0) 
+                scene->sainz->speed = 0;
+            break;
+
+        //case GLFW_KEY_UP:
+        //    camera->TurnDown();
+        //    break;
+        //case GLFW_KEY_DOWN:
+        //    camera->TurnUp();
+        //    break;
+        //case GLFW_KEY_LEFT:
+        //    camera->TurnCCW();
+        //    break;
+        //case GLFW_KEY_RIGHT:
+        //    camera->TurnCW();
+        //    break;
+        //case GLFW_KEY_S:
+        //    camera->SetMoveStep(0.0f);
+        //    break;
+        //case GLFW_KEY_KP_ADD:
+        //    camera->SetMoveStep(camera->GetMoveStep() + 0.5f);
+        //    break;
+        //case GLFW_KEY_B:
+        //    camera->MoveBack();
+        //    break;
+        //case GLFW_KEY_KP_SUBTRACT:
+        //    camera->SetMoveStep(camera->GetMoveStep() - 0.5f);
+        //    break;
+        //case GLFW_KEY_F:
+        //    camera->MoveFront();
+        //    break;
+        //case GLFW_KEY_Q:
+        //    camera->MoveUp();
+        //    break;
+        //case GLFW_KEY_A:
+        //    camera->MoveDown();
+        //    break;
+        //case GLFW_KEY_O:
+        //    camera->MoveLeft();
+        //    break;
+        //case GLFW_KEY_P:
+        //    camera->MoveRight();
+        //    break;
+        //case GLFW_KEY_K:
+        //    camera->TurnLeft();
+        //    break;
+        //case GLFW_KEY_L:
+        //    camera->TurnRight();
+        //    break;
     }
 }
 

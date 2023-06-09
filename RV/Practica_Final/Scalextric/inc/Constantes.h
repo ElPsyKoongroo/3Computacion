@@ -7,6 +7,9 @@ constexpr GLfloat CURVA_RADIO_INTERIOR = CURVA_RADIO_EXTERIOR-ANCHURA_PISTA;
 constexpr GLfloat CURVA_RADIO_CENTRO = CURVA_RADIO_INTERIOR+(ANCHURA_PISTA/2);
 constexpr int CURVA_P = 2;
 constexpr int CURVA_M = 33;
+constexpr float CURVA_OFFSET_VENTAJA = 0;
+constexpr float CURVA_OFFSET_DESVENTAJA = 1;
+constexpr float VELOCIDAD_MAXIMA = 1;
 
 /*
 

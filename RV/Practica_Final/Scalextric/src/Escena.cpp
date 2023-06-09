@@ -1,12 +1,6 @@
 #include "Escena.h"
-#include <GL/glew.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include "ShaderProgram.h"
-#include "Figura.h"
-#include "Recta.h"
-#include "Curva.h"
-#include <cmath>
+
+
 #define MY_PI 3.14159265358979323846
 
 Escena::Escena() {}
@@ -56,7 +50,7 @@ Escena::Escena(Circuito c)
     }
 
     suelo = new Recta(100.f,100.f);
-    suelo->Translate(glm::vec3(0.f, -50.f, 0.f));
+    suelo->Translate(glm::vec3(0.f, -50.f, 0.48f));
     suelo->SetMaterial(&(materiales[1]));
 
     nano = new Car();
@@ -188,8 +182,8 @@ void Escena::ActualizaCoche(Car* piloto) {
             auto curvaActual = std::get<CurvaData>(circuito.instrucciones[indexActualPiece]);
             float angulo = curvaActual.Angulo;
             double radio_offset = (piloto->isRight == curvaActual.isClockwise) 
-                ? 0
-                : 1;
+                ? CURVA_OFFSET_VENTAJA
+                : CURVA_OFFSET_DESVENTAJA;
             float circunferencia = 2 * MY_PI * (CURVA_RADIO_CENTRO + radio_offset);
             float distanciaArco = circunferencia / 360 * angulo;
 
@@ -205,7 +199,6 @@ void Escena::ActualizaCoche(Car* piloto) {
     
     glm::vec3 newPosition;
     GLfloat newRotation = 0;
-    bool clockwise = false;
     
     switch (circuito.instrucciones[indexActualPiece].index()) {
        case 0: {   // RectaData
@@ -215,23 +208,17 @@ void Escena::ActualizaCoche(Car* piloto) {
             break;
        }
        case 1:  {  // CurvaData
-            CurvaData curvaActual = std::get<CurvaData>(circuito.instrucciones[indexActualPiece]);
-       
+            CurvaData curvaActual = std::get<CurvaData>(circuito.instrucciones[indexActualPiece]);   
 
             double radio_offset = (piloto->isRight == curvaActual.isClockwise) 
-                ? 0
-                : 1;
-
-
+                ? CURVA_OFFSET_VENTAJA
+                : CURVA_OFFSET_DESVENTAJA;
             float angulo = curvaActual.Angulo;
             float circunferencia = 2 * MY_PI * (CURVA_RADIO_CENTRO + radio_offset);
             float distanciaArco = circunferencia / 360 * angulo;
 
             float anguloCoche = angulo * ( piloto->distanciaRecorridaEnPieza / distanciaArco );
-            if(curvaActual.isClockwise) {
-                clockwise = true;
-                anguloCoche = -anguloCoche;
-            }
+            if (curvaActual.isClockwise) anguloCoche *= -1;
 
             newPosition = Circuito::ActualizaPosicionCurva(curvaActual.PosIni, curvaActual.Rot.first, anguloCoche);
             newRotation = anguloCoche + curvaActual.Rot.first;
@@ -241,7 +228,7 @@ void Escena::ActualizaCoche(Car* piloto) {
 
     piloto->ResetLocation();
     piloto->Translate(newPosition);
-    piloto->Rotate(newRotation + 180, glm::vec3(0,0,1));
+    piloto->Rotate(newRotation + 180, glm::vec3(0,0,1)); //+180 Dado que el modelo del coche esta al reves
     if(piloto->isRight)
     {
         piloto->Translate(glm::vec3(-1.7,0,0));
@@ -250,22 +237,62 @@ void Escena::ActualizaCoche(Car* piloto) {
     {
         piloto->Translate(glm::vec3(+1.7,0,0));    
     }
-    // if(clockwise) 
-    //     piloto->Rotate(newRotation+ 180, glm::vec3(0,0,1));
-
-    // glm::vec3 translation = newPosition - piloto->position;
-    // piloto->Translate(translation);
     piloto->position = newPosition;
-    
-    // GLfloat rotation = newRotation - piloto->rotation;
-    // if(rotation != 0)
-    // {
-    //     piloto->Rotate(rotation, glm::vec3(0,0,1));  
     piloto->rotation = newRotation;
-    // }
 }
 
 void Escena::Update(){
     ActualizaCoche(sainz);
     ActualizaCoche(nano);
+}
+
+void Escena::UpdateCamara(CamaraEnum camaraActiva, Camara* camara)
+{
+    glm::mat4 matriz;
+    switch (camaraActiva)
+    {
+        case CamaraEnum::Circuito: {
+            camara->SetPosition(
+                0.0f, 5.0f, 160.0f
+            );
+            camara->SetDirection(
+                0.0f, 0.0f, 1.0f,
+                0.0f, 1.0f, 0.0f
+                );
+            return;
+            break;
+        }
+        case CamaraEnum::Nano: {
+            
+            matriz = nano->GetLocation();
+            break;
+        }
+        case CamaraEnum::Sainz: {
+            matriz = sainz->GetLocation();
+            break;
+        }
+    }
+    matriz = glm::translate(matriz, glm::vec3(0.0f, 5.f, 2.0f));
+    matriz = glm::rotate(matriz, glm::radians(10.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+    camara->SetPosition(matriz[3][0], matriz[3][1], matriz[3][2]);
+    camara->SetDirection(matriz[1][0], matriz[1][1], matriz[1][2], matriz[2][0], matriz[2][1], matriz[2][2]);
+    /*
+    matrix[0][0] = Right.x;
+    matrix[1][0] = Right.y;
+    matrix[2][0] = Right.z;
+    matrix[3][0] = 0.0f;
+    matrix[0][1] = Up.x;
+    matrix[1][1] = Up.y;
+    matrix[2][1] = Up.z;
+    matrix[3][1] = 0.0f;
+    matrix[0][2] = Dir.x;
+    matrix[1][2] = Dir.y;
+    matrix[2][2] = Dir.z;
+    matrix[3][2] = 0.0f;
+    matrix[0][3] = 0.0f;
+    matrix[1][3] = 0.0f;
+    matrix[2][3] = 0.0f;
+    matrix[3][3] = 1.0f;
+    */
+
 }
