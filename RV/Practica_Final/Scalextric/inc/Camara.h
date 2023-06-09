@@ -2,17 +2,10 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 
-enum class CamaraEnum {
-    Coche1,
-    Coche2,
-    Circuito
-};
-
 class Camara {
 public:
     Camara();
     glm::mat4 ViewMatrix();
-    CamaraEnum camaraActiva;
 
     void SetPosition(GLfloat x, GLfloat y, GLfloat z);
     void SetDirection(GLfloat xDir, GLfloat yDir, GLfloat zDir,
@@ -40,7 +33,7 @@ public:
     void TurnCW();
     void TurnCCW();
 
-    void ChangeCamaraView(CamaraEnum v);
+    void ChangeCamaraView(glm::vec3 position, glm::vec3 direction);
 
 private:
     glm::vec3 Pos;
@@ -52,8 +45,4 @@ private:
     GLfloat turnStep;
     GLfloat cosAngle;
     GLfloat sinAngle;
-
-    CamaraEnum view;
-
-
 };

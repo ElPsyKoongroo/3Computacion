@@ -2,6 +2,7 @@
 
 #include <GL/glew.h>
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include "ShaderProgram.h"
 #include "Figura.h"
 #include "Circuito.h"
@@ -11,7 +12,16 @@
 #include "Constantes.h"
 #include "Cubemah.h"
 #include "Fog.h"
+#include "Camara.h"
+#include "Recta.h"
+#include "Curva.h"
+#include <cmath>
 
+enum class CamaraEnum {
+    Nano,
+    Sainz,
+    Circuito
+};
 
 class Escena {
 public:
@@ -22,6 +32,7 @@ public:
     void CreateTextures();
     void Update();
     void ActualizaCoche(Car* piloto);
+    void UpdateCamara(CamaraEnum camaraActiva, Camara* camara);
     
     Car* nano;
     Car* sainz;
