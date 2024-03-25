@@ -35,7 +35,7 @@ public class SalvaParguelaPeligro implements Accion {
 	public SalvaParguelaPeligro() {
 		// TODO Auto-generated constructor stub
 	}
-
+	
 	@Override
 	public ACTIONS do_action(Mundo m) {
 		ArrayList<Vector2d> parguelas = ParguelaMedioMuerto.parguelas_medio_muertos(m);

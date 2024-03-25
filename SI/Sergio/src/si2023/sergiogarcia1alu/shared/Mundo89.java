@@ -141,7 +141,7 @@ public class Mundo89 implements Mundo {
 		}
 	}
 
-	// Esto tiene un Bug
+	// TODO: FIX THIS
 	private void set_grid(StateObservation m) {
 		ArrayList<Observation>[][] estados = m.getObservationGrid();
 		for (int i = 0; i < this.grid.length; i++) {
@@ -183,7 +183,7 @@ public class Mundo89 implements Mundo {
 			for (int y = 0; y < mundo.getObservationGrid()[x].length; y++) {
 				for (Observation o : mundo.getObservationGrid()[x][y]) {
 					if (o.itype == 16 || o.itype == 18) {
-
+					
 					}
 				}
 			}
@@ -311,5 +311,4 @@ public class Mundo89 implements Mundo {
 	public boolean ok() {
 		return this.mundo_ok;
 	}
-
 }

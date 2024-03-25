@@ -1,4 +1,4 @@
-package si2023.sergiogarcia1alu.p02;
+package si2024.sergiogarcia1alu.p03;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -10,7 +10,7 @@ public class GameRunner {
 	public static void main(String[] args) {
 
 		int ejecuciones = 100;
-		String p0 = "si2023.sergiogarcia1alu.p02.AgenteSuperInteligente";
+		String p0 = "si2024.sergiogarcia1alu.p03.AgenteSuperInteligente";
 
 		// Load available games
 		String spGamesCollection = "examples/all_games_sp.csv";
@@ -19,18 +19,9 @@ public class GameRunner {
 		// Game settings
 		boolean visuals = true;
 
-
-		int[] seed_to_play = { 1963797956,
-				-796734263,
-				-1872155723,
-				157357791,
-				-1153726265,
-				-650359497,
-				1464790604,
-				1245635922};
-
+		
 		// Game and level to play
-		int gameIdx = 89;
+		int gameIdx = 18;
 		int levelIdx = 4; // level names from 0 to 4 (game_lvlN.txt).
 
 		String gameName = games[gameIdx][1];
@@ -38,8 +29,10 @@ public class GameRunner {
 		String level1 = game.replace(gameName, gameName + "_lvl" + levelIdx);
 
 		// 1. This starts a game, in a level, played by a human.
-		// ArcadeMachine.playOneGame(game, level1, null, seed);
-		
+		// ArcadeMachine.playOneGame(game, level1, null, 33);
+
+
+		ArcadeMachine.runOneGame(game, level1, visuals, p0, null, 33, 0);
 		/*
 		for (int i = 0; i < seed_to_play.length; i++) {
 			// 2. This plays a game in a level by the controller.
@@ -47,24 +40,15 @@ public class GameRunner {
 			System.out.println(seed);
 			ArcadeMachine.runOneGame(game, level1, visuals, p0, null, seed, 0);
 		}
-        */
+
 		System.out.println("\n\nRandom seeds !!\n\n"
 				+ "=========================================================================");
 
 		ArrayList<Integer> seed_perdedoras = new ArrayList<>();
 
 		// 90% de WinRate en la seed 33
-		Random rand = new Random(33);
+		Random rand = new Random();
 
-		/*
-		for(var seed: seed_to_play) {
-			double[] cosos = ArcadeMachine.runOneGame(game, level1, visuals, p0, null, seed, 0);
-			if (cosos[0] == 0.0) {
-				seed_perdedoras.add(seed);
-			}
-		}
-		*/
-		
 		for (int i = 0; i < 100; i++) {
 			// 2. This plays a game in a level by the controller.
 			int seed = rand.nextInt();
@@ -81,6 +65,7 @@ public class GameRunner {
 		System.out.println("WinRate: " + (ejecuciones - seed_perdedoras.size()) * 100 / ejecuciones);
 
 		System.exit(0);
+		*/
 
 	}
 }

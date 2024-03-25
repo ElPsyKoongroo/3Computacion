@@ -7,7 +7,6 @@ import si2023.sergiogarcia1alu.shared.acciones.SalvaParguela;
 import si2023.sergiogarcia1alu.shared.condiciones.ParguelaCayendo;
 
 public class SalvarParguela extends Regla {
-
 	public SalvarParguela() {
 		this.antecedentes = new ArrayList<>();
 		this.antecedentes.add(new ParguelaCayendo());

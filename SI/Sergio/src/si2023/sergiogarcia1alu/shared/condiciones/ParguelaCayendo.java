@@ -12,7 +12,7 @@ public class ParguelaCayendo implements Condicion {
 
 	// Indica cuantos bloques mas pa'bajo tiene que mirar hasta dar por echo
 	// que el Parguela va a estamparse
-	private static final int FACTOR_DE_TONTEO = 5;
+	private static final int FACTOR_DE_TONTEO = 3;
 
 	public ParguelaCayendo() {
 		// TODO Auto-generated constructor stub
@@ -34,7 +34,7 @@ public class ParguelaCayendo implements Condicion {
 	 * 
 	 * 		SSSSSSSSSSSSSSSSSSSSSSSSS
 	 * 
-	 * El parguela de mas de la izq no tiene una nube abajo suya en una distancia de dos bloques por
+	 * El parguela de la izq no tiene una nube abajo suya en una distancia de dos bloques por
 	 * lo que el algoritmo lo detectaria como que esta en caida libre hacia el suelo. Lo contrario ocurriria
 	 * con el parguela de las de la derecha, tiene una nube a 2 bloques debajo suya por lo que no lo detectaria
 	 * en caida libre.
@@ -55,12 +55,13 @@ public class ParguelaCayendo implements Condicion {
 		ArrayList<Vector2d> se_van_a_estampar = new ArrayList<>();
 		ArrayList<Vector2d> falsos_parguelas = new ArrayList<>();
 		for (Vector2d parguela : aliados_cayendo) {
+
 			Mundo89.iType[] columna = grid[(int) parguela.x];
 			int parguela_y = (int) parguela.y;
 			boolean caida_directa = true;
-
 			int step = 1;
-			while (parguela_y + step <= Mundo89.NIVEL_DEL_SUELO && step < FACTOR_DE_TONTEO) {
+
+			while (parguela_y + step < Mundo89.NIVEL_DEL_SUELO && step < FACTOR_DE_TONTEO) {
 				if (columna[parguela_y + step] != Mundo89.iType.Nube)
 					falsos_parguelas.add(parguela);
 				step++;

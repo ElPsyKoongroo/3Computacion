@@ -9,10 +9,10 @@ public class Practica_00_exe {
 
     public static void main(String[] args) {
 
-		String agente = "si2023.sergiogarcia1alu.p00.Agente";
+		String agente = "si2023.sergiogarcia1alu.p00.AgenteSuperInteligente";
 		
 		//Load available games
-		String spGamesCollection =  "examples/all_games_sp.csv";
+		String spGamesCollection = "examples/all_games_sp.csv";
 		String[][] games = Utils.readGames(spGamesCollection);
 
 		//Game settings

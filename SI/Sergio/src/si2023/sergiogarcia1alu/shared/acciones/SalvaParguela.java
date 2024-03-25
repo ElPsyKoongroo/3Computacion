@@ -16,7 +16,6 @@ public class SalvaParguela implements Accion {
 	private static int parguela_id = -1;
 
 	public SalvaParguela() {
-		// TODO Auto-generated constructor stub
 	}
 
 	/*
@@ -32,7 +31,7 @@ public class SalvaParguela implements Accion {
 		else if (closest_parguela.x < player_pos.x)
 			return ACTIONS.ACTION_LEFT;
 
-		if (closest_parguela.y >= player_pos.y)
+		if (closest_parguela.y > player_pos.y)
 			return ACTIONS.ACTION_DOWN;
 		else if (closest_parguela.y < player_pos.y)
 			return ACTIONS.ACTION_UP;
@@ -41,6 +40,7 @@ public class SalvaParguela implements Accion {
 	}
 
 	public Vector2d selecciona_parguela(ArrayList<Vector2d> parguelas, Vector2d player_pos) {
+		// double closest_parguela = (double)(Mundo89.NIVEL_DEL_SUELO - parguelas.get(0).y); // parguelas.get(0).dist(player_pos);
 		double closest_parguela = parguelas.get(0).dist(player_pos);
 		Vector2d p = parguelas.get(0);
 
@@ -50,6 +50,16 @@ public class SalvaParguela implements Accion {
 				closest_parguela = parguela.dist(player_pos);
 			}
 		}
+		
+		/*
+		for (Vector2d parguela : parguelas) {
+			var dist = Mundo89.NIVEL_DEL_SUELO - parguela.y;
+			if (dist < closest_parguela) {
+				p = parguela;
+				closest_parguela = dist;
+			}
+		}
+		*/
 
 		return p;
 	}
